@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+
+import {json} from '../data.module'
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './genius.component.html',
   styleUrls: ['./genius.component.scss']
 })
+
 export class GeniusComponent {
-  title = 'test';
+  data = JSON.parse(json);
+  list = []
+
+  constructor() {
+  }
+
 }

@@ -7,14 +7,14 @@ import { AppRoutingModule } from './genius-routing.module';
 
 
 @NgModule({
-  declarations: [
-    GeniusComponent
-  ],
   imports: [
     BrowserModule,
     CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+  ],
+  declarations: [
+    GeniusComponent
   ],
   providers: [],
   bootstrap: [GeniusComponent]
