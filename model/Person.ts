@@ -1,6 +1,6 @@
 import {Family} from "./Family";
 
-class Person{
+export class Person{
 
   // props
   private _id:string;
