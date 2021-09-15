@@ -1,4 +1,10 @@
 import {Family} from "./Family";
+import {LifeEvent} from "./LifeEvent";
+
+enum Sex {
+  m = 'm',
+  w = 'w',
+}
 
 export class Person {
 
@@ -8,23 +14,19 @@ export class Person {
   private lastName: string;
   private middleName: string;
   private age: number;
-  private sex: 'm' | 'w';
-  private lifeEvent: Array<Object>;
-  private dateBirth: string;
-  private dateDeath: string;
+  private sex: Sex;
+  private lifeEvent: Array<LifeEvent>;
   private family: Family;
 
 
   // const
-  constructor(id: string, firstName: string, lastName: string, middleName: string, age: number, sex: 'm' | 'w', dateBirth: string, dateDeath: string, family: Family, lifeEvent: Array<Object>) {
+  constructor(id: string, firstName: string, lastName: string, middleName: string, age: number, sex: Sex,family: Family, lifeEvent: Array<LifeEvent>) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.middleName = middleName;
     this.age = age;
     this.sex = sex;
-    this.dateBirth = dateBirth;
-    this.dateDeath = dateDeath;
     this.family = family;
     this.lifeEvent = lifeEvent;
   }
@@ -59,16 +61,8 @@ export class Person {
     return this.sex;
   }
 
-  getLifeEvent(): Array<Object> {
+  getLifeEvent(): Array<LifeEvent> {
     return this.lifeEvent;
-  }
-
-  getDateBirth(): string {
-    return this.dateBirth;
-  }
-
-  getDateDeath(): string {
-    return this.dateDeath;
   }
 
   getFamily(): Family {
