@@ -1,10 +1,22 @@
+
+export enum Events {
+  birthDay = 'birthday',
+  deathDay = 'date of death',
+  wedding = 'wedding',
+  rewarding = 'rewarding',
+  moving = 'moving',
+  graduation = 'graduation',
+}
+
 export class LifeEvent {
   // props
-  private type: string;
-  private description: string;
+  date: Date;
+  type: Events;
+  description: string;
 
   // const
-  constructor(type: string, description: string) {
+  constructor(date: Date, type: Events, description: string) {
+    this.date = date;
     this.type = type;
     this.description = description
   }

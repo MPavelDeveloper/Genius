@@ -3,9 +3,9 @@ import {Person} from "./Person";
 export class Family {
 
   // props
-  private father: Person;
-  private mother: Person;
-  private children: Array<Person>;
+  public father: Person;
+  public mother: Person;
+  public children: Array<Person>;
 
   // constr
   constructor(father: Person, mother: Person, children: Array<Person>) {
@@ -15,15 +15,15 @@ export class Family {
   }
 
   // get setter
-  getFather(): Person {
-    return this.father;
-  }
-
-  getMother(): Person {
-    return this.mother;
-  }
-
-  getChildren(): Array<Person> {
-    return this.children;
-  }
+  // getFather(): Person {
+  //   return this.father;
+  // }
+  //
+  // getMother(): Person {
+  //   return this.mother;
+  // }
+  //
+  // getChildren(): Array<Person> {
+  //   return this.children;
+  // }
 }
