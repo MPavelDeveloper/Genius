@@ -3,11 +3,16 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from './environments/environment';
 
-// import module
+// import of own modules
 import { GeniusModule } from './genius/genius.module';
 
-import { json } from "./data.module";
-import {GeniusComponent} from "./genius/genius.component";
+
+// import json
+import { json } from './json'
+localStorage.setItem('json', json)
+
+
+
 
 if (environment.production) {
   enableProdMode();
@@ -16,4 +21,4 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(GeniusModule)
   .catch(err => console.error(err));
 
-// GeniusComponent.prototype.innerData(JSON.parse(json))
+

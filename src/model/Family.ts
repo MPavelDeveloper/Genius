@@ -1,29 +1,17 @@
-import {Person} from "./Person";
-
 export class Family {
 
   // props
-  public father: Person;
-  public mother: Person;
-  public children: Array<Person>;
+  public id : string;
+  public father:string | null;
+  public mother: string | null;
+  public children: Array<string> | null;
 
   // constr
-  constructor(father: Person, mother: Person, children: Array<Person>) {
+  constructor(id:string, father: string | null, mother: string | null, children: Array<string> | null) {
+    this.id = id;
     this.father = father;
     this.mother = mother;
     this.children = children;
   }
 
-  // get setter
-  // getFather(): Person {
-  //   return this.father;
-  // }
-  //
-  // getMother(): Person {
-  //   return this.mother;
-  // }
-  //
-  // getChildren(): Array<Person> {
-  //   return this.children;
-  // }
 }
