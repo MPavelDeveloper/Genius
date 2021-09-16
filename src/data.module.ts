@@ -1,18 +1,27 @@
-let data: object = {
+// import class
+import {Family} from "./model/Family";
+
+// import enums
+import {Sex} from "./model/Person";
+import {Events} from "./model/LifeEvent"
+
+
+let data: Array<Family> = [{
   father: {
     id: '2p',
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Johnson',
     age: 54,
-    sex: 'w',
-    lifeIvent: [
+    sex: Sex.man,
+    lifeEvent: [
       {
-        date: '20.03.1996',
-        event: 'Married',
+        date: new Date('1989-03-12'),
+        type: Events.wedding,
+        description: 'Married',
       },
     ],
-    family: [],
+    // family: [],
   },
   mother: {
     id: '3p',
@@ -20,14 +29,15 @@ let data: object = {
     lastName: 'James',
     middleName: 'Kolin',
     age: 45,
-    sex: 'w',
-    lifeIvent: [
+    sex: Sex.woman,
+    lifeEvent: [
       {
-        date: '20.03.1996',
-        event: 'Married',
+        date: new Date('1989-03-12'),
+        type: Events.wedding,
+        description: 'Married',
       },
     ],
-    family: [],
+    // family: [],
   },
   children: [
     {
@@ -36,17 +46,18 @@ let data: object = {
       lastName: 'James',
       middleName: 'Johnson',
       age: 23,
-      sex: 'm',
-      lifeIvent: [
+      sex: Sex.man,
+      lifeEvent: [
         {
-          date: '20.03.2018',
-          event: 'finished University',
+          date: new Date('1998-05-12'),
+          type: Events.birthDay,
+          description: 'Married',
         },
       ],
-      family: [],
+      // family: [],
 
     },
   ]
-}
+}];
 
 export const json = JSON.stringify(data)
