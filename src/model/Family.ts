@@ -2,12 +2,12 @@ export class Family {
 
   // props
   public id : string;
-  public father:string | null;
-  public mother: string | null;
-  public children: Array<string> | null;
+  public father:string;
+  public mother: string;
+  public children: Array<string>;
 
   // constr
-  constructor(id:string, father: string | null, mother: string | null, children: Array<string> | null) {
+  constructor(id:string, father: string, mother: string, children: Array<string>) {
     this.id = id;
     this.father = father;
     this.mother = mother;

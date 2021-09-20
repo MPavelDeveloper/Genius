@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './genius-routing.module';
+import { DataServiceProvider } from './dataServiceProvider.service'
+import { ParsService } from "./pars-service.service";
 
 // import component's
 import { GeniusComponent } from "./genius.component";
@@ -18,7 +20,7 @@ import { GeniusComponent } from "./genius.component";
     BrowserAnimationsModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [DataServiceProvider, ParsService],
   bootstrap: [GeniusComponent]
 })
 

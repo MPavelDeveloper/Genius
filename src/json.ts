@@ -23,23 +23,7 @@ const data: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 54,
-    sex: Sex.man,
-    lifeEvent: [
-      {
-        date: new Date('1989-03-12'),
-        type: Events.wedding,
-        description: 'Married',
-      },
-    ],
-    familyId: null,
-  }, {
-    // mother
-    id: '3p',
-    firstName: 'Lola',
-    lastName: 'James',
-    middleName: 'Kan',
-    age: 45,
-    sex: Sex.woman,
+    sex: Sex.Male,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
@@ -49,13 +33,29 @@ const data: LineAge = {
     ],
     familyId: '2f',
   }, {
+    // mother
+    id: '3p',
+    firstName: 'Lola',
+    lastName: 'James',
+    middleName: 'Kan',
+    age: 45,
+    sex: Sex.Female,
+    lifeEvent: [
+      {
+        date: new Date('1989-03-12'),
+        type: Events.wedding,
+        description: 'Married',
+      },
+    ],
+    familyId: null,
+  }, {
     // son
     id: '1p',
     firstName: 'John',
     lastName: 'James',
     middleName: 'Tomson',
     age: 23,
-    sex: Sex.man,
+    sex: Sex.Male,
     lifeEvent: [
       {
         date: new Date('1998-05-12'),
@@ -72,7 +72,7 @@ const data: LineAge = {
     lastName: 'James',
     middleName: 'Kolin',
     age: 92,
-    sex: Sex.man,
+    sex: Sex.Male,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -82,7 +82,7 @@ const data: LineAge = {
     lastName: 'James',
     middleName: 'Han',
     age: 88,
-    sex: Sex.woman,
+    sex: Sex.Female,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -92,9 +92,9 @@ const data: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 92,
-    sex: Sex.man,
+    sex: Sex.Male,
     lifeEvent: null,
-    familyId: '1f',
+    familyId: '2f',
   }, ],
 }
 

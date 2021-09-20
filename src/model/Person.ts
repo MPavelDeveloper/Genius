@@ -1,8 +1,8 @@
 import {LifeEvent} from "./LifeEvent";
 
 export enum Sex {
-  man = 'male',
-  woman = 'female',
+  Male = 'male',
+  Female = 'female',
 }
 
 export class Person {
@@ -10,16 +10,16 @@ export class Person {
   // props
   public id: string;
   public firstName: string;
-  public lastName: string | null;
-  public middleName: string | null;
-  public age: number | null;
+  public lastName: string;
+  public middleName: string;
+  public age: number;
   public sex: Sex;
-  public lifeEvent: Array<LifeEvent> | null;
-  public familyId: string | null;
+  public lifeEvent: Array<LifeEvent>;
+  public familyId: string;
 
 
   // const
-  constructor(id: string, firstName: string, lastName: string | null, middleName: string | null, age: number | null, sex: Sex,lifeEvent: Array<LifeEvent> | null, familyId: string | null) {
+  constructor(id: string, firstName: string, lastName: string, middleName: string, age: number, sex: Sex,lifeEvent: Array<LifeEvent>, familyId: string) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;

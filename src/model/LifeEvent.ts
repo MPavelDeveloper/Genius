@@ -18,7 +18,7 @@ export class LifeEvent {
   constructor(date: Date, type: Events, description: string) {
     this.date = date;
     this.type = type;
-    this.description = description
+    this.description = description;
   }
 
 
