@@ -34,6 +34,8 @@ export class ParsService {
   // methods
   parsData(): void {
     if (this.validData()) {
+
+      // add children (root Family) in geniusStruct
       if (this.rootFamily.children.length !== 0) {
         // search person by id
         const targetPerson = this.findTargetPerson(this.rootFamily.children[0], this.personsList);
@@ -44,57 +46,73 @@ export class ParsService {
         }
       }
 
-      let hash_persons: string[] = [];
-      let hash_families: string[] = [];
+
+      let hash_persons: Person[] = [];
+      let hash_families: Family[] = [];
+
+      // add parents (root Family) in hash_persons
       if (this.rootFamily.father) {
-        hash_persons.push(this.rootFamily.father)
+        const father = this.findTargetPerson(this.rootFamily.father, this.personsList)
+        if (father) {
+          hash_persons.push(father)
+        }
       }
       if (this.rootFamily.mother) {
-        hash_persons.push(this.rootFamily.mother)
+        const mother = this.findTargetPerson(this.rootFamily.mother, this.personsList)
+        if (mother) {
+          hash_persons.push(mother)
+        }
       }
 
 
       while (hash_persons.length !== 0) {
-        let wrap: Array<Array<Person>> = []
+        // consolidator all related persons (one iteration)
+        let wrap: Array<Array<Person>> = [];
 
+        // consolidator target related persons (one person line)
+        let targetPersons: Array<Person> = hash_persons;
+        hash_persons = [];
 
-        let targetPersons: Array<Person> = []
-        // get target person's: object's
-        hash_persons.forEach((id: string) => {
-          const person = this.findTargetPerson(id, this.personsList)
-          if (person) {
-            targetPersons.push(person)
-          }
-        })
-        // clean hash with persons id:string
-        hash_persons = []
-
-        // get each person's familyId and find targets person
+        // get each person's familyId and search related person
         targetPersons.forEach((targetPerson: Person) => {
+          // CASE:
           if (targetPerson.familyId !== null) {
-            hash_families.push(targetPerson.familyId)
-          }
-        })
-
-
-        if (hash_families.length !== 0) {
-          // search related person's by familyID
-          hash_families.forEach((familyID: string) => {
-            const related: Person[] = this.findRelatedPersons(familyID, this.personsList)
-            if (related !== null && related.length !== 0) {
+            // each collection of related person's
+            const related: Person[] = this.findRelatedPersons(targetPerson.familyId, this.personsList)
+            // check collection
+            if (related) {
               wrap.push(related)
-              console.log(wrap)
-
-              related.forEach((person:Person) => {
-                if(person.familyId !== null) {
-                  // hash_persons()
+              const hash: string[] = []
+              related.forEach((person: Person) => {
+                if (person.familyId !== null) {
+                  if(!hash.includes(person.familyId)) {
+                    hash.push(person.familyId)
+                    const family = this.findTargetFamily(person.familyId, this.familyList)
+                    if (family) {
+                      if (family.father) {
+                        const target: Person = this.findTargetPerson(family.father, this.personsList)
+                        if (target) {
+                          hash_persons.push(target)
+                        }
+                      }
+                      if (family.mother) {
+                        const target: Person = this.findTargetPerson(family.mother, this.personsList)
+                        if (target) {
+                          hash_persons.push(target)
+                        }
+                      }
+                    }
+                  }
                 }
               })
             }
-          })
-        }
+          } else {
+            wrap.push([targetPerson])
+          }
+        })
 
         this.genusStruct.push(wrap)
+
       }
 
 
@@ -124,9 +142,9 @@ export class ParsService {
     return null;
   }
 
-  findTargetFamily(familyId: string, data: LineAge): Family {
+  findTargetFamily(familyId: string, familyList: Family[]): Family {
     if (typeof familyId === 'string') {
-      const family: Family = data.familyList.find((f: Family) => f.id === familyId);
+      const family: Family = familyList.find((f: Family) => f.id === familyId);
       if (family) {
         return family;
       }
