@@ -31,7 +31,7 @@ const data: LineAge = {
         description: 'Married',
       },
     ],
-    familyId: '2f',
+    familyId: null,
   }, {
     // mother
     id: '3p',
@@ -47,7 +47,7 @@ const data: LineAge = {
         description: 'Married',
       },
     ],
-    familyId: null,
+    familyId: '2f',
   }, {
     // son
     id: '1p',
@@ -67,7 +67,7 @@ const data: LineAge = {
   }, {
     // second family
     // father
-    id: '2pp',
+    id: '4pp',
     firstName: 'Nick',
     lastName: 'James',
     middleName: 'Kolin',
@@ -77,7 +77,7 @@ const data: LineAge = {
     familyId: null,
   }, {
     // mother
-    id: '3pp',
+    id: '5pp',
     firstName: 'Julia',
     lastName: 'James',
     middleName: 'Han',
@@ -99,4 +99,5 @@ const data: LineAge = {
 }
 
 export const json = JSON.stringify(data)
+        localStorage.setItem('json', json)
 

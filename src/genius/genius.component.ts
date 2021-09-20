@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Family} from "../model/Family";
 import {Person} from "../model/Person";
-
+import {LineAge} from "../model/LineAge";
 
 
 @Component({
@@ -10,60 +10,161 @@ import {Person} from "../model/Person";
   styleUrls: ['./genius.component.scss']
 })
 
-export class GeniusComponent {
-  data = this.getData();
+export class GeniusComponent implements OnInit {
+  data: any;
+  struct: any;
 
 
   constructor() {
+    this.data = this.getJSON()
+    this.struct = [];
+  }
+
+  ngOnInit() {
+    this.parsData()
+    console.log(this.data)
+    console.log(this.struct)
+  }
+
+  getJSON() {
+    return localStorage.getItem('json')
   }
 
   // [Object LineAge] get data in local storage
-  getData() {
+  // getData() {
     // get json in local storage
-    const data = localStorage.getItem('json')
+    // const data = localStorage.getItem('json')
     // check data type
-    if (data) {
-      return JSON.parse(data)
-    }
-  }
+  //   if (data) {
+  //     return JSON.parse(data)
+  //   }
+  // }
 
 
   parsData(): void {
-    // checking for the presence object in data
-    if (this.checkData()) {
+    // data desserialization
+    const data = JSON.parse(this.data)
+    console.log(data)
 
-      // data -> familyList -> family (each)
-      this.data.familyList.forEach((family: Family) => {
+    // [VALID] <JSON> checking for the presence object in data
+    if (this.checkData(data)) {
 
-        // checking for the presence object in target family;
+      // [ITER] data -> familyList -> family (each)
+      data.familyList.forEach((family: Family) => {
+
+        // 1. Children
+        // [VALID] checking for the presence object in target family;
         if (!this.isEmpty(family.children)) {
+          const wrap_heirs: Person[] = []
           // @ts-ignore
+          // [ITER] each child
           family.children.forEach((personId: string) => {
-            const person = this.getTargetPerson(personId)
-                  if(!this.isEmpty(person)) {
-                    console.log(person)
-                  }
+            const targetPerson: Person | {} = this.getTargetPerson(personId, data)
+            if (!this.isEmpty(targetPerson)) {
+              // @ts-ignore
+              wrap_heirs.push(targetPerson)
+            }
           })
+          this.struct.push(wrap_heirs)
         }
+
+        // 2. Mother and mother's relatives (sisters, brothers)
+        if (!this.isEmpty(family.mother)) {
+          const wrap_mRelatives: Person[] = []
+          // @ts-ignore
+          // [Person] get target person
+          const targetPerson: Person | {} = this.getTargetPerson(family.mother, data)
+          // get target family
+          if (!this.isEmpty(targetPerson)) {
+            // @ts-ignore
+            wrap_mRelatives.push(targetPerson)
+            // @ts-ignore
+            // [Family] get target family
+            const targetFamily: Family | {} = this.getTargetFamily(targetPerson.familyId, data)
+
+            // @ts-ignore
+            if (!this.isEmpty(targetFamily) && !this.isEmpty(targetFamily.children)) {
+
+              // @ts-ignore
+              targetFamily.children.forEach(personId => wrap_mRelatives.push(this.getTargetPerson(personId, data)))
+              // @ts-ignore
+              targetFamily.children = null;
+            }
+
+          }
+          if (!this.isEmpty(wrap_mRelatives)) {
+            // @ts-ignore
+            this.struct.push(wrap_mRelatives)
+
+          }
+        }
+
+        // 3. Father and father relatives (sisters, brothers)
+        if (!this.isEmpty(family.father)) {
+          const wrap_fRelatives: Person[] = []
+          // @ts-ignore
+          // [Person] get target person
+          const targetPerson: Person | {} = this.getTargetPerson(family.father, data)
+          // get target family
+          if (!this.isEmpty(targetPerson)) {
+            // @ts-ignore
+            wrap_fRelatives.push(targetPerson)
+            // @ts-ignore
+            // [Family] get target family
+            const targetFamily: Family | {} = this.getTargetFamily(targetPerson.familyId, data)
+
+            // @ts-ignore
+            if (!this.isEmpty(targetFamily) && !this.isEmpty(targetFamily.children)) {
+
+              // @ts-ignore
+              targetFamily.children.forEach(personId => wrap_fRelatives.push(this.getTargetPerson(personId, data)))
+              // @ts-ignore
+              targetFamily.children = null;
+            }
+
+          }
+          if (!this.isEmpty(wrap_fRelatives)) {
+            // @ts-ignore
+            this.struct.push(wrap_fRelatives)
+          }
+        }
+
       })
     }
   }
 
-  // [Array] get target person in data.personList
-  getTargetPerson(personId: string): object {
-    const person = this.data.personList.find((p: Person) => p.id === personId)
-    if (typeof person === 'object') {
-      return person
+
+  // [Person | {}] get target person in data.personList
+  getTargetPerson(personId: string, data: LineAge): Person | object {
+    if(!this.isEmpty(personId)) {
+      // @ts-ignore
+      const person: Person = data.personList.find((p: Person) => p.id === personId)
+      if (!this.isEmpty(person)) {
+        return person
+      }
     }
     return {}
   }
 
-  // [Boolean] checking for the presence object in data
-  checkData(): boolean {
-    return this.data.familyList !== null &&
-      this.data.familyList.length !== 0 &&
-      this.data.personList !== null &&
-      this.data.personList.length !== 0
+  // [Family | {}] get target family in data.familyList
+  getTargetFamily(familyId: string, data: LineAge): Family | object {
+    if(!this.isEmpty(familyId)) {
+      // @ts-ignore
+      const family: Family = data.familyList.find((f: Family) => f.id === familyId)
+      if (!this.isEmpty(family)) {
+        return family
+      }
+    }
+    return {}
+  }
+
+  // [Boolean] VALIDATION JSON checking for the presence object in data
+  checkData(data: LineAge): boolean {
+    return data !== null &&
+      data.familyList !== null &&
+      data.familyList.length !== 0 &&
+      data.personList !== null &&
+      data.personList.length !== 0
   }
 
   // [Boolean] checking an object for the emptiness
@@ -84,5 +185,3 @@ export class GeniusComponent {
   }
 }
 
-const elem = new GeniusComponent()
-elem.parsData()
