@@ -9,12 +9,12 @@ export enum Events {
 }
 
 export class LifeEvent {
-  // props
-  date: Date;
-  type: Events;
-  description: string;
 
-  // const
+  public date: Date;
+  public type: Events;
+  public description: string;
+
+
   constructor(date: Date, type: Events, description: string) {
     this.date = date;
     this.type = type;

@@ -6,7 +6,7 @@ import { environment } from './environments/environment';
 
 import { json } from './json'
 localStorage.setItem('json', json)
-// console.log(json)
+
 
 
 // import of own modules

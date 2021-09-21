@@ -1,34 +1,5 @@
-*{
-  margin: 0;
-  border: 0;
-  padding: 0;
-
-  font-family: sans-serif;
-  box-sizing: border-box;
-
-  list-style-type: none;
-  text-decoration: none;
-  outline: none;
-}
-.card{
-  padding: 12px;
-  border-radius: 12px;
+.genus{
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  max-width: 320px;
-  font-family: sans-serif;
-  font-size: 27px;
-  color:white;
-  background-color: lightblue;
-  box-shadow: 0 2px 8px gray;
 }
-.card-name{
-  margin-bottom: 6px;
-}
-.card-sex{
-}
-.card-age{
-  font-size: 18px;
-}
-

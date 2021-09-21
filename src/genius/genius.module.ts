@@ -3,16 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './genius-routing.module';
-import { DataServiceProvider } from './dataServiceProvider.service'
-import { ParsService } from "./pars-service.service";
+
+// import service's
+import { DataServiceProvider } from './data-service-provider.service'
 
 // import component's
 import { GeniusComponent } from "./genius.component";
+import { PersonComponent } from './person/person.component';
 
 
 @NgModule({
   declarations: [
-    GeniusComponent
+    GeniusComponent,
+    PersonComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +23,7 @@ import { GeniusComponent } from "./genius.component";
     BrowserAnimationsModule,
     AppRoutingModule,
   ],
-  providers: [DataServiceProvider, ParsService],
+  providers: [DataServiceProvider],
   bootstrap: [GeniusComponent]
 })
 

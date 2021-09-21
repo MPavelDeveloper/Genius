@@ -1,6 +1,6 @@
-import {LineAge} from "./model/LineAge";
-import {Sex} from "./model/Person";
-import {Events} from "./model/LifeEvent";
+import {LineAge} from "./model/line-age";
+import {Sex} from "./model/person";
+import {Events} from "./model/life-event";
 
 
 const data: LineAge = {
@@ -8,12 +8,17 @@ const data: LineAge = {
     id: '1f',
     father: '2p',
     mother: '3p',
-    children: ['1p'],
+    children: ['1p', '4p'],
   }, {
     id: '2f',
     father: '4pp',
     mother: '5pp',
     children: ['2p', '3pp'],
+  }, {
+    id: '3f',
+    father: '6ppp',
+    mother: '7ppp',
+    children: ['5pp'],
   }, ],
   personList: [{
     // first family
@@ -49,7 +54,7 @@ const data: LineAge = {
     ],
     familyId: null,
   }, {
-    // son
+    // son first
     id: '1p',
     firstName: 'John',
     lastName: 'James',
@@ -59,6 +64,22 @@ const data: LineAge = {
     lifeEvent: [
       {
         date: new Date('1998-05-12'),
+        type: Events.birthDay,
+        description: 'Married',
+      },
+    ],
+    familyId: '1f',
+  }, {
+    // son second
+    id: '4p',
+    firstName: 'Sergey',
+    lastName: 'James',
+    middleName: 'Tomson',
+    age: 29,
+    sex: Sex.Male,
+    lifeEvent: [
+      {
+        date: new Date('1992-03-09'),
         type: Events.birthDay,
         description: 'Married',
       },
@@ -84,20 +105,40 @@ const data: LineAge = {
     age: 88,
     sex: Sex.Female,
     lifeEvent: null,
-    familyId: null,
+    familyId: '3f',
   }, {
     // + child
     id: '3pp',
     firstName: 'Nolan',
     lastName: 'James',
     middleName: 'Nickson',
-    age: 92,
+    age: 58,
     sex: Sex.Male,
     lifeEvent: null,
     familyId: '2f',
-  }, ],
+  }, {
+    // third family
+    // father
+    id: '6ppp',
+    firstName: 'Han',
+    lastName: 'Long',
+    middleName: 'Kan',
+    age: 142,
+    sex: Sex.Male,
+    lifeEvent: null,
+    familyId: null,
+  }, {
+    // mother
+    id: '7ppp',
+    firstName: 'Jessica',
+    lastName: 'Long',
+    middleName: 'Kolin',
+    age: 137,
+    sex: Sex.Female,
+    lifeEvent: null,
+    familyId: null,
+  },],
 }
 
 export const json = JSON.stringify(data)
-        localStorage.setItem('json', json)
 
