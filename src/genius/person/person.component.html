@@ -1,11 +1,4 @@
-
-  <ng-container *ngFor = 'let line of genusStruct'>
-    <div class="persons-related">
-      <ng-container *ngFor = 'let personsArr of line'>
-          <div class="person" *ngFor = 'let person of personsArr'>
-                    <p class="person-name">{{ person.firstName }} {{ person.lastName }} {{ person.middleName }}</p>
-                    <p class="person-age">{{ person.age }} years</p>
-          </div>
-      </ng-container>
-    </div>
-  </ng-container>
+<div class="person">
+  <p class="person-name">{{ person.firstName }} {{ person.lastName }} {{ person.middleName }}</p>
+  <p class="person-age">{{ person.age }} years</p>
+</div>

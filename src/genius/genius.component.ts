@@ -3,7 +3,7 @@ import { Person } from '../model/person'
 import { DataProvider } from './data-provider.service'
 
 @Component({
-  selector: 'app-genius',
+  selector: 'genius',
   templateUrl: './genius.component.html',
   styleUrls: ['./genius.component.scss']
 })
@@ -17,6 +17,5 @@ export class GeniusComponent implements OnInit {
   ngOnInit() {
     this.persons = this.dataProvider.getPersons();
   }
-
 }
 

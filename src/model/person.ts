@@ -1,4 +1,4 @@
-import {LifeEvent} from "./life-event";
+import { LifeEvent } from "./life-event";
 
 export enum Sex {
   Male = 'male',
