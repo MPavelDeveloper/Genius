@@ -1,26 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {Person} from '../model/person'
-import {DataServiceProvider} from './data-service-provider.service'
-
-
-
+import { Component, OnInit } from '@angular/core';
+import { Person } from '../model/person'
+import { DataProvider } from './data-provider.service'
 
 @Component({
   selector: 'app-genius',
   templateUrl: './genius.component.html',
-  providers: [DataServiceProvider],
   styleUrls: ['./genius.component.scss']
 })
-
 export class GeniusComponent implements OnInit {
 
-  public personsStruct: Array<Array<Array<Person>>> = [];
+  public persons: Array<Person>;
 
-
-  constructor() {
+  constructor(private dataProvider: DataProvider) {
   }
 
   ngOnInit() {
+    this.persons = this.dataProvider.getPersons();
   }
 
 }

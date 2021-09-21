@@ -11,38 +11,35 @@
   outline: none;
 }
 
-.persons-related{
-  margin-bottom: 18px;
+
+.person{
+  margin-bottom: 9px;
+  padding: 12px;
+  border-radius: 12px;
   display: flex;
-  justify-content: center;
-  .person{
-    margin-right: 9px;
-    padding: 12px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 270px;
-    font-family: sans-serif;
-    font-size: 27px;
-    color:white;
-    background-color: lightblue;
-    box-shadow: 0 2px 8px gray;
-    transition: 300ms;
-    cursor: pointer;
-    &:hover{
-      background-color: #86c4d4;
-    }
+  flex-direction: column;
+  align-items: center;
+  min-width: 270px;
+  font-family: sans-serif;
+  font-size: 27px;
+  color:white;
+  background-color: lightblue;
+  box-shadow: 0 2px 8px gray;
+  transition: 300ms;
+  cursor: pointer;
+  &:hover{
+    background-color: #86c4d4;
+  }
 
-    .person-name{
-      margin-bottom: 6px;
-    }
+  .person-name{
+    margin-bottom: 6px;
+  }
 
-    .person-age{
-      font-size: 21px;
-    }
+  .person-age{
+    font-size: 21px;
   }
 }
+
 
 
 

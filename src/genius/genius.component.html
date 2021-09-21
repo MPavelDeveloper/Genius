@@ -1,4 +1,6 @@
 <div class="genus">
-  <app-person></app-person>
+  <ng-container *ngFor = 'let person of persons'>
+    <person [person]="person"></person>
+  </ng-container>
 </div>
 
