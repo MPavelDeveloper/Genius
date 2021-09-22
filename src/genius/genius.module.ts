@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { DataProvider, LocalStorageDataProvider } from './data-provider.service'
+import { DataProvider, LocalStorageDataProvider } from './services/data-provider.service'
 import { AppRoutingModule } from './genius-routing.module';
 
 import { GeniusComponent } from "./genius.component";
