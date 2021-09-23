@@ -31,13 +31,8 @@ export class LocalStorageDataProvider implements DataProvider {
 
 
   constructor() {
-    const data = JSON.parse(localStorage.getItem('json'));
-    if (data) {
-      this.persons = data.personList.map((obj: any) => this.mapPerson(obj))
-      this.families = data.familyList.map((obj: any) => this.mapFamily(obj))
-    }
+    this.reloadData();
   }
-
 
   private mapPerson(obj: any): Person {
     let person = new Person();
@@ -65,14 +60,14 @@ export class LocalStorageDataProvider implements DataProvider {
     if (personId) {
       return this.persons.find((p: Person) => p.id === personId);
     }
-    return null
+    return undefined
   }
 
   public findFamily(familyId: string): Family {
     if (familyId) {
       return this.families.find((family: Family) => family.id === familyId);
     }
-    return null
+    return undefined
   }
 
 
@@ -96,5 +91,13 @@ export class LocalStorageDataProvider implements DataProvider {
 
   public getPersons(): Array<Person> {
     return this.persons;
+  }
+
+  reloadData() {
+    const data = JSON.parse(localStorage.getItem('json'));
+    if (data) {
+      this.persons = data.personList.map((obj: any) => this.mapPerson(obj))
+      this.families = data.familyList.map((obj: any) => this.mapFamily(obj))
+    }
   }
 }

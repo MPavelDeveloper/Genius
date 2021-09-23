@@ -3,7 +3,7 @@ import {Sex} from "./model/person";
 import {Events} from "./model/life-event";
 
 
-const data: LineAge = {
+export const data: LineAge = {
   familyList: [{
     id: '1f',
     father: {
@@ -280,5 +280,89 @@ const data: LineAge = {
   }, ],
 }
 
+export const testData: LineAge = {
+  familyList: [{
+    id: '1f',
+    father: {
+      id: '2p',
+      firstName: 'Tom',
+      lastName: 'James',
+      middleName: 'Nickson',
+      age: 54,
+      sex: Sex.Male,
+      lifeEvent: [
+        {
+          date: new Date('1989-03-12'),
+          type: Events.wedding,
+          description: 'Married',
+        },
+      ],
+      familyId: '2f',
+    },
+    mother: {
+      id: '3p',
+      firstName: 'Lola',
+      lastName: 'James',
+      middleName: 'Kan',
+      age: 45,
+      sex: Sex.Female,
+      lifeEvent: [
+        {
+          date: new Date('1989-03-12'),
+          type: Events.wedding,
+          description: 'Married',
+        },
+      ],
+      familyId: null,
+    },
+    children: [{
+      // son first
+      id: '1p',
+      firstName: 'John',
+      lastName: 'James',
+      middleName: 'Tomson',
+      age: 23,
+      sex: Sex.Male,
+      lifeEvent: [
+        {
+          date: new Date('1998-05-12'),
+          type: Events.birthDay,
+          description: 'Married',
+        },
+      ],
+      familyId: '1f',
+    }, {
+      // son second
+      id: '4p',
+      firstName: 'Sergey',
+      lastName: 'James',
+      middleName: 'Tomson',
+      age: 29,
+      sex: Sex.Male,
+      lifeEvent: [
+        {
+          date: new Date('1992-03-09'),
+          type: Events.birthDay,
+          description: 'Married',
+        },
+      ],
+      familyId: '1f',
+    }],
+  }, ],
+  personList: [{
+    // first family
+    // father
+    id: '2p',
+    firstName: 'Tom',
+    lastName: 'James',
+    middleName: 'Nickson',
+    age: 54,
+    sex: Sex.Male,
+    lifeEvent: null,
+    familyId: '2f',
+  }, ],
+}
+
+export const key = 'json';
 export const json = JSON.stringify(data)
 
