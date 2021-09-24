@@ -36,7 +36,7 @@ describe('GeniusComponent', () => {
 
   it('HTML blocks <person> and Instance property persons; should be the same amount', () => {
     localStorage.clear()
-    localStorage.setItem('json', JSON.stringify(testData));
+    localStorage.setItem('jsonLineAge', JSON.stringify(testData));
     dataProvider.reloadData();
     fixture.detectChanges()
 

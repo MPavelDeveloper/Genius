@@ -1,19 +1,18 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
-import { environment } from './environments/environment';
+import {environment} from './environments/environment';
 
 
-import { json } from './json'
-localStorage.setItem('json', json)
+import {json, key} from './json'
 
+if (localStorage.getItem(key) === null) {
+  localStorage.setItem(key, json)
+}
 
 
 // import of own modules
-import { GeniusModule } from './genius/genius.module';
-
-
-
+import {GeniusModule} from './genius/genius.module';
 
 
 if (environment.production) {

@@ -77,6 +77,7 @@ export class LocalStorageDataProvider implements DataProvider {
   }
 
   public addPerson(person: Person): string {
+    console.log(person)
     return "";
   }
 
@@ -96,7 +97,7 @@ export class LocalStorageDataProvider implements DataProvider {
 
 
   reloadData() {
-    const data = JSON.parse(localStorage.getItem('json'));
+    const data = JSON.parse(localStorage.getItem('jsonLineAge'));
     if (data) {
       this.persons = data.personList.map((obj: any) => this.mapPerson(obj))
       this.families = data.familyList.map((obj: any) => this.mapFamily(obj))

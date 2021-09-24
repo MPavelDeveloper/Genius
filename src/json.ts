@@ -363,6 +363,6 @@ export const testData: LineAge = {
   }, ],
 }
 
-export const key = 'json';
+export const key = 'jsonLineAge';
 export const json = JSON.stringify(data)
 
