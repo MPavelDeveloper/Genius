@@ -1,22 +1,91 @@
 import {TestBed} from '@angular/core/testing';
 import {LocalStorageDataProvider} from './data-provider.service';
-import {json, data, key, testData} from "../../json";
+import {json, key, testData} from "../../json";
 import {Person, Sex} from "../../model/person";
 import {Events} from "../../model/life-event";
+import {Family} from "../../model/family";
 
 
 describe('LocalStorageDataProvider', () => {
   let service: LocalStorageDataProvider
   let person: Person = {
+    id: '2p',
+    firstName: 'Tom',
+    lastName: 'James',
+    middleName: 'Nickson',
+    age: 54,
+    sex: Sex.Male,
+    lifeEvent: null,
+    familyId: '2f',
+  }
+  let family: Family = {
+    id: '1f',
+    father: {
       id: '2p',
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
       age: 54,
       sex: Sex.Male,
-      lifeEvent: null,
+      lifeEvent: [
+        {
+          date: new Date('1989-03-12'),
+          type: Events.wedding,
+          description: 'Married',
+        },
+      ],
       familyId: '2f',
-    }
+    },
+    mother: {
+      id: '3p',
+      firstName: 'Lola',
+      lastName: 'James',
+      middleName: 'Kan',
+      age: 45,
+      sex: Sex.Female,
+      lifeEvent: [
+        {
+          date: new Date('1989-03-12'),
+          type: Events.wedding,
+          description: 'Married',
+        },
+      ],
+      familyId: null,
+    },
+    children: [{
+      // son first
+      id: '1p',
+      firstName: 'John',
+      lastName: 'James',
+      middleName: 'Tomson',
+      age: 23,
+      sex: Sex.Male,
+      lifeEvent: [
+        {
+          date: new Date('1998-05-12'),
+          type: Events.birthDay,
+          description: 'Married',
+        },
+      ],
+      familyId: '1f',
+    }, {
+      // son second
+      id: '4p',
+      firstName: 'Sergey',
+      lastName: 'James',
+      middleName: 'Tomson',
+      age: 29,
+      sex: Sex.Male,
+      lifeEvent: [
+        {
+          date: new Date('1992-03-09'),
+          type: Events.birthDay,
+          description: 'Married',
+        },
+      ],
+      familyId: '1f',
+    }],
+  };
 
 
   beforeEach(() => {
@@ -24,12 +93,11 @@ describe('LocalStorageDataProvider', () => {
       providers: [LocalStorageDataProvider]
     });
     service = TestBed.inject(LocalStorageDataProvider);
-    localStorage.setItem('json', json)
+    localStorage.setItem(key, json)
   });
-
-  // afterEach(() => {
-  //   localStorage.setItem('json', json)
-  // })
+  afterEach(() => {
+    localStorage.setItem(key, json)
+  })
 
 
   it('should create the data-provider service', () => {
@@ -37,17 +105,65 @@ describe('LocalStorageDataProvider', () => {
   })
 
   // positive tests
-  it('findPerson; should be person / family', () => {
+  it('findPerson(); correct data; should be person', () => {
     localStorage.clear()
     localStorage.setItem(key, JSON.stringify(testData));
 
     service.reloadData()
-    console.log(service.persons)
+
     let res = service.findPerson(person.id)
     expect(res).toBeDefined()
+    expect(res instanceof Person).toBeTrue()
   })
 
-  it('findFamily(); should be family')
+  it('findFamily(); correct data; should be family', () => {
+    localStorage.clear()
+    localStorage.setItem(key, JSON.stringify(testData))
+
+    service.reloadData()
+
+    let res = service.findFamily(family.id)
+    expect(res).toBeDefined()
+    expect(res instanceof Family).toBeTrue()
+  })
+
+  it('getPersons(); correct data; should be arr of persons', () => {
+    localStorage.clear()
+    localStorage.setItem(key, JSON.stringify(testData))
+
+    service.reloadData()
+
+    let res = service.getPersons()
+    expect(res).toBeDefined()
+    expect(Array.isArray(res)).toBeTrue()
+    res.forEach(person => {
+      expect(person instanceof Person).toBeTrue()
+    })
+  })
+
+  it('getFamilies(); correct data; should be arr of families', () => {
+    localStorage.clear()
+    localStorage.setItem(key, JSON.stringify(testData))
+
+    service.reloadData()
+
+    let res = service.getFamilies()
+    expect(res).toBeDefined()
+    expect(Array.isArray(res)).toBeTrue()
+    res.forEach(family => {
+      expect(family instanceof Family).toBeTrue()
+    })
+  })
+
+  it('mapPerson(); correct data; should be instance Person', () => {
+    let res = service.mapPerson(person)
+    expect(res instanceof Person).toBeTrue()
+  })
+
+  it('mapPerson(); correct data; should be instance Person', () => {
+    let res = service.mapFamily(person)
+    expect(res instanceof Family).toBeTrue()
+  })
 
 
   // negative test's
@@ -62,43 +178,4 @@ describe('LocalStorageDataProvider', () => {
   });
 
 
-  // it('data; local storage is empty', () => {
-  //   localStorage.clear()
-  //   let serv = new LocalStorageDataProvider()
-  //   expect(serv.persons).toBeUndefined()
-  //   expect(serv.families).toBeUndefined()
-  // })
-
-
 })
-
-
-// it('persons; check data type', () => {
-//   const persons = service.getPersons()
-//   expect(Array.isArray(persons)).toBeTrue()
-//
-//   for (let person of persons) {
-//     expect(person instanceof Person).toBeTrue()
-//   }
-// });
-// it('persons; check amount of persons', () => {
-//   const serv = new LocalStorageDataProvider()
-//   expect(serv.getPersons().length === 9).toBeTrue()
-// });
-
-
-// it('families; check data type', () => {
-//   const serv = new LocalStorageDataProvider()
-//   const families = service.getFamilies()
-//   expect(Array.isArray(families)).toBeTrue()
-//
-//   for (let family of families) {
-//     expect(family instanceof Family).toBeTrue()
-//   }
-// });
-
-
-// it('families; check amount of families', () => {
-//   const serv = new LocalStorageDataProvider()
-//   expect(service.getFamilies().length).toEqual(data.familyList.length)
-// });

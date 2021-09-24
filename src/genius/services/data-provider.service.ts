@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Family} from "../../model/family";
 import {Person} from "../../model/person";
 
+
 export abstract class DataProvider {
   abstract getPersons(): Array<Person>;
 
@@ -26,15 +27,15 @@ export abstract class DataProvider {
 })
 
 export class LocalStorageDataProvider implements DataProvider {
-    public persons: Array<Person>;
-    public families: Array<Family>;
+  public persons: Array<Person>;
+  public families: Array<Family>;
 
 
   constructor() {
     this.reloadData();
   }
 
-  private mapPerson(obj: any): Person {
+  public mapPerson(obj: any): Person {
     let person = new Person();
     person.id = obj.id;
     person.firstName = obj.firstName;
@@ -47,7 +48,7 @@ export class LocalStorageDataProvider implements DataProvider {
     return person;
   }
 
-  private mapFamily(obj: any): Family {
+  public mapFamily(obj: any): Family {
     let family = new Family();
     family.id = obj.id;
     family.father = obj.father;
@@ -92,6 +93,7 @@ export class LocalStorageDataProvider implements DataProvider {
   public getPersons(): Array<Person> {
     return this.persons;
   }
+
 
   reloadData() {
     const data = JSON.parse(localStorage.getItem('json'));
