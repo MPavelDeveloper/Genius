@@ -1,9 +1,7 @@
-
-
-<div class="wrap">
-  <div class="card" id = 'com1'>{{ data }}
-    Helloy
-  </div>
+<div class="genus">
+  <ng-container *ngFor = 'let person of persons'>
+    <person [person]="person"></person>
+  </ng-container>
 </div>
 
-<router-outlet></router-outlet>
+

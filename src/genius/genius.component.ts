@@ -1,19 +1,21 @@
-import {Component} from '@angular/core';
-
-import {json} from '../data.module'
-
+import { Component, OnInit } from '@angular/core';
+import { Person } from '../model/person'
+import { DataProvider } from './services/data-provider.service'
 
 @Component({
-  selector: 'app-root',
+  selector: 'genius',
   templateUrl: './genius.component.html',
   styleUrls: ['./genius.component.scss']
 })
+export class GeniusComponent implements OnInit {
 
-export class GeniusComponent {
-  data = JSON.parse(json);
-  list = []
+  public persons: Array<Person>;
 
-  constructor() {
+  constructor(private dataProvider: DataProvider) {
   }
 
+  ngOnInit() {
+    this.persons = this.dataProvider.getPersons();
+  }
 }
+

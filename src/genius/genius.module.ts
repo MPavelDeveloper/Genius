@@ -1,16 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { DataProvider, LocalStorageDataProvider } from './services/data-provider.service'
 import { AppRoutingModule } from './genius-routing.module';
 
-// import component's
 import { GeniusComponent } from "./genius.component";
+import { PersonComponent } from './person/person.component';
 
 
 @NgModule({
   declarations: [
-    GeniusComponent
+    GeniusComponent,
+    PersonComponent
   ],
   imports: [
     BrowserModule,
@@ -18,8 +21,9 @@ import { GeniusComponent } from "./genius.component";
     BrowserAnimationsModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [{ provide: DataProvider, useValue: new LocalStorageDataProvider() }],
   bootstrap: [GeniusComponent]
 })
 
-export class GeniusModule{ }
+export class GeniusModule {
+}
