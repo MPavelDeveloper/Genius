@@ -1,0 +1,15 @@
+<div class="form-wrap">
+  <div class="wrap">
+    <input class="person-fn person-input" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName">
+    <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName">
+    <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName">
+    <input class="person-age person-input" type="number" placeholder="Age" tabindex="4" [(ngModel)] = "person.age">
+    <input class="person-sex person-input" type="text" placeholder="Sex" tabindex="5">
+    <textarea class="person-event" rows="6" placeholder="Events"></textarea>
+    <button class="person-create-btn" type="button" (click)="submit()">Create</button>
+  </div>
+</div>
+
+<input type="text" name="title"  [(ngModel)]="title" (click)="print()">
+
+

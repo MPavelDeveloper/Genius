@@ -1,0 +1,25 @@
+<div class="create-family">
+  <div class="wrap-family">
+    <div class="family-title">Create family</div>
+    <div class="family-father person-screen">
+      <button type="button" (click)="showClosePersonForm()">add father</button>
+    </div>
+    <div class="family-mother person-screen">
+      <button type="button" (click)="showClosePersonForm()">add mother</button>
+    </div>
+    <div class="family-children person-screen">
+      <div class="children-plus" ><span (click)="createChild()">+</span></div>
+      <div class="child-container" *ngFor = 'let child of children'>
+        <input class="description" disabled placeholder="add child">
+        <button class="action-btn" type="button" (click)="showClosePersonForm()">add</button>
+        <button class="action-btn" type="button">delete</button>
+        <button class="action-btn" type="button">change</button>
+      </div>
+    </div>
+
+    <button class="btn-add-family" type="button">create Family</button>
+  </div>
+
+  <app-person-form *ngIf="personDialogVisible" (transferPerson)="catchTransferPerson($event)" [person]=currentPerson></app-person-form>
+<!--  <app-person-form *ngIf="personDialogVisible" [person]="currentPerson" (onOk)="this.createPerson(person)" ></app-person-form>-->
+</div>
