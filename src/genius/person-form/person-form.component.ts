@@ -1,11 +1,11 @@
-import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, Input, Output} from '@angular/core';
 import {Person} from "../../model/person";
 import {LocalStorageDataProvider} from "../services/data-provider.service";
 import {EventEmitter} from "@angular/core";
 
 
 @Component({
-  selector: 'app-person-form',
+  selector: 'person-form',
   templateUrl: './person-form.component.html',
   styleUrls: ['./person-form.component.scss']
 })
@@ -14,6 +14,7 @@ import {EventEmitter} from "@angular/core";
 export class PersonFormComponent {
 
   @Input() person: Person;
+  @Input() personType: string;
 
   @Output()
   transferPerson = new EventEmitter<Person>()

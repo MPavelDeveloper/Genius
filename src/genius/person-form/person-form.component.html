@@ -1,7 +1,7 @@
 <div class="form-wrap" id="person_form" >
   <div class="wrap">
     <span class="btn-close" (click)="submit(null)">X</span>
-    <div class="person-title">Create person</div>
+    <div class="person-title">Create {{personType}}</div>
     <input class="person-fn person-input" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName">
     <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName">
     <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName">

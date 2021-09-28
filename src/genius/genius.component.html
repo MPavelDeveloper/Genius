@@ -1,11 +1,12 @@
+<button class="btn-createFamily" routerLink = "/addPerson" type="button">Add Family</button>
+<button class="btn-createFamily" routerLink = "/" type="button">Home</button>
+
+<router-outlet></router-outlet>
+
 <div class="genus">
   <ng-container *ngFor = 'let person of persons'>
     <person [person]="person"></person>
   </ng-container>
 </div>
 
-<app-family-form></app-family-form>
 
-
-<!--test-->
-<!--<app-test-comp></app-test-comp>-->

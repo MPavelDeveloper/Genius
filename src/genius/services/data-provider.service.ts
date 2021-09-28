@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 
 import {Family} from "../../model/family";
 import {Person} from "../../model/person";
+import {LineAge} from "../../model/line-age";
+import {key} from "../../json";
 
 
 export abstract class DataProvider {
@@ -11,7 +13,7 @@ export abstract class DataProvider {
 
   abstract deletePerson(personId: string): void;
 
-  abstract addPerson(person: Person): string;
+  abstract addPerson(person: Person): void;
 
   abstract getFamilies(): Array<Family>;
 
@@ -19,7 +21,7 @@ export abstract class DataProvider {
 
   abstract deleteFamily(familyId: string): void;
 
-  abstract addFamily(family: Family): string;
+  abstract addFamily(family: Family): void;
 }
 
 @Injectable({
@@ -72,14 +74,21 @@ export class LocalStorageDataProvider implements DataProvider {
   }
 
 
-  public addFamily(family: Family): string {
-    return "";
+  public addFamily(family: Family): void {
+    this.families.push(family);
+    this.putDataFromLocalStorage()
   }
 
-  public addPerson(person: Person): string {
-    console.log(person)
-    return "";
+  public addPerson(person: Person): void {
+    this.persons.push(person)
   }
+
+  public putDataFromLocalStorage(): void {
+    let data: LineAge = new LineAge(this.families, this.persons)
+    // console.log(LineAge)
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
 
   public deleteFamily(familyId: string): void {
   }
@@ -97,7 +106,7 @@ export class LocalStorageDataProvider implements DataProvider {
 
 
   reloadData() {
-    const data = JSON.parse(localStorage.getItem('jsonLineAge'));
+    const data = JSON.parse(localStorage.getItem(key));
     if (data) {
       this.persons = data.personList.map((obj: any) => this.mapPerson(obj))
       this.families = data.familyList.map((obj: any) => this.mapFamily(obj))
