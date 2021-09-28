@@ -14,7 +14,7 @@ import {PersonFormComponent} from './person-form/person-form.component';
 import {FamilyFormComponent} from './family-form/family-form.component';
 
 const GeniusRoutes: Routes = [
-  {path:'', component: GeniusComponent,},
+  {path:'home', component: GeniusComponent,},
   {path: 'addPerson', component: FamilyFormComponent,},
   {path: '**', redirectTo: '/',},
 ]

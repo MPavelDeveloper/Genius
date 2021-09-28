@@ -1,18 +1,30 @@
 <div class="create-family">
   <div class="wrap-family">
     <div class="family-title">Create family</div>
-    <div class="family-father person-screen">
-      <button type="button" (click)="createNewPerson('father')">add father</button>
+    <div class="person-screen">
+      <input class="description" *ngIf = "family.father; else unset1" disabled placeholder="{{family.father.firstName}}">
+      <ng-template #unset1>
+        <input class="description" disabled placeholder="add father">
+      </ng-template>
+      <button class="action-btn" type="button" (click)="createNewPerson('father')">add</button>
+      <button class="action-btn" type="button" (click)="changePerson('father') ">change</button>
+      <button class="action-btn" type="button" (click)="deletePerson('father')">delete</button>
     </div>
-    <div class="family-mother person-screen">
-      <button type="button" (click)="createNewPerson('mother')">add mother</button>
+    <div class="person-screen">
+      <input class="description" *ngIf = "family.mother; else unset2" disabled placeholder="{{family.mother.firstName}}">
+      <ng-template #unset2>
+        <input class="description" disabled placeholder="add mother">
+      </ng-template>
+      <button class="action-btn" type="button" (click)="createNewPerson('mother')">add</button>
+      <button class="action-btn" type="button" (click)="changePerson('mother')">change</button>
+      <button class="action-btn" type="button" (click)="deletePerson('mother')">delete</button>
     </div>
-    <div class="family-children person-screen">
-      <div class="children-plus" ><span (click)="createChild()">+</span></div>
-      <div class="child-container" *ngFor = 'let child of children'>
+    <div class="person-screen">
+      <div class="children-plus" ><span (click)="addChildTemplate()">+</span></div>
+      <div class="child-container" *ngFor = 'let child of childrenAmount'>
         <input class="description" disabled placeholder="add child">
         <button class="action-btn" type="button" (click)="createNewPerson('child')">add</button>
-        <button class="action-btn" type="button">delete</button>
+        <button class="action-btn" type="button" (click)="deleteChildTemplate()">delete</button>
         <button class="action-btn" type="button">change</button>
       </div>
     </div>

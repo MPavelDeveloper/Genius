@@ -4,7 +4,6 @@ import {DataProvider} from "../services/data-provider.service";
 import {Person} from "../../model/person";
 
 
-
 @Component({
   selector: 'family-form',
   templateUrl: './family-form.component.html',
@@ -15,7 +14,7 @@ export class FamilyFormComponent implements OnInit {
   public family: Family;
   public persons: Array<Person>;
   public currentPerson: Person;
-  public children: Array<Person>;
+  public childrenAmount: Array<number>;
   public personType: string;
   public personDialogVisible: boolean;
 
@@ -24,7 +23,7 @@ export class FamilyFormComponent implements OnInit {
     this.family.children = [];
     this.currentPerson = new Person();
     this.persons = [];
-    this.children = [];
+    this.childrenAmount = [];
   }
 
 
@@ -53,12 +52,13 @@ export class FamilyFormComponent implements OnInit {
     this.personDialogVisible = false;
   }
 
-  saveFamily() {
+  saveFamily(): void {
     if (this.familyValid()) {
       this.persons.forEach(person => this.dataProvider.addPerson(person))
       this.dataProvider.addFamily(this.family)
 
       this.family = new Family()
+      this.family.children = []
     }
 
   }
@@ -79,9 +79,22 @@ export class FamilyFormComponent implements OnInit {
   }
 
 
-  createChild() {
-    this.children.push(new Person());
-    console.log(this.children);
+  addChildTemplate(): void {
+    this.childrenAmount.push(1);
+  }
+
+  deleteChildTemplate(): void {
+    this.childrenAmount.pop();
+  }
+
+
+  deletePerson(str: string): void {
+    if (str === 'father' || str === 'mother') {
+      this.family[str] = null
+    }
+  }
+
+  changePerson(str:string): void {
   }
 }
 

@@ -24,7 +24,7 @@ export class PersonFormComponent {
   }
 
   submit(person: Person) {
-    console.log(this.person)
+
     if (person) {
       this.transferPerson.emit(person)
     } else {

@@ -1,18 +1,25 @@
-<div class="form-wrap" id="person_form" >
+<form class="form-wrap" id="person_form" >
   <div class="wrap">
     <span class="btn-close" (click)="submit(null)">X</span>
     <div class="person-title">Create {{personType}}</div>
-    <input class="person-fn person-input" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName">
-    <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName">
-    <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName">
-    <input class="person-age person-input" type="number" placeholder="Age" tabindex="4" [(ngModel)] = "person.age">
-    <input class="person-sex person-input" type="text" placeholder="Sex" tabindex="5">
+
+    <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName" name="firstName" autocomplete="off">
+    <div class="div" [hidden]="firstName.valid || !firstName.touched">This field is required. </div>
+
+    <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName" name="lastName">
+    <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName" name="middleName">
+
+    <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" required tabindex="4" [(ngModel)] = "person.age" name="age" min="1">
+    <div class="div" [hidden]="age.valid || !age.touched">This field is required. </div>
+
+    <input class="person-sex person-input" #sex="ngModel" type="text" placeholder="Sex" tabindex="5" name="sex" [(ngModel)] = "person.sex">
+    <div class="div" [hidden]="sex.valid || !sex.touched">This field is required. </div>
     <textarea class="person-event" rows="6" placeholder="Events"></textarea>
 
 
         <button class="person-create-btn" type="button" (click)="submit(person)">Create</button>
   </div>
-</div>
+</form>
 
 <!--<button class="person-create-btn" type="button" (click) = "">Create</button>-->
 
