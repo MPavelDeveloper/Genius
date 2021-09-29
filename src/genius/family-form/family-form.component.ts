@@ -1,24 +1,31 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Family} from "../../model/family";
 import {DataProvider} from "../services/data-provider.service";
 import {Person} from "../../model/person";
 
+export enum PersonTypesEnum {
+  father = 'father',
+  mother = 'mother',
+  child = 'child',
+}
 
 @Component({
   selector: 'family-form',
   templateUrl: './family-form.component.html',
   styleUrls: ['./family-form.component.scss'],
 })
-export class FamilyFormComponent implements OnInit {
+export class FamilyFormComponent {
 
+  public importPersonTypesEnum;
   public family: Family;
   public persons: Array<Person>;
   public currentPerson: Person;
   public childrenAmount: Array<number>;
-  public personType: string;
+  public personType: PersonTypesEnum;
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
+    this.importPersonTypesEnum = PersonTypesEnum;
     this.family = new Family();
     this.family.children = [];
     this.currentPerson = new Person();
@@ -27,24 +34,24 @@ export class FamilyFormComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-  }
-
-  createNewPerson(str: string) {
+  openFormCreateNewPerson(personType: PersonTypesEnum): void {
     this.personDialogVisible = true;
-    this.personType = str;
+    this.personType = personType;
   }
 
 
-  addPersonInFamily(person: any): void {
+  addPersonInFamily(person: Person): void {
 
     if (person && Object.keys(person).length > 0) {
       this.currentPerson = new Person()
 
-      if (this.personType === 'father' || this.personType === 'mother')
-        this.family[this.personType] = person;
-      if (this.personType === 'child')
-        this.family.children.push(person)
+      if (this.personType === PersonTypesEnum.father) {
+        this.setFather(person)
+      } else if (this.personType === PersonTypesEnum.mother) {
+        this.setMother(person)
+      } else if (this.personType === PersonTypesEnum.child) {
+        this.setChild(person)
+      }
 
       this.persons.push(person);
     }
@@ -58,6 +65,7 @@ export class FamilyFormComponent implements OnInit {
       this.dataProvider.addFamily(this.family)
 
       this.family = new Family()
+      this.persons = []
       this.family.children = []
     }
 
@@ -88,13 +96,59 @@ export class FamilyFormComponent implements OnInit {
   }
 
 
-  deletePerson(str: string): void {
-    if (str === 'father' || str === 'mother') {
-      this.family[str] = null
+  deletePerson(personType: PersonTypesEnum): void {
+    if (personType === PersonTypesEnum.father) {
+      this.setFather(null)
+    } else if (personType === PersonTypesEnum.mother) {
+      this.setMother(null)
     }
   }
 
-  changePerson(str:string): void {
+  changePerson(personType: PersonTypesEnum): void {
+    if (personType === PersonTypesEnum.father) {
+      this.currentPerson = this.getFathet()
+      this.cleanPersons(this.currentPerson, this.persons);
+      this.openFormCreateNewPerson(PersonTypesEnum.father)
+
+    } else if (personType === PersonTypesEnum.mother) {
+      this.currentPerson = this.getMother()
+      this.cleanPersons(this.currentPerson, this.persons)
+      this.openFormCreateNewPerson(PersonTypesEnum.mother)
+    }
+  }
+
+  cleanPersons(currentPerson: Person, persons: Array<Person>): void {
+    const indexTargetPerson = this.persons.findIndex((person:Person) => {
+      if(person.firstName === this.currentPerson.firstName &&
+        person.age === this.currentPerson.age &&
+        person.sex === this.currentPerson.sex) return true
+      return false
+    })
+
+    if(indexTargetPerson >= 0) {
+      console.log(this.persons.splice(indexTargetPerson, 1));
+    }
+
+  }
+
+  getFathet(): Person {
+    return this.family.father
+  }
+
+  getMother(): Person {
+    return this.family.mother
+  }
+
+  setFather(person: Person): void {
+    this.family.father = person;
+  }
+
+  setMother(person: Person): void {
+    this.family.mother = person;
+  }
+
+  setChild(person: Person): void {
+    this.family.children.push(person)
   }
 }
 

@@ -1,8 +1,13 @@
 import {Component, Input, Output} from '@angular/core';
-import {Person} from "../../model/person";
-import {LocalStorageDataProvider} from "../services/data-provider.service";
+import {Person, Sex} from "../../model/person";
 import {EventEmitter} from "@angular/core";
+import {PersonTypesEnum} from "../family-form/family-form.component";
 
+
+export enum formStatesEnum {
+  closeWindow = 'close',
+  sendPerson = 'send',
+}
 
 @Component({
   selector: 'person-form',
@@ -14,19 +19,25 @@ import {EventEmitter} from "@angular/core";
 export class PersonFormComponent {
 
   @Input() person: Person;
-  @Input() personType: string;
+  @Input() personType: PersonTypesEnum;
 
-  @Output()
-  transferPerson = new EventEmitter<Person>()
+  @Output() transferPerson = new EventEmitter<Person>();
+
+  importFormStatesEnum;
+  PersonSex: Array<string>;
 
 
-  constructor(private localStorageDataProvider: LocalStorageDataProvider) {
+  constructor() {
+    this.importFormStatesEnum = formStatesEnum;
+    this.PersonSex = Object.values(Sex);
   }
 
-  submit(person: Person) {
 
-    if (person) {
-      this.transferPerson.emit(person)
+  submit(formState: formStatesEnum) {
+
+    console.log(this.person)
+    if (this.person && formState === formStatesEnum.sendPerson) {
+      this.transferPerson.emit(this.person)
     } else {
       this.transferPerson.emit(null)
     }
@@ -36,22 +47,21 @@ export class PersonFormComponent {
 
   // validation(): boolean {
   //   let flag = true;
-    // let inputsArr: Array<string> = [];
-    // inputsArr.push(this.person.firstName);
-    // inputsArr.push(this.person.a);
-    // inputsArr.push(this.person.sex);
+  // let inputsArr: Array<string> = [];
+  // inputsArr.push(this.person.firstName);
+  // inputsArr.push(this.person.a);
+  // inputsArr.push(this.person.sex);
 
-    // inputsArr.forEach((elem) => {
-    //   if (elem) {
-    //     elem.style.background = '#fbb8b8';
-    //     flag = false;
-    //   } else {
-    //     elem.style.background = 'snow';
-    //   }
-    // });
-    //
-    // return flag
-
+  // inputsArr.forEach((elem) => {
+  //   if (elem) {
+  //     elem.style.background = '#fbb8b8';
+  //     flag = false;
+  //   } else {
+  //     elem.style.background = 'snow';
+  //   }
+  // });
+  //
+  // return flag
   // }
 
 }

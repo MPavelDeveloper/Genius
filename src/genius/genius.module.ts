@@ -8,10 +8,12 @@ import {AppRoutingModule} from './genius-routing.module';
 
 import {GeniusComponent} from "./genius.component";
 import {PersonComponent} from './person/person.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, NgModel, ReactiveFormsModule} from "@angular/forms";
 import {RouterModule, Routes} from "@angular/router";
 import {PersonFormComponent} from './person-form/person-form.component';
 import {FamilyFormComponent} from './family-form/family-form.component';
+
+
 
 const GeniusRoutes: Routes = [
   {path:'home', component: GeniusComponent,},

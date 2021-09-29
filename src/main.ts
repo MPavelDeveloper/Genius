@@ -4,10 +4,10 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {environment} from './environments/environment';
 
 
-import {json, key} from './json'
+import {json, keyJson} from './json'
 
-if (localStorage.getItem(key) === null) {
-  localStorage.setItem(key, json)
+if (localStorage.getItem(keyJson) === null) {
+  localStorage.setItem(keyJson, json)
 }
 
 

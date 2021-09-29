@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {LocalStorageDataProvider} from './data-provider.service';
-import {json, key, testData} from "../../json";
+import {json, keyJson, testData} from "../../json";
 import {Person, Sex} from "../../model/person";
 import {Events} from "../../model/life-event";
 import {Family} from "../../model/family";
@@ -93,10 +93,10 @@ describe('LocalStorageDataProvider', () => {
       providers: [LocalStorageDataProvider]
     });
     service = TestBed.inject(LocalStorageDataProvider);
-    localStorage.setItem(key, json)
+    localStorage.setItem(keyJson, json)
   });
   afterEach(() => {
-    localStorage.setItem(key, json)
+    localStorage.setItem(keyJson, json)
   })
 
 
@@ -107,7 +107,7 @@ describe('LocalStorageDataProvider', () => {
   // positive tests
   it('findPerson(); correct data; should be person', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData));
+    localStorage.setItem(keyJson, JSON.stringify(testData));
 
     service.reloadData()
 
@@ -118,7 +118,7 @@ describe('LocalStorageDataProvider', () => {
 
   it('findFamily(); correct data; should be family', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(keyJson, JSON.stringify(testData))
 
     service.reloadData()
 
@@ -129,7 +129,7 @@ describe('LocalStorageDataProvider', () => {
 
   it('getPersons(); correct data; should be arr of persons', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(keyJson, JSON.stringify(testData))
 
     service.reloadData()
 
@@ -143,7 +143,7 @@ describe('LocalStorageDataProvider', () => {
 
   it('getFamilies(); correct data; should be arr of families', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(keyJson, JSON.stringify(testData))
 
     service.reloadData()
 

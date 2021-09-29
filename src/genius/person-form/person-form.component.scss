@@ -38,6 +38,17 @@
       outline: none;
     }
 
+    .person-sexlist {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border-bottom: 3px solid gray;
+      padding: 6px;
+      font-family: sans-serif;
+      font-size: 18px;
+      outline: none;
+      cursor: pointer;
+    }
+
     .person-event {
       margin-bottom: 12px;
       padding: 12px;
@@ -46,6 +57,11 @@
       font-family: sans-serif;
       font-size: 18px;
       outline: none;
+    }
+
+    .person-valid {
+      margin-bottom: 6px;
+      font-family: system-ui;
     }
 
     .person-create-btn {
@@ -59,10 +75,11 @@
     }
   }
 
-  .ng-invalid{
+  .ng-invalid {
     background-color: #f5f0f0;
   }
-  .ng-invalid.ng-touched  {
+
+  .ng-invalid.ng-touched {
     background-color: lightcoral;
   }
 }

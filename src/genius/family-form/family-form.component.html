@@ -6,32 +6,31 @@
       <ng-template #unset1>
         <input class="description" disabled placeholder="add father">
       </ng-template>
-      <button class="action-btn" type="button" (click)="createNewPerson('father')">add</button>
-      <button class="action-btn" type="button" (click)="changePerson('father') ">change</button>
-      <button class="action-btn" type="button" (click)="deletePerson('father')">delete</button>
+      <button class="action-btn" type="button" (click)="openFormCreateNewPerson(importPersonTypesEnum.father)">add</button>
+      <button class="action-btn" type="button" *ngIf="family.father" (click)="changePerson(importPersonTypesEnum.father) ">change</button>
+      <button class="action-btn" type="button" *ngIf="!family.father" (click)="changePerson(importPersonTypesEnum.father) " disabled>change</button>
+      <button class="action-btn" type="button" (click)="deletePerson(importPersonTypesEnum.father)">delete</button>
     </div>
     <div class="person-screen">
       <input class="description" *ngIf = "family.mother; else unset2" disabled placeholder="{{family.mother.firstName}}">
       <ng-template #unset2>
         <input class="description" disabled placeholder="add mother">
       </ng-template>
-      <button class="action-btn" type="button" (click)="createNewPerson('mother')">add</button>
-      <button class="action-btn" type="button" (click)="changePerson('mother')">change</button>
-      <button class="action-btn" type="button" (click)="deletePerson('mother')">delete</button>
+      <button class="action-btn" type="button" (click)="openFormCreateNewPerson(importPersonTypesEnum.mother)">add</button>
+      <button class="action-btn" type="button" *ngIf="family.mother" (click)="changePerson(importPersonTypesEnum.mother)">change</button>
+      <button class="action-btn" type="button" *ngIf="!family.mother" (click)="changePerson(importPersonTypesEnum.father) " disabled>change</button>
+      <button class="action-btn" type="button" (click)="deletePerson(importPersonTypesEnum.mother)">delete</button>
     </div>
     <div class="person-screen">
       <div class="children-plus" ><span (click)="addChildTemplate()">+</span></div>
       <div class="child-container" *ngFor = 'let child of childrenAmount'>
         <input class="description" disabled placeholder="add child">
-        <button class="action-btn" type="button" (click)="createNewPerson('child')">add</button>
+        <button class="action-btn" type="button" (click)="openFormCreateNewPerson(importPersonTypesEnum.child)">add</button>
         <button class="action-btn" type="button" (click)="deleteChildTemplate()">delete</button>
         <button class="action-btn" type="button">change</button>
       </div>
     </div>
-
     <button class="btn-add-family" type="button" (click)="saveFamily()">save Family</button>
   </div>
-
   <person-form *ngIf="personDialogVisible" (transferPerson)="addPersonInFamily($event)" [person]=currentPerson [personType]="personType"></person-form>
-<!--  <app-person-form *ngIf="personDialogVisible" [person]="currentPerson" (onOk)="this.createPerson(person)" ></app-person-form>-->
 </div>
