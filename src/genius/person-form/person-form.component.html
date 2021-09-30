@@ -1,6 +1,6 @@
 <form class="form-wrap" id="person_form" >
   <div class="wrap">
-    <span class="btn-close" (click)="submit(importFormStatesEnum.closeWindow)">X</span>
+    <span class="btn-close" (click)="submit(formStates.CLOSE_WINDOW)">X</span>
     <div class="person-title">Create {{personType}}</div>
 
     <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName" name="firstName" autocomplete="off">
@@ -13,14 +13,14 @@
     <div class="person-valid" [hidden]="age.valid || !age.touched">This field is required. </div>
 
     <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)] = "person.sex" tabindex="5" required>
-       <ng-container *ngFor = "let sex of PersonSex; let i = index">
-          <option  value="{{sex}}" selected>{{sex}}</option>
+       <ng-container *ngFor = "let sex of PersonSex">
+          <option  value="{{sex}}">{{sex}}</option>
        </ng-container>
     </select>
     <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required. </div>
     <textarea class="person-event" rows="6" placeholder="Events"></textarea>
 
-    <button class="person-create-btn" type="button" *ngIf = ' firstName.valid && age.valid && sex.valid' (click)="submit(importFormStatesEnum.sendPerson)">Create</button>
+    <button class="person-create-btn" type="button" *ngIf = ' firstName.valid && age.valid && sex.valid' (click)="submit(formStates.SEND_PERSON)">Create</button>
     <button class="person-create-btn" type="button" *ngIf = '!firstName.valid || !age.valid || !sex.valid' disabled>Create</button>
   </div>
 </form>

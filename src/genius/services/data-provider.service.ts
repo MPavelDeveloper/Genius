@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
-
 import {Family} from "../../model/family";
 import {Person} from "../../model/person";
 import {LineAge} from "../../model/line-age";
-import {keyJson} from "../../json";
-
+import {GENEALOGY_STORAGE_KEY} from "../../json";
 
 export abstract class DataProvider {
   abstract getPersons(): Array<Person>;
 
-  abstract findPerson(personId: string): Person;
+  abstract findPerson(personId: number): Person;
 
   abstract deletePerson(personId: string): void;
 
@@ -17,7 +15,7 @@ export abstract class DataProvider {
 
   abstract getFamilies(): Array<Family>;
 
-  abstract findFamily(familyId: string): Family;
+  abstract findFamily(familyId: number): Family;
 
   abstract deleteFamily(familyId: string): void;
 
@@ -31,7 +29,6 @@ export abstract class DataProvider {
 export class LocalStorageDataProvider implements DataProvider {
   public persons: Array<Person>;
   public families: Array<Family>;
-
 
   constructor() {
     this.reloadData();
@@ -59,38 +56,51 @@ export class LocalStorageDataProvider implements DataProvider {
     return family;
   }
 
-  public findPerson(personId: string): Person {
+  public findPerson(personId: number): Person {
     if (personId) {
       return this.persons.find((p: Person) => p.id === personId);
     }
     return undefined
   }
 
-  public findFamily(familyId: string): Family {
+  public findFamily(familyId: number): Family {
     if (familyId) {
       return this.families.find((family: Family) => family.id === familyId);
     }
     return undefined
   }
 
-
   public addFamily(family: Family): void {
-    console.log(family)
+    console.log(family);
+    if (family.id) {
+      this.setFamilyId(family);
+    }
     this.families.push(family);
     this.putDataFromLocalStorage();
   }
 
   public addPerson(person: Person): void {
     console.log(person)
-    this.persons.push(person);
-    this.putDataFromLocalStorage();
+    if (person.id) {
+      this.setPersonId(person)
+      this.persons.push(person);
+      this.putDataFromLocalStorage();
+    }
   }
 
   public putDataFromLocalStorage(): void {
     let data: LineAge = new LineAge(this.families, this.persons);
-    localStorage.setItem(keyJson, JSON.stringify(data));
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
+  public setFamilyId(family: Family) {
+    if (family.id) {
+
+    }
+  }
+
+  public setPersonId(person: Person) {
+  }
 
   public deleteFamily(familyId: string): void {
   }
@@ -106,9 +116,8 @@ export class LocalStorageDataProvider implements DataProvider {
     return this.persons;
   }
 
-
-  reloadData() {
-    const data = JSON.parse(localStorage.getItem(keyJson));
+  public reloadData() {
+    const data = JSON.parse(localStorage.getItem(GENEALOGY_STORAGE_KEY));
     if (data) {
       this.persons = data.personList.map((obj: any) => this.mapPerson(obj));
       this.families = data.familyList.map((obj: any) => this.mapFamily(obj));

@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {formStatesEnum, PersonFormComponent} from './person-form.component';
+import {FormState, PersonFormComponent} from './person-form.component';
 import {FormsModule} from "@angular/forms";
 import {Sex} from "../../model/person";
-import {PersonTypesEnum} from "../family-form/family-form.component";
+import {FormType} from "../family-form/family-form.component";
 
 describe('PersonFormComponent', () => {
   let component: PersonFormComponent;
@@ -21,16 +21,16 @@ describe('PersonFormComponent', () => {
     fixture = TestBed.createComponent(PersonFormComponent);
     component = fixture.componentInstance;
     component.person = {
-      id: '2p',
+      id: 2,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
       age: 54,
       sex: Sex.Male,
       lifeEvent: null,
-      familyId: '2f',
+      familyId: 2,
     }
-    component.personType = PersonTypesEnum.child;
+    component.personType = FormType.CHILD;
     fixture.detectChanges();
   });
 
@@ -58,13 +58,13 @@ describe('PersonFormComponent', () => {
   })
 
   it('template; generation event; should send event with person || null', () => {
-    const event = spyOn(component.transferPerson, 'emit');
-    component.submit(formStatesEnum.closeWindow);
+    const event = spyOn(component.addedPerson, 'emit');
+    component.submit(FormState.CLOSE_WINDOW);
 
     expect(event).toHaveBeenCalled()
     expect(event).toHaveBeenCalledWith(null)
 
-    component.submit(formStatesEnum.sendPerson)
+    component.submit(FormState.SEND_PERSON)
     expect(event).toHaveBeenCalled()
     expect(event).toHaveBeenCalledWith(component.person)
   })

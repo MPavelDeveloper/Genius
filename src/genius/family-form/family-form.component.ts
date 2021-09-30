@@ -3,10 +3,10 @@ import {Family} from "../../model/family";
 import {DataProvider} from "../services/data-provider.service";
 import {Person} from "../../model/person";
 
-export enum PersonTypesEnum {
-  father = 'father',
-  mother = 'mother',
-  child = 'child',
+export enum FormType {
+  FATHER = 'father',
+  MOTHER = 'mother',
+  CHILD = 'child',
 }
 
 @Component({
@@ -16,16 +16,16 @@ export enum PersonTypesEnum {
 })
 export class FamilyFormComponent {
 
-  public importPersonTypesEnum;
+  public formType;
   public family: Family;
   public persons: Array<Person>;
   public currentPerson: Person;
   public childrenAmount: Array<number>;
-  public personType: PersonTypesEnum;
+  public personType: FormType;
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
-    this.importPersonTypesEnum = PersonTypesEnum;
+    this.formType = FormType;
     this.family = new Family();
     this.family.children = [];
     this.currentPerson = new Person();
@@ -33,23 +33,21 @@ export class FamilyFormComponent {
     this.childrenAmount = [];
   }
 
-
-  openFormCreateNewPerson(personType: PersonTypesEnum): void {
+  createNewPerson(personType: FormType): void {
     this.personDialogVisible = true;
     this.personType = personType;
   }
-
 
   addPersonInFamily(person: Person): void {
 
     if (person && Object.keys(person).length > 0) {
       this.currentPerson = new Person()
 
-      if (this.personType === PersonTypesEnum.father) {
+      if (this.personType === FormType.FATHER) {
         this.setFather(person)
-      } else if (this.personType === PersonTypesEnum.mother) {
+      } else if (this.personType === FormType.MOTHER) {
         this.setMother(person)
-      } else if (this.personType === PersonTypesEnum.child) {
+      } else if (this.personType === FormType.CHILD) {
         this.setChild(person)
       }
 
@@ -86,7 +84,6 @@ export class FamilyFormComponent {
     return false
   }
 
-
   addChildTemplate(): void {
     this.childrenAmount.push(1);
   }
@@ -95,25 +92,24 @@ export class FamilyFormComponent {
     this.childrenAmount.pop();
   }
 
-
-  deletePerson(personType: PersonTypesEnum): void {
-    if (personType === PersonTypesEnum.father) {
+  deletePerson(personType: FormType): void {
+    if (personType === FormType.FATHER) {
       this.setFather(null)
-    } else if (personType === PersonTypesEnum.mother) {
+    } else if (personType === FormType.MOTHER) {
       this.setMother(null)
     }
   }
 
-  changePerson(personType: PersonTypesEnum): void {
-    if (personType === PersonTypesEnum.father) {
-      this.currentPerson = this.getFathet()
+  changePerson(personType: FormType): void {
+    if (personType === FormType.FATHER) {
+      this.currentPerson = this.getFather()
       this.cleanPersons(this.currentPerson, this.persons);
-      this.openFormCreateNewPerson(PersonTypesEnum.father)
+      this.createNewPerson(FormType.FATHER)
 
-    } else if (personType === PersonTypesEnum.mother) {
+    } else if (personType === FormType.MOTHER) {
       this.currentPerson = this.getMother()
       this.cleanPersons(this.currentPerson, this.persons)
-      this.openFormCreateNewPerson(PersonTypesEnum.mother)
+      this.createNewPerson(FormType.MOTHER)
     }
   }
 
@@ -131,7 +127,7 @@ export class FamilyFormComponent {
 
   }
 
-  getFathet(): Person {
+  getFather(): Person {
     return this.family.father
   }
 

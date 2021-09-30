@@ -1,12 +1,11 @@
 import {Component, Input, Output} from '@angular/core';
 import {Person, Sex} from "../../model/person";
 import {EventEmitter} from "@angular/core";
-import {PersonTypesEnum} from "../family-form/family-form.component";
+import {FormType} from "../family-form/family-form.component";
 
-
-export enum formStatesEnum {
-  closeWindow = 'close',
-  sendPerson = 'send',
+export enum FormState {
+  CLOSE_WINDOW = 'close',
+  SEND_PERSON = 'send',
 }
 
 @Component({
@@ -15,33 +14,28 @@ export enum formStatesEnum {
   styleUrls: ['./person-form.component.scss']
 })
 
-
 export class PersonFormComponent {
 
   @Input() person: Person;
-  @Input() personType: PersonTypesEnum;
+  @Input() personType: FormType;
 
-  @Output() transferPerson = new EventEmitter<Person>();
+  @Output() addedPerson = new EventEmitter<Person>();
 
-  importFormStatesEnum;
+  formStates;
   PersonSex: Array<string>;
 
-
   constructor() {
-    this.importFormStatesEnum = formStatesEnum;
+    this.formStates = FormState;
     this.PersonSex = Object.values(Sex);
   }
 
-
-  submit(formState: formStatesEnum) {
-
+  submit(formState: FormState) {
     console.log(this.person)
-    if (this.person && formState === formStatesEnum.sendPerson) {
-      this.transferPerson.emit(this.person)
+    if (this.person && formState === FormState.SEND_PERSON) {
+      this.addedPerson.emit(this.person)
     } else {
-      this.transferPerson.emit(null)
+      this.addedPerson.emit(null)
     }
-
   }
 
 

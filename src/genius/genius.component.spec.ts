@@ -2,9 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {GeniusComponent} from './genius.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 import {DataProvider, LocalStorageDataProvider} from "./services/data-provider.service";
-import {keyJson, testData} from "../json";
-
-
+import {GENEALOGY_STORAGE_KEY, testData} from "../json";
 
 describe('GeniusComponent', () => {
   let component: GeniusComponent;
@@ -36,7 +34,7 @@ describe('GeniusComponent', () => {
 
   it('HTML blocks <person> and Instance property persons; should be the same amount', () => {
     localStorage.clear()
-    localStorage.setItem(keyJson, JSON.stringify(testData));
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
     dataProvider.reloadData();
     fixture.detectChanges()
 

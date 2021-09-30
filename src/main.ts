@@ -4,10 +4,10 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {environment} from './environments/environment';
 
 
-import {json, keyJson} from './json'
+import {json, GENEALOGY_STORAGE_KEY} from './json'
 
-if (localStorage.getItem(keyJson) === null) {
-  localStorage.setItem(keyJson, json)
+if (localStorage.getItem(GENEALOGY_STORAGE_KEY) === null) {
+  localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
 }
 
 

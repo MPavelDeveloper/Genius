@@ -26,7 +26,7 @@ describe('PersonComponent', () => {
     fixture = TestBed.createComponent(PersonComponent);
     component = fixture.componentInstance;
     component.person = {
-      id: '4pp',
+      id: 4,
       firstName: 'Nick',
       lastName: 'James',
       middleName: 'Kolin',
