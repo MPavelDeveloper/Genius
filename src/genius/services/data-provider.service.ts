@@ -72,20 +72,15 @@ export class LocalStorageDataProvider implements DataProvider {
 
   public addFamily(family: Family): void {
     console.log(family);
-    if (family.id) {
-      this.setFamilyId(family);
-    }
     this.families.push(family);
     this.putDataFromLocalStorage();
   }
 
   public addPerson(person: Person): void {
     console.log(person)
-    if (person.id) {
-      this.setPersonId(person)
-      this.persons.push(person);
-      this.putDataFromLocalStorage();
-    }
+    this.setPersonId(person)
+    this.persons.push(person);
+    this.putDataFromLocalStorage();
   }
 
   public putDataFromLocalStorage(): void {
