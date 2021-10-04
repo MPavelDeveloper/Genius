@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Family} from "../../model/family";
-import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
+import {DataProvider} from "../services/data-provider.service";
 import {Person} from "../../model/person";
 
 export enum FormType {
@@ -39,42 +39,24 @@ export class FamilyFormComponent {
   }
 
   addPersonInFamily(person: Person): void {
-
     if (person && Object.keys(person).length > 0) {
       this.currentPerson = new Person()
-
       if (this.personType === FormType.FATHER) {
         this.setFather(person)
       } else if (this.personType === FormType.MOTHER) {
         this.setMother(person)
       } else if (this.personType === FormType.CHILD) {
-        this.setChild(person)
+        this.addChild(person)
       }
-      console.log(this.family)
-      console.log(this.persons)
     }
-
     this.personDialogVisible = false;
   }
 
   saveFamily(): void {
     if (this.familyValid(this.family)) {
-      // catch new family
-      if (!this.family.id) {
-        this.family.id = this.dataProvider.getNewFamilyID()
-        // save new family
-        this.dataProvider.addNewFamily(this.family)
-      }
-      if (this.getChildren().length > 0) {
-        this.getChildren().forEach(child => child.familyId = this.family.id)
-      }
-
-      this.addPersonsToCollection()
-      // save new person's; continue current person's
-      this.persons.forEach(person => this.dataProvider.addNewPerson(person))
-      // save in base; one time
-      this.dataProvider.putData()
-
+      // create new family
+      (!this.family.id) ? this.dataProvider.addNewFamily(this.family) :
+                          this.dataProvider.changeFamily(this.family);
       // clean family
       this.family = new Family()
       this.persons = []
@@ -118,7 +100,6 @@ export class FamilyFormComponent {
     this.childrenAmount.pop();
   }
 
-
   deletePerson(personType: FormType): void {
     if (personType === FormType.FATHER) {
       this.setFather(null)
@@ -137,7 +118,6 @@ export class FamilyFormComponent {
       this.createNewPerson(FormType.MOTHER)
     }
   }
-
 
   getFather(): Person {
     return this.family.father;
@@ -159,7 +139,7 @@ export class FamilyFormComponent {
     this.family.mother = person;
   }
 
-  setChild(person: Person): void {
+  addChild(person: Person): void {
     this.family.children.push(person)
   }
 }

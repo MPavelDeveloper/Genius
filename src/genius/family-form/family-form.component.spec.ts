@@ -1,11 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {FamilyFormComponent, FormType} from './family-form.component';
 import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
 import {Person, Sex} from "../../model/person";
 import {RouterTestingModule} from "@angular/router/testing";
-import {cleanPackageJson} from "@angular/compiler-cli/ngcc/src/packages/build_marker";
-
 
 describe('FamilyFormComponent', () => {
   let component: FamilyFormComponent;
@@ -60,10 +57,9 @@ describe('FamilyFormComponent', () => {
     component = fixture.componentInstance;
     component.setFather(testFather);
     component.setMother(testMother);
-    component.setChild(testChild)
+    component.addChild(testChild)
     fixture.detectChanges();
   });
-
 
   it('should create', () => {
     expect(component).toBeTruthy();

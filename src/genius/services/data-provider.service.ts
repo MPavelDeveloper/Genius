@@ -21,11 +21,8 @@ export abstract class DataProvider {
 
   abstract addNewFamily(family: Family): void;
 
-  abstract getNewFamilyID(): number;
+  abstract changeFamily(family: Family): void;
 
-  abstract getNewPersonID(): number;
-
-  abstract putData(): void;
 }
 
 @Injectable({
@@ -76,43 +73,71 @@ export class LocalStorageDataProvider implements DataProvider {
     return undefined
   }
 
+
   public addNewFamily(family: Family): void {
-      this.families.push(family);
+    family.id = this.getNewFamilyID()
+    if (Boolean(family.father) && !family.father.id) {
+      family.father.id = this.getNewPersonID();
+      this.persons.push(family.father);
+    }
+    if (Boolean(family.father) && !family.mother.id) {
+      family.mother.id = this.getNewPersonID();
+      this.persons.push(family.mother);
+    }
+    family.children.forEach(child => {
+      if (!child.id) {
+        child.id = family.id;
+        this.persons.push(child);
+      }
+    })
+    this.families.push(family);
+    this.putData()
   }
 
   public addNewPerson(person: Person): void {
-    if (!person.id) {
-      person.id = this.getNewPersonID();
-      this.persons.push(person);
+    person.id = this.getNewPersonID();
+    this.persons.push(person);
+  }
+
+  public changeFamily(family: Family): void {
+    if (Boolean(family.father) && !family.father.id) {
+      family.father.id = this.getNewPersonID();
+      this.persons.push(family.father);
     }
+    if (Boolean(family.father) && !family.mother.id) {
+      family.mother.id = this.getNewPersonID();
+      this.persons.push(family.mother);
+    }
+    family.children.forEach(child => {
+      if (!child.id) {
+        child.id = family.id;
+        this.persons.push(child);
+      }
+    })
+    this.putData()
   }
 
-  public putData(): void {
-    let data: LineAge = new LineAge(this.families, this.persons);
-    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
-  }
-
-
-  public getNewPersonID(): number {
+  private getNewPersonID(): number {
     const currentId = this.persons.reduce((previusId: number, item: Person) => {
       if (previusId < item.id) return item.id
       return previusId
     }, 0);
 
-    console.log(currentId);
-
     return currentId + 1;
   }
 
-  public getNewFamilyID(): number {
+  private getNewFamilyID(): number {
     const currentId = this.families.reduce((previusId: number, item: Family) => {
       if (previusId < item.id) return item.id
       return previusId
     }, 0);
 
-    console.log(currentId);
-
     return currentId + 1;
+  }
+
+  private putData(): void {
+    let data: LineAge = new LineAge(this.families, this.persons);
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
 
@@ -121,7 +146,6 @@ export class LocalStorageDataProvider implements DataProvider {
 
   public deletePerson(personId: string): void {
   }
-
 
   public getFamilies(): Array<Family> {
     return this.families;

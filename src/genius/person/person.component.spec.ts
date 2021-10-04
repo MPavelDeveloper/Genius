@@ -1,8 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {PersonComponent} from './person.component';
-
 import {Sex} from "../../model/person";
-import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
 
 
 describe('PersonComponent', () => {

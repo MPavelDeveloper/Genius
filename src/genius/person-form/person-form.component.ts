@@ -2,13 +2,9 @@ import {Component, Input, Output} from '@angular/core';
 import {Person, Sex} from "../../model/person";
 import {EventEmitter} from "@angular/core";
 import {FormType} from "../family-form/family-form.component";
-import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
+import {DataProvider} from "../services/data-provider.service";
 import {Family} from "../../model/family";
 
-export enum FormState {
-  CLOSE_WINDOW = 'close',
-  SEND_PERSON = 'send',
-}
 
 @Component({
   selector: 'person-form',
@@ -23,28 +19,24 @@ export class PersonFormComponent {
 
   @Output() addedPerson = new EventEmitter<Person>();
 
-  formStates;
   PersonSex: Array<string>;
   familyList: Array<Family>;
 
   constructor(private DataProvider: DataProvider) {
-    this.formStates = FormState;
     this.PersonSex = Object.values(Sex);
   }
 
-  submit(formState: FormState) {
-    console.log(this.person)
-    if (this.person && formState === FormState.SEND_PERSON) {
-      this.addedPerson.emit(this.person)
-    } else {
-      this.addedPerson.emit(null)
-    }
+  close() {
+    this.addedPerson.emit(null)
   }
 
+  addNewPerson() {
+    console.log(this.person)
+    this.addedPerson.emit(this.person)
+  }
 
   getFamilies() {
     this.familyList = this.DataProvider.getFamilies();
-    console.log(this.familyList)
   }
 
 

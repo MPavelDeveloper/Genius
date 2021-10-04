@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {FormState, PersonFormComponent} from './person-form.component';
+import {PersonFormComponent} from './person-form.component';
 import {FormsModule} from "@angular/forms";
 import {Sex} from "../../model/person";
 import {FormType} from "../family-form/family-form.component";
@@ -62,14 +62,13 @@ describe('PersonFormComponent', () => {
 
   it('template; generation event; should send event with person || null', () => {
     const event = spyOn(component.addedPerson, 'emit');
-    component.submit(FormState.CLOSE_WINDOW);
+    component.close();
 
     expect(event).toHaveBeenCalled()
     expect(event).toHaveBeenCalledWith(null)
 
-    component.submit(FormState.SEND_PERSON)
+    component.addNewPerson()
     expect(event).toHaveBeenCalled()
-    expect(event).toHaveBeenCalledWith(component.person)
   })
 
 
