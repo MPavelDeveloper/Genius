@@ -2,6 +2,8 @@ import {Component, Input, Output} from '@angular/core';
 import {Person, Sex} from "../../model/person";
 import {EventEmitter} from "@angular/core";
 import {FormType} from "../family-form/family-form.component";
+import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
+import {Family} from "../../model/family";
 
 export enum FormState {
   CLOSE_WINDOW = 'close',
@@ -23,8 +25,9 @@ export class PersonFormComponent {
 
   formStates;
   PersonSex: Array<string>;
+  familyList: Array<Family>;
 
-  constructor() {
+  constructor(private DataProvider: DataProvider) {
     this.formStates = FormState;
     this.PersonSex = Object.values(Sex);
   }
@@ -36,6 +39,12 @@ export class PersonFormComponent {
     } else {
       this.addedPerson.emit(null)
     }
+  }
+
+
+  getFamilies() {
+    this.familyList = this.DataProvider.getFamilies();
+    console.log(this.familyList)
   }
 
 

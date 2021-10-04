@@ -37,7 +37,7 @@
       outline: none;
     }
 
-    .person-sexlist {
+    .person-familyList, .person-sexlist {
       margin-bottom: 12px;
       border-radius: 6px;
       border-bottom: 3px solid gray;
@@ -47,6 +47,18 @@
       outline: none;
       cursor: pointer;
     }
+
+    .person-familyList {
+      color: coral;
+      .familyList-option {
+        color: #f54200;
+
+        .option-title {
+          color: lightseagreen;
+        }
+      }
+    }
+
 
     .person-event {
       margin-bottom: 12px;

@@ -3,6 +3,13 @@
     <span class="btn-close" (click)="submit(formStates.CLOSE_WINDOW)">X</span>
     <div class="person-title">Create {{personType}}</div>
 
+    <select class="person-familyList" (click)="getFamilies()">
+      <option class="familyList-option" value="null">Select an existing family</option>
+      <ng-container *ngFor = "let family of familyList">
+        <option  class="familyList-option" value="{{family?.id}}"><span class="option-title">My family</span> {{family.father?.firstName}} {{family.father?.age}} {{family.mother?.firstName}} {{family.mother?.age}} </option>
+      </ng-container>
+    </select>
+
     <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName" name="firstName" autocomplete="off">
     <div class="person-valid" [hidden]="firstName.valid || !firstName.touched">This field is required. </div>
 
@@ -13,6 +20,7 @@
     <div class="person-valid" [hidden]="age.valid || !age.touched">This field is required. </div>
 
     <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)] = "person.sex" tabindex="5" required>
+<!--      <option>check sex</option>-->
        <ng-container *ngFor = "let sex of PersonSex">
           <option  value="{{sex}}">{{sex}}</option>
        </ng-container>

@@ -50,8 +50,8 @@ export class FamilyFormComponent {
       } else if (this.personType === FormType.CHILD) {
         this.setChild(person)
       }
-
-      this.persons.push(person);
+      console.log(this.family)
+      console.log(this.persons)
     }
 
     this.personDialogVisible = false;
@@ -59,9 +59,23 @@ export class FamilyFormComponent {
 
   saveFamily(): void {
     if (this.familyValid()) {
-      this.persons.forEach(person => this.dataProvider.addPerson(person))
-      this.dataProvider.addFamily(this.family)
+      // catch new family
+      if (!this.family.id) {
+        this.family.id = this.dataProvider.getNewFamilyID()
+        // save new family
+        this.dataProvider.addNewFamily(this.family)
+      }
+      if (this.getChildren().length > 0) {
+        this.getChildren().forEach(child => child.familyId = this.family.id)
+      }
 
+      this.addPersonsToCollection()
+      // save new person's; continue current person's
+      this.persons.forEach(person => this.dataProvider.addNewPerson(person))
+      // save in base; one time
+      this.dataProvider.putData()
+
+      // clean family
       this.family = new Family()
       this.persons = []
       this.family.children = []
@@ -72,16 +86,28 @@ export class FamilyFormComponent {
   familyValid(): boolean {
     if (!this.family.father) this.family.father = null;
     if (!this.family.mother) this.family.mother = null;
-    if (this.family.children.length === 0) this.family.children = null;
-
     let values = Object.values(this.family)
 
     for (let value of values) {
+      if (Array.isArray(value)) {
+        if (value.length > 0) return true
+        continue
+      }
       if (value !== null) return true
     }
 
-    this.family.children = []
     return false
+  }
+
+  addPersonsToCollection() {
+    if (this.getFather()) this.persons.push(this.getFather())
+    if (this.getMother()) this.persons.push(this.getMother())
+
+    if (this.getChildren().length > 0) {
+      for (let child of this.getChildren()) {
+        this.persons.push(child)
+      }
+    }
   }
 
   addChildTemplate(): void {
@@ -91,6 +117,7 @@ export class FamilyFormComponent {
   deleteChildTemplate(): void {
     this.childrenAmount.pop();
   }
+
 
   deletePerson(personType: FormType): void {
     if (personType === FormType.FATHER) {
@@ -103,36 +130,25 @@ export class FamilyFormComponent {
   changePerson(personType: FormType): void {
     if (personType === FormType.FATHER) {
       this.currentPerson = this.getFather()
-      this.cleanPersons(this.currentPerson, this.persons);
       this.createNewPerson(FormType.FATHER)
 
     } else if (personType === FormType.MOTHER) {
       this.currentPerson = this.getMother()
-      this.cleanPersons(this.currentPerson, this.persons)
       this.createNewPerson(FormType.MOTHER)
     }
   }
 
-  cleanPersons(currentPerson: Person, persons: Array<Person>): void {
-    const indexTargetPerson = this.persons.findIndex((person:Person) => {
-      if(person.firstName === this.currentPerson.firstName &&
-        person.age === this.currentPerson.age &&
-        person.sex === this.currentPerson.sex) return true
-      return false
-    })
-
-    if(indexTargetPerson >= 0) {
-      console.log(this.persons.splice(indexTargetPerson, 1));
-    }
-
-  }
 
   getFather(): Person {
-    return this.family.father
+    return this.family.father;
   }
 
   getMother(): Person {
-    return this.family.mother
+    return this.family.mother;
+  }
+
+  getChildren(): Array<Person> {
+    return this.family.children;
   }
 
   setFather(person: Person): void {

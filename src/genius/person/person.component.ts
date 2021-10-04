@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { Person } from "../../model/person";
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Person} from "../../model/person";
 
 @Component({
   selector: 'person',
   templateUrl: './person.component.html',
-  styleUrls: ['./person.component.scss']
+  styleUrls: ['./person.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated,
 })
 export class PersonComponent {
 

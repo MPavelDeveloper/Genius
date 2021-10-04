@@ -11,7 +11,7 @@ export abstract class DataProvider {
 
   abstract deletePerson(personId: string): void;
 
-  abstract addPerson(person: Person): void;
+  abstract addNewPerson(person: Person): void;
 
   abstract getFamilies(): Array<Family>;
 
@@ -19,7 +19,13 @@ export abstract class DataProvider {
 
   abstract deleteFamily(familyId: string): void;
 
-  abstract addFamily(family: Family): void;
+  abstract addNewFamily(family: Family): void;
+
+  abstract getNewFamilyID(): number;
+
+  abstract getNewPersonID(): number;
+
+  abstract putData(): void;
 }
 
 @Injectable({
@@ -70,38 +76,52 @@ export class LocalStorageDataProvider implements DataProvider {
     return undefined
   }
 
-  public addFamily(family: Family): void {
-    console.log(family);
-    this.families.push(family);
-    this.putDataFromLocalStorage();
+  public addNewFamily(family: Family): void {
+      this.families.push(family);
   }
 
-  public addPerson(person: Person): void {
-    console.log(person)
-    this.setPersonId(person)
-    this.persons.push(person);
-    this.putDataFromLocalStorage();
+  public addNewPerson(person: Person): void {
+    if (!person.id) {
+      person.id = this.getNewPersonID();
+      this.persons.push(person);
+    }
   }
 
-  public putDataFromLocalStorage(): void {
+  public putData(): void {
     let data: LineAge = new LineAge(this.families, this.persons);
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
-  public setFamilyId(family: Family) {
-    if (family.id) {
 
-    }
+  public getNewPersonID(): number {
+    const currentId = this.persons.reduce((previusId: number, item: Person) => {
+      if (previusId < item.id) return item.id
+      return previusId
+    }, 0);
+
+    console.log(currentId);
+
+    return currentId + 1;
   }
 
-  public setPersonId(person: Person) {
+  public getNewFamilyID(): number {
+    const currentId = this.families.reduce((previusId: number, item: Family) => {
+      if (previusId < item.id) return item.id
+      return previusId
+    }, 0);
+
+    console.log(currentId);
+
+    return currentId + 1;
   }
+
 
   public deleteFamily(familyId: string): void {
   }
 
   public deletePerson(personId: string): void {
   }
+
 
   public getFamilies(): Array<Family> {
     return this.families;
