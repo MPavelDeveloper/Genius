@@ -4,6 +4,7 @@ import {FormState, PersonFormComponent} from './person-form.component';
 import {FormsModule} from "@angular/forms";
 import {Sex} from "../../model/person";
 import {FormType} from "../family-form/family-form.component";
+import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
 
 describe('PersonFormComponent', () => {
   let component: PersonFormComponent;
@@ -13,8 +14,10 @@ describe('PersonFormComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PersonFormComponent],
       imports: [FormsModule],
+      providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
     })
       .compileComponents();
+
   });
 
   beforeEach(() => {

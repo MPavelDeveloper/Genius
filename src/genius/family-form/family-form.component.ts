@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Family} from "../../model/family";
-import {DataProvider} from "../services/data-provider.service";
+import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
 import {Person} from "../../model/person";
 
 export enum FormType {
@@ -58,7 +58,7 @@ export class FamilyFormComponent {
   }
 
   saveFamily(): void {
-    if (this.familyValid()) {
+    if (this.familyValid(this.family)) {
       // catch new family
       if (!this.family.id) {
         this.family.id = this.dataProvider.getNewFamilyID()
@@ -83,10 +83,10 @@ export class FamilyFormComponent {
 
   }
 
-  familyValid(): boolean {
-    if (!this.family.father) this.family.father = null;
-    if (!this.family.mother) this.family.mother = null;
-    let values = Object.values(this.family)
+  familyValid(family: Family): boolean {
+    if (!family.father) family.father = null;
+    if (!family.mother) family.mother = null;
+    let values = Object.values(family)
 
     for (let value of values) {
       if (Array.isArray(value)) {
@@ -99,7 +99,7 @@ export class FamilyFormComponent {
     return false
   }
 
-  addPersonsToCollection() {
+  addPersonsToCollection(): void {
     if (this.getFather()) this.persons.push(this.getFather())
     if (this.getMother()) this.persons.push(this.getMother())
 

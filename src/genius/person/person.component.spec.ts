@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {PersonComponent} from './person.component';
 
 import {Sex} from "../../model/person";
+import {DataProvider, LocalStorageDataProvider} from "../services/data-provider.service";
 
 
 describe('PersonComponent', () => {
@@ -41,7 +42,6 @@ describe('PersonComponent', () => {
   it('should create the person component', () => {
     expect(component).toBeTruthy();
   });
-
 
   it('HTML and Instance; should be the same;', () => {
     let personName = fixture.nativeElement.querySelector('.person-name');
