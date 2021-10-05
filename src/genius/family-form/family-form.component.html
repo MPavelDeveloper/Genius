@@ -3,40 +3,41 @@
     <div class="family-title">Create family</div>
 
     <div class="person-screen">
-      <input class="description" *ngIf = "family.father; else unset1" disabled placeholder="{{family.father.firstName}}">
-      <ng-template #unset1>
-        <input class="description" disabled placeholder="add father">
-      </ng-template>
-      <button class="action-btn" type="button" (click)="createNewPerson(formType.FATHER)">add</button>
-      <button class="action-btn" type="button" *ngIf="family.father" (click)="changePerson(formType.FATHER)">change</button>
-      <button class="action-btn" type="button" *ngIf="!family.father" disabled>change</button>
-      <button class="action-btn" type="button" (click)="deletePerson(formType.FATHER)">delete</button>
+      <div class="description" [hidden]="family.father">Father</div>
+      <person class="create-person" *ngIf = "family.father" [person]="family.father" >{{family.father.firstName}} {{family.father.age}}</person>
+      <div class="actions-wrap">
+        <button class="action-btn" type="button" (click)="createNewPerson(formType.FATHER)" [hidden]="family.father">add</button>
+        <button class="action-btn" type="button" (click)="createNewPerson(formType.FATHER)" [hidden]="family.father">select</button>
+        <button class="action-btn change" type="button" (click)="changePerson(formType.FATHER)" [hidden]="!family.father">change</button>
+        <button class="action-btn delete" type="button" (click)="deletePerson(formType.FATHER)" [hidden]="!family.father">delete</button>
+      </div>
     </div>
 
     <div class="person-screen">
-      <input class="description" *ngIf = "family.mother; else unset2" disabled placeholder="{{family.mother.firstName}}">
-      <ng-template #unset2>
-        <input class="description" disabled placeholder="add mother">
-      </ng-template>
-      <button class="action-btn" type="button" (click)="createNewPerson(formType.MOTHER)">add</button>
-      <button class="action-btn" type="button" *ngIf="family.mother" (click)="changePerson(formType.MOTHER)">change</button>
-      <button class="action-btn" type="button" *ngIf="!family.mother" disabled>change</button>
-      <button class="action-btn" type="button" (click)="deletePerson(formType.MOTHER)">delete</button>
+      <div class="description" [hidden]="family.mother">Mother</div>
+      <person class="create-person" *ngIf = "family.mother" [person]="family.mother">Mother: {{family.mother.firstName}} {{family.mother.age}}</person>
+      <div class="actions-wrap">
+        <button class="action-btn" type="button" (click)="createNewPerson(formType.MOTHER)" [hidden]="family.mother">add</button>
+        <button class="action-btn" type="button" (click)="createNewPerson(formType.FATHER)" [hidden]="family.father">select</button>
+        <button class="action-btn change" type="button" (click)="changePerson(formType.MOTHER)" [hidden]="!family.mother">change</button>
+        <button class="action-btn delete" type="button" (click)="deletePerson(formType.MOTHER)" [hidden]="!family.mother">delete</button>
+      </div>
     </div>
 
     <div class="person-screen">
       <div class="children-plus" ><span (click)="addChildTemplate()">+</span></div>
       <div class="child-container" *ngFor = 'let child of childrenAmount'>
         <input class="description" disabled placeholder="add child">
-        <button class="action-btn" type="button" (click)="createNewPerson(formType.CHILD)">add</button>
-        <button class="action-btn" type="button" (click)="deleteChildTemplate()">delete</button>
-        <button class="action-btn" type="button">change</button>
+        <div class="actions-wrap">
+          <button class="action-btn" type="button" (click)="createNewPerson(formType.CHILD)">add</button>
+          <button class="action-btn change" type="button" (click)="deleteChildTemplate()">delete</button>
+          <button class="action-btn delete" type="button">change</button>
+        </div>
       </div>
     </div>
 
-
-
     <button class="btn-add-family" type="button" (click)="saveFamily()">save Family</button>
   </div>
+
   <person-form *ngIf="personDialogVisible" (addedPerson)="addPersonInFamily($event)" [person]="currentPerson" [personType]="personType"></person-form>
 </div>
