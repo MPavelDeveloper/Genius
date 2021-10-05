@@ -19,11 +19,13 @@ export class PersonFormComponent {
 
   @Output() addedPerson = new EventEmitter<Person>();
 
+  selectFamilyId: string;
   PersonSex: Array<string>;
   familyList: Array<Family>;
 
   constructor(private DataProvider: DataProvider) {
     this.PersonSex = Object.values(Sex);
+    this.selectFamilyId = null;
   }
 
   close() {
@@ -31,11 +33,15 @@ export class PersonFormComponent {
   }
 
   addNewPerson() {
-    console.log(this.person)
-    this.addedPerson.emit(this.person)
+    (this.selectFamilyId) ? this.person.familyId = Number(this.selectFamilyId):
+                            this.person.familyId = null;
+    
+    console.log(this.person);
+    this.addedPerson.emit(this.person);
   }
 
   getFamilies() {
+    console.log(this.selectFamilyId)
     this.familyList = this.DataProvider.getFamilies();
   }
 

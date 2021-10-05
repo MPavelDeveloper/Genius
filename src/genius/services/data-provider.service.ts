@@ -7,19 +7,19 @@ import {GENEALOGY_STORAGE_KEY} from "../../json";
 export abstract class DataProvider {
   abstract getPersons(): Array<Person>;
 
-  abstract findPerson(personId: number): Person;
-
-  abstract deletePerson(personId: string): void;
-
-  abstract addNewPerson(person: Person): void;
-
   abstract getFamilies(): Array<Family>;
+
+  abstract findPerson(personId: number): Person;
 
   abstract findFamily(familyId: number): Family;
 
-  abstract deleteFamily(familyId: string): void;
+  abstract addNewPerson(person: Person): void;
 
   abstract addNewFamily(family: Family): void;
+
+  abstract deletePerson(personId: string): void;
+
+  abstract deleteFamily(familyId: string): void;
 
   abstract changeFamily(family: Family): void;
 
@@ -73,23 +73,17 @@ export class LocalStorageDataProvider implements DataProvider {
     return undefined
   }
 
+  private changeExistFamilyChildren(person: Person): void {
+    const targetFamily = this.findFamily(person.familyId);
+    if (targetFamily) {
+      (targetFamily.children === null) ? targetFamily.children = [person] :
+        targetFamily.children.push(person);
+    }
+  }
 
   public addNewFamily(family: Family): void {
     family.id = this.getNewFamilyID();
-    if (Boolean(family.father) && !family.father.id) {
-      this.addNewPerson(family.father)
-    }
-    if (Boolean(family.mother) && !family.mother.id) {
-      this.addNewPerson(family.mother)
-    }
-    if (family.children) {
-      family.children.forEach(child => {
-        child.familyId = family.id;
-        if (!child.id) {
-          this.addNewPerson(child);
-        }
-      });
-    }
+    this.setPersonsId(family);
     this.families.push(family);
     this.putData();
   }
@@ -100,21 +94,31 @@ export class LocalStorageDataProvider implements DataProvider {
   }
 
   public changeFamily(family: Family): void {
-    if (Boolean(family.father) && !family.father.id) {
-      family.father.id = this.getNewPersonID();
-      this.persons.push(family.father);
+    this.setPersonsId(family);
+    this.putData();
+  }
+
+  private setPersonsId(family: Family): void {
+    if (family.father && !family.father.id) {
+      this.addNewPerson(family.father);
     }
-    if (Boolean(family.father) && !family.mother.id) {
-      family.mother.id = this.getNewPersonID();
-      this.persons.push(family.mother);
+    if (family.father && family.father.familyId) {
+      this.changeExistFamilyChildren(family.father)
     }
-    family.children.forEach(child => {
-      if (!child.id) {
-        child.id = family.id;
-        this.persons.push(child);
-      }
-    })
-    this.putData()
+    if (family.mother && !family.mother.id) {
+      this.addNewPerson(family.mother);
+    }
+    if (family.mother && family.mother.familyId) {
+      this.changeExistFamilyChildren(family.mother)
+    }
+    if (family.children) {
+      family.children.forEach(child => {
+        child.familyId = family.id;
+        if (!child.id) {
+          this.addNewPerson(child);
+        }
+      });
+    }
   }
 
   private getNewPersonID(): number {

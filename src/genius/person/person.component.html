@@ -1,4 +1,10 @@
-<div class="person" ownStyle>
-  <p class="person-name" ownStyle>{{ person.firstName }} {{ person.lastName }} {{ person.middleName }}</p>
-  <p class="person-age" ownStyle>{{ person.age }} years</p>
+<div class="person" *ngIf='!showShortView; else showShortTemplate'>
+  <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>
+  <p class="person-age">{{ person?.age + 'years'}}</p>
 </div>
+
+
+<ng-template #showShortTemplate>
+  {{ person?.firstName }} {{ ' ' + person?.age + ' '}}
+</ng-template>
+

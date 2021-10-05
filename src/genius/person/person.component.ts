@@ -11,4 +11,10 @@ export class PersonComponent {
 
   @Input()
   person: Person;
+  @Input()
+  showShortView: Boolean;
+
+  constructor() {
+    this.showShortView = false;
+  }
 }
