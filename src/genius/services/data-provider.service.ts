@@ -75,23 +75,23 @@ export class LocalStorageDataProvider implements DataProvider {
 
 
   public addNewFamily(family: Family): void {
-    family.id = this.getNewFamilyID()
+    family.id = this.getNewFamilyID();
     if (Boolean(family.father) && !family.father.id) {
-      family.father.id = this.getNewPersonID();
-      this.persons.push(family.father);
+      this.addNewPerson(family.father)
     }
-    if (Boolean(family.father) && !family.mother.id) {
-      family.mother.id = this.getNewPersonID();
-      this.persons.push(family.mother);
+    if (Boolean(family.mother) && !family.mother.id) {
+      this.addNewPerson(family.mother)
     }
-    family.children.forEach(child => {
-      if (!child.id) {
-        child.id = family.id;
-        this.persons.push(child);
-      }
-    })
+    if (family.children) {
+      family.children.forEach(child => {
+        child.familyId = family.id;
+        if (!child.id) {
+          this.addNewPerson(child);
+        }
+      });
+    }
     this.families.push(family);
-    this.putData()
+    this.putData();
   }
 
   public addNewPerson(person: Person): void {

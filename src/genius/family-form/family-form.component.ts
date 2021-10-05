@@ -56,11 +56,11 @@ export class FamilyFormComponent {
     if (this.familyValid(this.family)) {
       // create new family
       (!this.family.id) ? this.dataProvider.addNewFamily(this.family) :
-                          this.dataProvider.changeFamily(this.family);
+        this.dataProvider.changeFamily(this.family);
       // clean family
-      this.family = new Family()
-      this.persons = []
-      this.family.children = []
+      this.family = new Family();
+      this.persons = [];
+      this.family.children = [];
     }
 
   }
@@ -68,8 +68,9 @@ export class FamilyFormComponent {
   familyValid(family: Family): boolean {
     if (!family.father) family.father = null;
     if (!family.mother) family.mother = null;
-    let values = Object.values(family)
+    if (family.children.length === 0) family.children = null;
 
+    let values = Object.values(family)
     for (let value of values) {
       if (Array.isArray(value)) {
         if (value.length > 0) return true
@@ -82,12 +83,12 @@ export class FamilyFormComponent {
   }
 
   addPersonsToCollection(): void {
-    if (this.getFather()) this.persons.push(this.getFather())
-    if (this.getMother()) this.persons.push(this.getMother())
+    if (this.getFather()) this.persons.push(this.getFather());
+    if (this.getMother()) this.persons.push(this.getMother());
 
     if (this.getChildren().length > 0) {
       for (let child of this.getChildren()) {
-        this.persons.push(child)
+        this.persons.push(child);
       }
     }
   }
