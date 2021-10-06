@@ -102,15 +102,17 @@ export class LocalStorageDataProvider implements DataProvider {
     if (family.father && !family.father.id) {
       this.addNewPerson(family.father);
     }
-    if (family.father && family.father.familyId) {
-      this.changeExistFamilyChildren(family.father)
-    }
+    // add in target family as child
+    // if (family.father && family.father.familyId) {
+    //   this.changeExistFamilyChildren(family.father)
+    // }
     if (family.mother && !family.mother.id) {
       this.addNewPerson(family.mother);
     }
-    if (family.mother && family.mother.familyId) {
-      this.changeExistFamilyChildren(family.mother)
-    }
+    // add in target family as child
+    // if (family.mother && family.mother.familyId) {
+    //   this.changeExistFamilyChildren(family.mother)
+    // }
     if (family.children) {
       family.children.forEach(child => {
         child.familyId = family.id;
@@ -144,7 +146,6 @@ export class LocalStorageDataProvider implements DataProvider {
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
-
   public deleteFamily(familyId: string): void {
   }
 
@@ -152,10 +153,12 @@ export class LocalStorageDataProvider implements DataProvider {
   }
 
   public getFamilies(): Array<Family> {
+    // this.reloadData()
     return this.families;
   }
 
   public getPersons(): Array<Person> {
+    // this.reloadData()
     return this.persons;
   }
 

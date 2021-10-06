@@ -10,10 +10,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterModule, Routes} from "@angular/router";
 import {PersonFormComponent} from './person-form/person-form.component';
 import {FamilyFormComponent} from './family-form/family-form.component';
+import { FamilyComponent } from './family/family.component';
 
 const GeniusRoutes: Routes = [
-  {path:'home', component: GeniusComponent,},
-  {path: 'addPerson', component: FamilyFormComponent,},
+  {path:'Home', redirectTo: '/',},
+  {path: 'addFamily', component: FamilyFormComponent,},
   {path: '**', redirectTo: '/',},
   {path: 'search', redirectTo: '/',},
 ]
@@ -24,6 +25,7 @@ const GeniusRoutes: Routes = [
     PersonComponent,
     PersonFormComponent,
     FamilyFormComponent,
+    FamilyComponent,
   ],
   imports: [
     BrowserModule,

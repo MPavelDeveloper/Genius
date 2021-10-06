@@ -19,8 +19,9 @@
   --ageSize: 18px;
 }
 
-
-
+:host(.person-short) {
+  --padding: 12px;
+}
 
 .person {
   margin: var(--margn, 0 0 9px 0);
@@ -51,6 +52,13 @@
     font-size: var(--ageSize, 21px);
   }
 }
+
+.person-short {
+  padding: var(--padding);
+  height: 100%;
+  width: 100%;
+}
+
 
 
 

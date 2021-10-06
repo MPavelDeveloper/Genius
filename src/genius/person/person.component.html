@@ -1,10 +1,13 @@
 <div class="person" *ngIf='!showShortView; else showShortTemplate'>
   <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>
-  <p class="person-age">{{ person?.age + 'years'}}</p>
+  <p class="person-age">{{ person?.age + ' years'}}</p>
 </div>
 
 
 <ng-template #showShortTemplate>
-  {{ person?.firstName }} {{ ' ' + person?.age + ' '}}
+  <div class="person-short" (click)="returnPerson()">
+    {{ person?.firstName }} {{ ' ' + person?.age + ' '}}
+  </div>
 </ng-template>
+
 

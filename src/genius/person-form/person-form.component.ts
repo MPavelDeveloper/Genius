@@ -1,9 +1,7 @@
-import {Component, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Person, Sex} from "../../model/person";
-import {EventEmitter} from "@angular/core";
 import {FormType} from "../family-form/family-form.component";
 import {DataProvider} from "../services/data-provider.service";
-import {Family} from "../../model/family";
 
 
 @Component({
@@ -19,13 +17,13 @@ export class PersonFormComponent {
 
   @Output() addedPerson = new EventEmitter<Person>();
 
-  selectFamilyId: string;
+  selectPersonId: string;
   PersonSex: Array<string>;
-  familyList: Array<Family>;
+  personsList: Array<Person>;
 
   constructor(private DataProvider: DataProvider) {
     this.PersonSex = Object.values(Sex);
-    this.selectFamilyId = null;
+    this.selectPersonId = null;
   }
 
   close() {
@@ -33,16 +31,35 @@ export class PersonFormComponent {
   }
 
   addNewPerson() {
-    (this.selectFamilyId) ? this.person.familyId = Number(this.selectFamilyId):
-                            this.person.familyId = null;
-    
-    console.log(this.person);
     this.addedPerson.emit(this.person);
   }
 
-  getFamilies() {
-    console.log(this.selectFamilyId)
-    this.familyList = this.DataProvider.getFamilies();
+  getPersons() {
+    const persons = this.DataProvider.getPersons();
+    if (this.personType === FormType.FATHER) {
+      this.personsList = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.Male))
+    } else if (this.personType === FormType.MOTHER) {
+      this.personsList = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.Female))
+    } else if (this.personType === FormType.CHILD){
+      this.personsList = this.searchPersonsByCondition(persons, ((person: Person) => true))
+    }
+
+    if(this.selectPersonId === 'null') {
+      this.person = new Person();
+      return
+    }
+
+    if (this.selectPersonId) {
+      this.person = this.DataProvider.findPerson(Number(this.selectPersonId));
+    }
+  }
+
+  searchPersonsByCondition(persons: Array<Person>, condition: Function): Array<Person> {
+    const result = persons.filter(person => condition(person));
+    if (result.length > 0) {
+      return result;
+    }
+    return undefined;
   }
 
 

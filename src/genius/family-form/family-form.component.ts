@@ -1,12 +1,18 @@
 import {Component} from '@angular/core';
 import {Family} from "../../model/family";
 import {DataProvider} from "../services/data-provider.service";
-import {Person} from "../../model/person";
+import {Person, Sex} from "../../model/person";
 
 export enum FormType {
   FATHER = 'father',
   MOTHER = 'mother',
   CHILD = 'child',
+}
+
+enum SelectListType {
+  PERSONS = 'persons',
+  FAMILIES = 'families',
+  NONE = 'none',
 }
 
 @Component({
@@ -16,7 +22,11 @@ export enum FormType {
 })
 export class FamilyFormComponent {
 
+  public interfaceSelectPersonHint: Boolean;
+  public selectListType;
+  public currentSelectType: SelectListType;
   public formType;
+  public currentFormType: FormType;
   public family: Family;
   public persons: Array<Person>;
   public currentPerson: Person;
@@ -25,7 +35,11 @@ export class FamilyFormComponent {
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
+    this.interfaceSelectPersonHint = false;
+    this.selectListType = SelectListType;
+    this.currentSelectType = SelectListType.NONE;
     this.formType = FormType;
+    this.currentFormType = null;
     this.family = new Family();
     this.family.children = [];
     this.currentPerson = new Person();
@@ -34,6 +48,10 @@ export class FamilyFormComponent {
   }
 
   createNewPerson(personType: FormType): void {
+    if (personType === FormType.FATHER) this.currentPerson.sex = Sex.Male;
+    if (personType === FormType.MOTHER) this.currentPerson.sex = Sex.Female;
+    if (personType === FormType.CHILD) this.currentPerson.sex = null;
+    this.currentFormType = personType;
     this.personDialogVisible = true;
     this.personType = personType;
   }
@@ -48,6 +66,8 @@ export class FamilyFormComponent {
       } else if (this.personType === FormType.CHILD) {
         this.addChild(person)
       }
+    } else {
+      this.currentPerson = new Person()
     }
     this.personDialogVisible = false;
   }
@@ -68,7 +88,7 @@ export class FamilyFormComponent {
   familyValid(family: Family): boolean {
     if (!family.father) family.father = null;
     if (!family.mother) family.mother = null;
-    if (family.children.length === 0) family.children = null;
+    if (family.children && family.children.length === 0) family.children = null;
 
     let values = Object.values(family)
     for (let value of values) {
@@ -143,5 +163,43 @@ export class FamilyFormComponent {
   addChild(person: Person): void {
     this.family.children.push(person)
   }
+
+  getFamilyList() {
+    return this.dataProvider.getFamilies();
+  }
+
+  getPersonsList() {
+    return this.dataProvider.getPersons();
+  }
+
+  setSelectListType(type: SelectListType) {
+    this.currentSelectType = type;
+  }
+
+  selectExistPerson(personType: FormType, selectType: SelectListType) {
+    this.setSelectListType(selectType);
+    this.createNewPerson(personType);
+  }
+
+  setCurrentPerson(person: Person): void {
+    if (this.personDialogVisible) {
+      console.log(111)
+      console.log(this.currentFormType)
+      if (person.sex === Sex.Male && this.currentFormType === FormType.FATHER ||
+          person.sex === Sex.Female && this.currentFormType === FormType.MOTHER ||
+          this.currentFormType === FormType.CHILD) {
+        this.currentPerson = person;
+      }
+    } else {
+      this.interfaceSelectPersonHint = true;
+      setTimeout(() => this.interfaceSelectPersonHint = false, 300);
+    }
+  }
+
+  setCurrentFamily(family: Family): void {
+    this.family = family;
+  }
+
+
 }
 
