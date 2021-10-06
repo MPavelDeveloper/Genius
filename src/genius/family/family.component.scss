@@ -1,0 +1,41 @@
+.family {
+  margin-bottom: 12px;
+  border-radius: 3px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  font-size: 18px;
+  color: black;
+  background-color: #80800059;
+  box-shadow: 0 2px 6px lightgrey;
+  cursor: pointer;
+  transition: 300ms;
+
+  &:hover {
+    background-color: #c4c1c1;
+  }
+
+  .parents {
+    margin-right: 21px;
+
+    .family-father {
+      margin-bottom: 3px;
+    }
+
+    .family-mother {
+    }
+  }
+
+  .family-children {
+    display: flex;
+
+    person {
+      margin-right: 9px;
+    }
+    person:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
