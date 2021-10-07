@@ -48,6 +48,11 @@ export class FamilyFormComponent {
   }
 
   createNewPerson(personType: FormType): void {
+    if(this.personDialogVisible) {
+      console.log(111)
+      this.currentPerson = new Person();
+      this.personDialogVisible = false;
+    }
     if (personType === FormType.FATHER) this.currentPerson.sex = Sex.Male;
     if (personType === FormType.MOTHER) this.currentPerson.sex = Sex.Female;
     if (personType === FormType.CHILD) this.currentPerson.sex = null;
@@ -58,7 +63,6 @@ export class FamilyFormComponent {
 
   addPersonInFamily(person: Person): void {
     if (person && Object.keys(person).length > 0) {
-      this.currentPerson = new Person()
       if (this.personType === FormType.FATHER) {
         this.setFather(person)
       } else if (this.personType === FormType.MOTHER) {
@@ -66,9 +70,8 @@ export class FamilyFormComponent {
       } else if (this.personType === FormType.CHILD) {
         this.addChild(person)
       }
-    } else {
-      this.currentPerson = new Person()
     }
+    this.currentPerson = new Person()
     this.personDialogVisible = false;
   }
 

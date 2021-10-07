@@ -1,7 +1,17 @@
-<button class="btn-createFamily" routerLink = "/addFamily" type="button">Add Family</button>
-<button class="btn-createFamily" routerLink = "/Home" type="button">Home</button>
-<button class="btn-createFamily" routerLink = "/**" type="button">Search (Change / Delete)</button>
-
+<header>
+  <div class="header">
+    <div class="header-logo">
+      <div class="logo-wrap">
+        <img class="logo-header" src="../assets/icon__tree_of_life.png" alt="logo" routerLink = "/Home">
+      </div>
+    </div>
+    <div class="header-links">
+      <a class="link-item" routerLink = "/Home" type="button">Home</a>
+      <a class="link-item" routerLink = "/addFamily" type="button">Add Family</a>
+      <a class="link-item" routerLink = "/**" type="button">Search (Change / Delete)</a>
+    </div>
+  </div>
+</header>
 <router-outlet></router-outlet>
 
 <!--<div class="genus">-->

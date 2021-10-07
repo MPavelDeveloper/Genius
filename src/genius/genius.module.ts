@@ -11,12 +11,13 @@ import {RouterModule, Routes} from "@angular/router";
 import {PersonFormComponent} from './person-form/person-form.component';
 import {FamilyFormComponent} from './family-form/family-form.component';
 import { FamilyComponent } from './family/family.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 const GeniusRoutes: Routes = [
-  {path:'Home', redirectTo: '/',},
+  {path:'Home', component: HomePageComponent,},
   {path: 'addFamily', component: FamilyFormComponent,},
-  {path: '**', redirectTo: '/',},
-  {path: 'search', redirectTo: '/',},
+  {path: '**', redirectTo: 'Home',},
+  {path: 'search', redirectTo: 'Home',},
 ]
 
 @NgModule({
@@ -26,6 +27,7 @@ const GeniusRoutes: Routes = [
     PersonFormComponent,
     FamilyFormComponent,
     FamilyComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
