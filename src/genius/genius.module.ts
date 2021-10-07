@@ -15,7 +15,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 
 const GeniusRoutes: Routes = [
   {path:'Home', component: HomePageComponent,},
-  {path: 'addFamily', component: FamilyFormComponent,},
+  {path: 'createFamily', component: FamilyFormComponent,},
   {path: '**', redirectTo: 'Home',},
   {path: 'search', redirectTo: 'Home',},
 ]

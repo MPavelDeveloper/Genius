@@ -1,13 +1,39 @@
-<div class="person" *ngIf='!showShortView; else showShortTemplate'>
-  <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>
-  <p class="person-age">{{ person?.age + ' years'}}</p>
-</div>
+<!--<div class="person" *ngIf='!showShortView; else showShortTemplate'>-->
+<!--  <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>-->
+<!--  <p class="person-age">{{ person?.age + ' years'}}</p>-->
+<!--</div>-->
 
 
-<ng-template #showShortTemplate>
-  <div class="person-short" (click)="returnPerson()">
-    {{ person?.firstName }} {{ ' ' + person?.age + ' '}}
+<!--<ng-template #showShortTemplate>-->
+<!--  <div class="person-short" (click)="returnPerson()">-->
+<!--    {{ person?.firstName }} {{ ' ' + person?.age + ' '}}-->
+<!--  </div>-->
+<!--</ng-template>-->
+
+
+<div [ngSwitch] = "templateVersion">
+
+  <div *ngSwitchCase = "'shortestTemplate'" class="person-shortest" (click)="returnPerson()">
+    {{ checkString(person.firstName) ? person.firstName : '' }} {{ checkValue(person.age) ? ' ' + person?.age + ' ' : ''  }}
   </div>
-</ng-template>
+
+  <div *ngSwitchCase = "'shortTemplate'" class="person-short" (click)="returnPerson()">
+    {{ checkString(person.firstName) ? person.firstName : ''  }}
+    {{ checkValue(person.age) ? ' ' + person?.age + ' ' : '' }}
+    {{checkString(person.sex) ? person.sex : '' }}
+  </div>
+
+  <div class="person" *ngSwitchCase = "'fullTemplate'">
+    <p class="person-name">
+      {{ checkString(person.firstName) ? person.firstName : ''   }}
+      {{ checkString(person.lastName) ? person.lastName : ''  }}
+      {{ checkString(person.middleName) ? person.middleName : ''  }}
+    </p>
+    <p class="person-age">
+      {{ checkValue(person.age) ? ' ' + person?.age + ' years' : '' }}
+    </p>
+  </div>
+
+</div>
 
 

@@ -1,5 +1,5 @@
 <div class="persons-list">
   <ng-container *ngFor = 'let person of persons' >
-    <person [person]="person"></person>
+    <person [templateVersion]="'fullTemplate'" [person]="person" ></person>
   </ng-container>
 </div>

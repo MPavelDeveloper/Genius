@@ -57,7 +57,6 @@ describe('FamilyFormComponent', () => {
     component = fixture.componentInstance;
     component.setFather(testFather);
     component.setMother(testMother);
-    component.addChild(testChild)
     fixture.detectChanges();
   });
 

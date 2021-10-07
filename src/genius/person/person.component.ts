@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
 import {Person} from "../../model/person";
-import {rendererTypeName} from "@angular/compiler";
+
 
 @Component({
   selector: 'person',
@@ -11,15 +11,23 @@ import {rendererTypeName} from "@angular/compiler";
 export class PersonComponent {
 
   @Input() person: Person;
-  @Input() showShortView: Boolean;
+  @Input() templateVersion: string;
 
   @Output() returnedPerson = new EventEmitter<Person>();
 
   constructor() {
-    this.showShortView = false;
+    this.templateVersion = 'fullTemplate';
   }
 
   returnPerson() {
     this.returnedPerson.emit(this.person);
+  }
+
+  checkValue(number: Number): Boolean {
+    return number !== undefined && number !== null;
+  }
+
+  checkString(string: String): Boolean {
+    return string !== undefined && string !== null;
   }
 }

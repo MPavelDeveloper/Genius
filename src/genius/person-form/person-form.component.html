@@ -7,7 +7,7 @@
       <option class="familyList-option" value="null">Select {{personType}}</option>
       <ng-container *ngFor = "let person of personsList">
         <option  class="familyList-option" value="{{person?.id}}">
-          {{personType}} <person class="create-person" [person]="person" [showShortView] = 'true'></person>
+          {{personType}} <person  [person]="person" [templateVersion]="'shortestTemplate'" ></person>
         </option>
       </ng-container>
     </select>
