@@ -1,0 +1,71 @@
+<div class="wrap">
+  <div class="create-family">
+    <div class="create-family-wrap">
+      <div class="wrap-family">
+      <div class="family-title">Create family</div>
+      <div class="person-screen">
+        <div class="description" [hidden]="family.father">Father</div>
+        <person class="create-person" *ngIf = "family.father" [person]="family.father"></person>
+        <div class="actions-wrap" >
+          <button class="action-btn" type="button" (click)="createNewPerson(formType.FATHER)" [hidden]="family.father">add</button>
+          <button class="action-btn" type="button" (click)="selectExistPerson(formType.FATHER, selectListType.PERSONS)" [hidden]="family.father" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+          <button class="action-btn change" type="button" (click)="changePerson(formType.FATHER)" [hidden]="!family.father">change</button>
+          <button class="action-btn delete" type="button" (click)="deletePerson(formType.FATHER)" [hidden]="!family.father">delete</button>
+        </div>
+      </div>
+
+      <div class="person-screen">
+        <div class="description" [hidden]="family.mother">Mother</div>
+        <person class="create-person" *ngIf = "family.mother" [person]="family.mother"></person>
+        <div class="actions-wrap">
+          <button class="action-btn" type="button" (click)="createNewPerson(formType.MOTHER)" [hidden]="family.mother">add</button>
+          <button class="action-btn" type="button" (click)="selectExistPerson(formType.MOTHER, selectListType.PERSONS)" [hidden]="family.mother" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+          <button class="action-btn change" type="button" (click)="changePerson(formType.MOTHER)" [hidden]="!family.mother">change</button>
+          <button class="action-btn delete" type="button" (click)="deletePerson(formType.MOTHER)" [hidden]="!family.mother">delete</button>
+        </div>
+      </div>
+
+      <div class="person-screen">
+        <div class="children-plus" ><span (click)="addChildTemplate()">+</span></div>
+        <div class="child-container" *ngFor = 'let child of childrenAmount'>
+          <input class="description" disabled placeholder="add child">
+          <div class="actions-wrap">
+            <button class="action-btn" type="button" (click)="createNewPerson(formType.CHILD)">add</button>
+<!--            <button class="action-btn" type="button" (click)="selectExistPerson(formType.CHILD, selectType.PERSONS)" [hidden]="family.mother">select</button>-->
+            <button class="action-btn change" type="button" (click)="deleteChildTemplate()">delete</button>
+            <button class="action-btn delete" type="button">change</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-add-family" type="button" (click)="saveFamily()">save Family</button>
+    </div>
+      <div class="select-list-wrap">
+        <div class="select-list-actions">
+          <div class="acrions-wrap">
+            <button class="action-open" (click)="setSelectListType(selectListType.PERSONS)">Persons</button>
+            <button class="action-open" (click)="setSelectListType(selectListType.FAMILIES)">Families</button>
+          </div>
+          <button class="action-close" *ngIf='currentSelectType !== selectListType.NONE' (click)="setSelectListType(selectListType.NONE)">Close</button>
+        </div>
+        <div class="select-persons-list" *ngIf ="currentSelectType === selectListType.PERSONS">
+          <div class="list_title">
+            Persons
+          </div>
+          <div class="item-person" *ngFor = 'let prs of getPersonsList()'>
+            <person class="person-short" [person]="prs" [showShortView]="true" (returnedPerson)="setCurrentPerson($event)"></person>
+          </div>
+        </div>
+        <div class="select-families-list" *ngIf ="currentSelectType === selectListType.FAMILIES">
+          <div class="list_title">
+            Families
+          </div>
+          <family *ngFor = "let fml of getFamilyList()" [family]="fml" (returnedFamily)="setCurrentFamily($event)"></family>
+        </div>
+      </div>
+    </div>
+    <person-form *ngIf="personDialogVisible" (addedPerson)="addPersonInFamily($event)" [person]="currentPerson" [personType]="personType"></person-form>
+
+  </div>
+</div>
+

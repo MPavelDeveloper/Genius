@@ -7,12 +7,12 @@ export enum Sex {
 
 export class Person {
 
-  public id: string;
+  public id: number;
   public firstName: string;
   public lastName: string;
   public middleName: string;
   public age: number;
   public sex: Sex;
   public lifeEvent: Array<LifeEvent>;
-  public familyId: string;
+  public familyId: number;
 }

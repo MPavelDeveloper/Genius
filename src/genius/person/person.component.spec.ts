@@ -1,6 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {PersonComponent} from './person.component';
-
 import {Sex} from "../../model/person";
 
 
@@ -26,7 +25,7 @@ describe('PersonComponent', () => {
     fixture = TestBed.createComponent(PersonComponent);
     component = fixture.componentInstance;
     component.person = {
-      id: '4pp',
+      id: 4,
       firstName: 'Nick',
       lastName: 'James',
       middleName: 'Kolin',
@@ -41,7 +40,6 @@ describe('PersonComponent', () => {
   it('should create the person component', () => {
     expect(component).toBeTruthy();
   });
-
 
   it('HTML and Instance; should be the same;', () => {
     let personName = fixture.nativeElement.querySelector('.person-name');

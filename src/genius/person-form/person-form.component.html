@@ -1,0 +1,37 @@
+<form class="form-wrap" id="person_form" >
+  <div class="wrap">
+    <span class="btn-close" (click)="close()">X</span>
+    <div class="person-title">Create {{personType}}</div>
+
+    <select class="person-familyList" [(ngModel)] = "selectPersonId" (click)="getPersons()" name="selectedPerson">
+      <option class="familyList-option" value="null">Select {{personType}}</option>
+      <ng-container *ngFor = "let person of personsList">
+        <option  class="familyList-option" value="{{person?.id}}">
+          {{personType}} <person class="create-person" [person]="person" [showShortView] = 'true'></person>
+        </option>
+      </ng-container>
+    </select>
+
+    <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName" name="firstName" autocomplete="off">
+    <div class="person-valid" [hidden]="firstName.valid || !firstName.touched">This field is required. </div>
+
+    <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName" name="lastName">
+    <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName" name="middleName">
+
+    <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" required tabindex="4" [(ngModel)] = "person.age" name="age" min="1">
+    <div class="person-valid" [hidden]="age.valid || !age.touched">This field is required. </div>
+
+
+    <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)] = "person.sex" tabindex="5" required>
+      <option value="null" >Select sex</option>
+       <ng-container *ngFor = "let sex of PersonSex" >
+          <option  [value] = "sex" value="{{sex}}">{{sex}}</option>
+       </ng-container>
+    </select>
+    <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required.</div>
+    <textarea class="person-event" rows="6" placeholder="Events"></textarea>
+    <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addNewPerson()">Create</button>
+  </div>
+</form>
+
+

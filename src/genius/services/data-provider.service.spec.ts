@@ -1,27 +1,26 @@
 import {TestBed} from '@angular/core/testing';
 import {LocalStorageDataProvider} from './data-provider.service';
-import {json, key, testData} from "../../json";
+import {json, GENEALOGY_STORAGE_KEY, testData} from "../../json";
 import {Person, Sex} from "../../model/person";
 import {Events} from "../../model/life-event";
 import {Family} from "../../model/family";
 
-
 describe('LocalStorageDataProvider', () => {
   let service: LocalStorageDataProvider
   let person: Person = {
-    id: '2p',
+    id: 2,
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Nickson',
     age: 54,
     sex: Sex.Male,
     lifeEvent: null,
-    familyId: '2f',
-  }
+    familyId: 2,
+  };
   let family: Family = {
-    id: '1f',
+    id: 1,
     father: {
-      id: '2p',
+      id: 2,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
@@ -34,10 +33,10 @@ describe('LocalStorageDataProvider', () => {
           description: 'Married',
         },
       ],
-      familyId: '2f',
+      familyId: 2,
     },
     mother: {
-      id: '3p',
+      id: 3,
       firstName: 'Lola',
       lastName: 'James',
       middleName: 'Kan',
@@ -54,7 +53,7 @@ describe('LocalStorageDataProvider', () => {
     },
     children: [{
       // son first
-      id: '1p',
+      id: 1,
       firstName: 'John',
       lastName: 'James',
       middleName: 'Tomson',
@@ -67,10 +66,10 @@ describe('LocalStorageDataProvider', () => {
           description: 'Married',
         },
       ],
-      familyId: '1f',
+      familyId: 1,
     }, {
       // son second
-      id: '4p',
+      id: 4,
       firstName: 'Sergey',
       lastName: 'James',
       middleName: 'Tomson',
@@ -83,22 +82,20 @@ describe('LocalStorageDataProvider', () => {
           description: 'Married',
         },
       ],
-      familyId: '1f',
+      familyId: 1,
     }],
   };
-
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LocalStorageDataProvider]
     });
     service = TestBed.inject(LocalStorageDataProvider);
-    localStorage.setItem(key, json)
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
   });
   afterEach(() => {
-    localStorage.setItem(key, json)
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
   })
-
 
   it('should create the data-provider service', () => {
     expect(service).toBeTruthy()
@@ -107,18 +104,19 @@ describe('LocalStorageDataProvider', () => {
   // positive tests
   it('findPerson(); correct data; should be person', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData));
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
 
     service.reloadData()
 
     let res = service.findPerson(person.id)
+    console.log(res)
     expect(res).toBeDefined()
     expect(res instanceof Person).toBeTrue()
   })
 
   it('findFamily(); correct data; should be family', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
 
     service.reloadData()
 
@@ -129,7 +127,7 @@ describe('LocalStorageDataProvider', () => {
 
   it('getPersons(); correct data; should be arr of persons', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
 
     service.reloadData()
 
@@ -143,7 +141,7 @@ describe('LocalStorageDataProvider', () => {
 
   it('getFamilies(); correct data; should be arr of families', () => {
     localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(testData))
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
 
     service.reloadData()
 
@@ -165,15 +163,14 @@ describe('LocalStorageDataProvider', () => {
     expect(res instanceof Family).toBeTrue()
   })
 
-
   // negative test's
   it('findPerson(); fake data; should be undefined', () => {
-    let res = service.findPerson('str')
+    let res = service.findPerson(300)
     expect(res).toBeUndefined()
   });
 
   it('findFamily(); fake data; should be undefined', () => {
-    let res = service.findFamily('str');
+    let res = service.findFamily(300);
     expect(res).toBeUndefined();
   });
 

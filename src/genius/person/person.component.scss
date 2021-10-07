@@ -1,44 +1,67 @@
-*{
-  margin: 0;
-  border: 0;
-  padding: 0;
+:host(.create-person) {
+  --margn: 0 12px 0 0;
+  --bradius: 12px;
+  --bline: 3px solid gray;
+  --padding: 12px;
+  --disp: flex;
+  --fdir:row;
+  --fjust: center;
+  --faline: center;
+  --minWdt: 172px;
+  --fsize: 21px;
+  --taline: center;
+  --bcground: none;
+  --bshadow: none;
+  --color: black;
 
-  font-family: sans-serif;
-  box-sizing: border-box;
+  --nameMargin: 0 12px 0 0;
 
-  list-style-type: none;
-  text-decoration: none;
-  outline: none;
+  --ageSize: 18px;
 }
 
+:host(.person-short) {
+  --padding: 12px;
+}
 
-.person{
-  margin-bottom: 9px;
-  padding: 12px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 270px;
-  font-family: sans-serif;
-  font-size: 27px;
-  color:white;
-  background-color: lightblue;
-  box-shadow: 0 2px 8px gray;
+.person {
+  margin: var(--margn, 0 0 9px 0);
+  padding: var(--padding, 12px);
+  border-radius: var(--bradius, 12px);
+  border: var(--bline, 0);
+  display: var(--displ, flex);
+  flex-direction: var(--fdir, column);
+  justify-content: var(--fjust, center);
+  align-items: var(--faline, center);
+  min-width: var(--minWdt, 270px);
+  font-size: var(--fsize, 27px);
+  color: var(--color, white);
+  background-color: var(--bcground, lightblue);
+  box-shadow: var(--bshadow, 0 2px 8px gray);
   transition: 300ms;
   cursor: pointer;
-  &:hover{
-    background-color: #86c4d4;
+
+  &:hover {
+    background-color: var(--bcground, #86c4d4);
   }
 
-  .person-name{
-    margin-bottom: 6px;
+  .person-name {
+    margin:var(--nameMargin, 0 0 6px 0);
   }
 
-  .person-age{
-    font-size: 21px;
+  .person-age {
+    font-size: var(--ageSize, 21px);
   }
 }
+
+.person-short {
+  padding: var(--padding);
+  height: 100%;
+  width: 100%;
+}
+
+
+
+
 
 
 
