@@ -1,17 +1,4 @@
-<!--<div class="person" *ngIf='!showShortView; else showShortTemplate'>-->
-<!--  <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>-->
-<!--  <p class="person-age">{{ person?.age + ' years'}}</p>-->
-<!--</div>-->
-
-
-<!--<ng-template #showShortTemplate>-->
-<!--  <div class="person-short" (click)="returnPerson()">-->
-<!--    {{ person?.firstName }} {{ ' ' + person?.age + ' '}}-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-
-<div [ngSwitch] = "templateVersion">
+<ng-container [ngSwitch] = "templateVersion">
 
   <div *ngSwitchCase = "'shortestTemplate'" class="person-shortest" (click)="returnPerson()">
     {{ (person && person.firstName) ? person.firstName : '' }}
@@ -35,6 +22,6 @@
     </p>
   </div>
 
-</div>
+</ng-container>
 
 

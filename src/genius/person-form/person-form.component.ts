@@ -1,7 +1,12 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Person, Sex} from "../../model/person";
 import {FormType} from "../family-form/family-form.component";
 import {DataProvider} from "../services/data-provider.service";
+
+export enum PersonFormTemplateVersion {
+  FAMILY_FORM = 'familyForm',
+  PERSON_EDITOR = 'personEditor',
+}
 
 
 @Component({
@@ -10,20 +15,29 @@ import {DataProvider} from "../services/data-provider.service";
   styleUrls: ['./person-form.component.scss']
 })
 
-export class PersonFormComponent {
+export class PersonFormComponent implements OnInit{
 
+  @Input() templateVersion: string;
   @Input() person: Person;
   @Input() personType: FormType;
 
   @Output() addedPerson = new EventEmitter<Person>();
 
-  selectPersonId: string;
-  PersonSex: Array<string>;
-  personsList: Array<Person>;
+
+  public personFormTemplateVersion;
+  public selectPersonId: string;
+  public PersonSex: Array<string>;
+  public personsList: Array<Person>;
+  public defaultPerson: Person;
 
   constructor(private DataProvider: DataProvider) {
+    this.person = new Person();
+    this.personFormTemplateVersion = PersonFormTemplateVersion;
     this.PersonSex = Object.values(Sex);
     this.selectPersonId = null;
+  }
+
+  ngOnInit() {
   }
 
   close() {
@@ -61,25 +75,5 @@ export class PersonFormComponent {
     }
     return undefined;
   }
-
-
-  // validation(): boolean {
-  //   let flag = true;
-  // let inputsArr: Array<string> = [];
-  // inputsArr.push(this.person.firstName);
-  // inputsArr.push(this.person.a);
-  // inputsArr.push(this.person.sex);
-
-  // inputsArr.forEach((elem) => {
-  //   if (elem) {
-  //     elem.style.background = '#fbb8b8';
-  //     flag = false;
-  //   } else {
-  //     elem.style.background = 'snow';
-  //   }
-  // });
-  //
-  // return flag
-  // }
 
 }

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Family} from "../../model/family";
 import {DataProvider} from "../services/data-provider.service";
 import {Person, Sex} from "../../model/person";
+import {PersonFormTemplateVersion} from "../person-form/person-form.component";
 
 export enum FormType {
   FATHER = 'father',
@@ -22,6 +23,7 @@ export enum SelectListType {
 })
 export class FamilyFormComponent {
 
+  public personComponentTemplate;
   public selectListType;
   public currentSelectType: SelectListType;
   public interfaceSelectPersonHint: Boolean;
@@ -33,6 +35,7 @@ export class FamilyFormComponent {
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
+    this.personComponentTemplate = PersonFormTemplateVersion;
     this.selectListType = SelectListType;
     this.currentSelectType = SelectListType.NONE;
     this.interfaceSelectPersonHint = false;

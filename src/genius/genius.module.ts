@@ -12,12 +12,14 @@ import {PersonFormComponent} from './person-form/person-form.component';
 import {FamilyFormComponent} from './family-form/family-form.component';
 import { FamilyComponent } from './family/family.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { PersonEditorComponent } from './person-editor/person-editor.component';
+import { PersonListComponent } from './person-list/person-list.component';
 
 const GeniusRoutes: Routes = [
   {path:'Home', component: HomePageComponent,},
   {path: 'createFamily', component: FamilyFormComponent,},
+  {path: 'editPerson', component: PersonEditorComponent,},
   {path: '**', redirectTo: 'Home',},
-  {path: 'search', redirectTo: 'Home',},
 ]
 
 @NgModule({
@@ -28,6 +30,8 @@ const GeniusRoutes: Routes = [
     FamilyFormComponent,
     FamilyComponent,
     HomePageComponent,
+    PersonEditorComponent,
+    PersonListComponent,
   ],
   imports: [
     BrowserModule,

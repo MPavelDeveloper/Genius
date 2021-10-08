@@ -1,0 +1,9 @@
+
+  <div class="select-persons-list">
+    <div class="list_title">
+      Persons
+    </div>
+    <div class="item-person" *ngFor = 'let prs of getPersonsList()'>
+      <person class="person-short" [person]="prs" [templateVersion]="'shortTemplate'"  ></person>
+    </div>
+  </div>
