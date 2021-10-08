@@ -17,9 +17,9 @@ export abstract class DataProvider {
 
   abstract addNewFamily(family: Family): void;
 
-  abstract deletePerson(personId: string): void;
+  abstract deletePerson(personId: number): void;
 
-  abstract deleteFamily(familyId: string): void;
+  abstract deleteFamily(familyId: number): void;
 
   abstract changeFamily(family: Family): void;
 
@@ -94,8 +94,20 @@ export class LocalStorageDataProvider implements DataProvider {
   }
 
   public changeFamily(family: Family): void {
-    this.setPersonsId(family);
-    this.putData();
+    // checking content
+    if (this.checkFamilyPerson(family)) {
+      this.setPersonsId(family);
+      this.putData();
+    } else {
+      this.deleteFamily(family.id);
+    }
+  }
+
+  private checkFamilyPerson(family: Family): Boolean {
+
+    return (family.father) ? true :
+      (family.mother) ? true :
+        (family.children && family.children.length > 0) ? true : false
   }
 
   private setPersonsId(family: Family): void {
@@ -146,10 +158,15 @@ export class LocalStorageDataProvider implements DataProvider {
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
-  public deleteFamily(familyId: string): void {
+  public deleteFamily(familyId: number): void {
+    const delIndex = this.families.findIndex(family => family.id === familyId)
+    if (delIndex != -1) {
+      this.families.splice(delIndex, 1);
+    }
+    this.putData();
   }
 
-  public deletePerson(personId: string): void {
+  public deletePerson(personId: number): void {
   }
 
   public getFamilies(): Array<Family> {

@@ -68,7 +68,7 @@ describe('FamilyFormComponent', () => {
     const buttonAdd = fixture.nativeElement.querySelector('.action-btn');
     buttonAdd.click()
 
-    expect(component.personType).toBe(FormType.FATHER)
+    expect(component.currentPersonType).toBe(FormType.FATHER)
     expect(component.personDialogVisible).toBeTrue()
   });
 
@@ -77,7 +77,7 @@ describe('FamilyFormComponent', () => {
     buttonChange.click();
 
     expect(component.currentPerson.firstName).toBe(component.getFather().firstName);
-    expect(component.personType).toBe(FormType.FATHER)
+    expect(component.currentPersonType).toBe(FormType.FATHER)
     expect(component.personDialogVisible).toBeTrue()
   });
 
@@ -88,23 +88,6 @@ describe('FamilyFormComponent', () => {
     expect(component.getFather()).toBeNull()
   });
 
-  it('script; method addPersonsToCollection(); should be create collection of persons', () => {
-    let indeticalObjects: boolean = true;
-    let arr: Array<Person> = [component.getFather(), component.getMother(),];
-    component.getChildren().forEach(child => arr.push(child));
-
-    component.addPersonsToCollection();
-    expect(component.persons.length).toBe(arr.length);
-    for (let person of component.persons) {
-      if (arr.includes(person)) continue;
-      indeticalObjects = false;
-      break;
-    }
-
-    expect(indeticalObjects).toBeTrue();
-
-
-  });
 
   it('script; method familyValid(); should be true', () => {
     expect(component.familyValid(component.family)).toBeTrue();
@@ -121,7 +104,7 @@ describe('FamilyFormComponent', () => {
       lifeEvent: null,
       familyId: null,
     };
-    component.personType = FormType.MOTHER;
+    component.currentPersonType = FormType.MOTHER;
     component.addPersonInFamily(testPerson);
 
     expect(component.family.mother).toBe(testPerson);

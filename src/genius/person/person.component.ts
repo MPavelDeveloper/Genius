@@ -23,11 +23,4 @@ export class PersonComponent {
     this.returnedPerson.emit(this.person);
   }
 
-  checkValue(number: Number): Boolean {
-    return number !== undefined && number !== null;
-  }
-
-  checkString(string: String): Boolean {
-    return string !== undefined && string !== null;
-  }
 }

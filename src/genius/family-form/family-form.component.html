@@ -9,10 +9,10 @@
           <person class="create-person" [person]="family.father" [templateVersion]="'shortestTemplate'"></person>
         </div>
         <div class="actions-wrap" >
-          <button class="action-btn" type="button" (click)="createNewParent(formType.FATHER)" [hidden]="family.father">add</button>
-          <button class="action-btn" type="button" (click)="selectExistPerson(formType.FATHER, selectListType.PERSONS)" [hidden]="family.father" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
-          <button class="action-btn change" type="button" (click)="changePerson(formType.FATHER)" [hidden]="!family.father">change</button>
-          <button class="action-btn delete" type="button" (click)="deletePerson(formType.FATHER)" [hidden]="!family.father">delete</button>
+          <button class="action-btn" type="button" (click)="createNewParent(personType.FATHER)" [hidden]="family.father">add</button>
+          <button class="action-btn" type="button" (click)="selectExistParent(personType.FATHER, selectListType.PERSONS)" [hidden]="family.father" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+          <button class="action-btn change" type="button" (click)="changeParent(personType.FATHER)" [hidden]="!family.father">change</button>
+          <button class="action-btn delete" type="button" (click)="deleteParent(personType.FATHER)" [hidden]="!family.father">delete</button>
         </div>
       </div>
 
@@ -22,16 +22,16 @@
           <person class="create-person" [person]="family.mother" [templateVersion]="'shortestTemplate'"></person>
         </div>
         <div class="actions-wrap">
-          <button class="action-btn" type="button" (click)="createNewParent(formType.MOTHER)" [hidden]="family.mother">add</button>
-          <button class="action-btn" type="button" (click)="selectExistPerson(formType.MOTHER, selectListType.PERSONS)" [hidden]="family.mother" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
-          <button class="action-btn change" type="button" (click)="changePerson(formType.MOTHER)" [hidden]="!family.mother">change</button>
-          <button class="action-btn delete" type="button" (click)="deletePerson(formType.MOTHER)" [hidden]="!family.mother">delete</button>
+          <button class="action-btn" type="button" (click)="createNewParent(personType.MOTHER)" [hidden]="family.mother">add</button>
+          <button class="action-btn" type="button" (click)="selectExistParent(personType.MOTHER, selectListType.PERSONS)" [hidden]="family.mother" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+          <button class="action-btn change" type="button" (click)="changeParent(personType.MOTHER)" [hidden]="!family.mother">change</button>
+          <button class="action-btn delete" type="button" (click)="deleteParent(personType.MOTHER)" [hidden]="!family.mother">delete</button>
         </div>
       </div>
 
       <div class="person-screen">
         <div class="children-plus" >
-          <button class="btn-plus" type="button" (click)="addChildTemplate()" [disabled] = "getCompleteChildrenAmount() === getChildren().length">+</button>
+          <button class="btn-plus" type="button" (click)="addChildTemplate()" [disabled] = "getChildren() && getCompleteChildrenAmount() + 1 === getChildren().length">+</button>
         </div>
         <div class="child-container" *ngFor = 'let child of family.children; let index = index; let first = first; let last = last;'>
           <div class="description" [hidden]="checkChild(index)">Child</div>
@@ -40,9 +40,9 @@
           </div>
           <div class="actions-wrap">
             <button class="action-btn" type="button" (click)="createNewChild(index)" [hidden]="checkChild(index)">add</button>
-            <button class="action-btn" type="button" (click)="selectExistPerson(formType.CHILD, selectListType.PERSONS)" [hidden]="checkChild(index)" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+            <button class="action-btn" type="button" (click)="selectExistChild(index, selectListType.PERSONS)" [hidden]="checkChild(index)" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
+            <button class="action-btn delete" type="button" (click)="changeChild(index)" [hidden]="!checkChild(index)">change</button>
             <button class="action-btn change" type="button" (click)="deleteChild(index)" [hidden]="!checkChild(index)">delete</button>
-            <button class="action-btn delete" type="button" [hidden]="!checkChild(index)">change</button>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <person-form *ngIf="personDialogVisible" (addedPerson)="addPersonInFamily($event)" [person]="currentPerson" [personType]="personType"></person-form>
+    <person-form *ngIf="personDialogVisible" (addedPerson)="addPersonInFamily($event)" [person]="currentPerson" [personType]="currentPersonType"></person-form>
 
   </div>
 </div>
