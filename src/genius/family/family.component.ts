@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Family} from "../../model/family";
 
 @Component({
@@ -13,7 +13,6 @@ export class FamilyComponent {
   @Output() returnedFamily = new EventEmitter<Family>();
 
   returnFamily() {
-    console.log(this.family);
     this.returnedFamily.emit(this.family);
   }
 

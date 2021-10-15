@@ -1,8 +1,8 @@
 import { LifeEvent } from "./life-event";
 
 export enum Sex {
-  Male = 'male',
-  Female = 'female',
+  MALE = 'male',
+  FEMALE = 'female',
 }
 
 export class Person {

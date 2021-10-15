@@ -1,6 +1,6 @@
 
 <ng-container [ngSwitch] = "templateVersion">
-  <form *ngSwitchCase = "personFormTemplateVersion.FAMILY_FORM" class="form-wrap" id="person_form" >
+  <form *ngSwitchCase = "personFormTemplateVersion.FAMILY_FORM" class="form-wrap" id="person_form"  >
     <div class="wrap">
       <span class="btn-close" (click)="close()">X</span>
       <div class="person-title">Create {{personType}}</div>
@@ -32,20 +32,21 @@
       </select>
       <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required.</div>
       <textarea class="person-event" rows="6" placeholder="Events"></textarea>
-      <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addNewPerson()">Create</button>
+      <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
     </div>
   </form>
 
   <form *ngSwitchCase = "personFormTemplateVersion.PERSON_EDITOR" class="form-wrap" id="person_form" >
     <div class="wrap">
+      <span class="btn-close" (click)="close()">X</span>
       <div class="person-title">Person</div>
 
-      <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" minlength="2" tabindex="1" autofocus [(ngModel)] = "person.firstName" ng-model-options="{ allowInvalid: true }" name="firstName" autocomplete="off">
+      <input class="person-fn person-input" #firstName="ngModel" type="text" [(ngModel)] = "person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus >
 
-      <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.firstName" name="lastName" autocomplete="off">
+      <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName" name="lastName" autocomplete="off">
       <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName" name="middleName" autocomplete="off">
 
-      <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)] = "person.age" name="age" min="1" autocomplete="off">
+      <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)] ="person.age" name="age" min="1" autocomplete="off">
 
 
       <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)] = "person.sex" tabindex="5">
@@ -57,8 +58,9 @@
       <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required.</div>
       <textarea class="person-event" rows="6" placeholder="Events"></textarea>
       <div class="actions-wrap">
-        <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addNewPerson()">Edit</button>
-        <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addNewPerson()">Delete</button>
+        <button class="person-create-btn" type="button"  [hidden]="!createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
+        <button class="person-create-btn" type="button"  [hidden]="createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Edit</button>
+        <button class="person-create-btn" type="button"  [hidden]="createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
       </div>
     </div>
   </form>

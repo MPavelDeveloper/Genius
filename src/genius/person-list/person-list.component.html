@@ -3,7 +3,15 @@
     <div class="list_title">
       Persons
     </div>
-    <div class="item-person" *ngFor = 'let prs of getPersonsList()'>
-      <person class="person-short" [person]="prs" [templateVersion]="'shortTemplate'"  ></person>
+    <div class="list_action">
+      <button class="action-add" (click)="createPerson()">+</button>
     </div>
+    <ng-container *ngFor = "let prs of persons">
+        <div class="item-person" *ngIf = "prs.sex === personSex.MALE" style="background: lightblue">
+          <person class="person-short" [person]="prs" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
+        </div>
+        <div class="item-person" *ngIf = "prs.sex === personSex.FEMALE" style="background: pink">
+          <person class="person-short" [person]="prs" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
+        </div>
+    </ng-container>
   </div>

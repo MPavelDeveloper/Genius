@@ -18,8 +18,16 @@
       {{ (person && person.middleName) ? person.middleName : ''  }}
     </p>
     <p class="person-age">
-      {{ (person.age) ? ' ' + person?.age + ' years' : '' }}
+      {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
     </p>
+  </div>
+
+  <div *ngSwitchCase = "'fullDataTemplate'" class="person-short" (click)="returnPerson()">
+    {{ (person && person.firstName) ? person.firstName : ''   }}
+    {{ (person && person.lastName) ? person.lastName : ''  }}
+    {{ (person && person.middleName) ? person.middleName : ''  }}
+    {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
+    {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
   </div>
 
 </ng-container>

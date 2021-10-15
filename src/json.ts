@@ -1,6 +1,7 @@
 import {LineAge} from "./model/line-age";
-import {Sex} from "./model/person";
+import {Person, Sex} from "./model/person";
 import {Events} from "./model/life-event";
+import {Family} from "./model/family";
 
 
 export const data: LineAge = {
@@ -12,7 +13,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Nickson',
       age: 54,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
@@ -28,7 +29,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Kan',
       age: 45,
-      sex: Sex.Female,
+      sex: Sex.FEMALE,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
@@ -45,7 +46,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Tomson',
       age: 23,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
@@ -61,7 +62,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Tomson',
       age: 29,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
@@ -79,7 +80,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Kolin',
       age: 92,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: null,
       familyId: null,
     },
@@ -90,7 +91,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Han',
       age: 88,
-      sex: Sex.Female,
+      sex: Sex.FEMALE,
       lifeEvent: null,
       familyId: 3,
     },
@@ -102,7 +103,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Nickson',
       age: 54,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
@@ -118,7 +119,7 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Nickson',
       age: 58,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: null,
       familyId: 2,
     }],
@@ -132,7 +133,7 @@ export const data: LineAge = {
       lastName: 'Long',
       middleName: 'Kan',
       age: 142,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: null,
       familyId: null,
     },
@@ -143,7 +144,7 @@ export const data: LineAge = {
       lastName: 'Long',
       middleName: 'Kolin',
       age: 137,
-      sex: Sex.Female,
+      sex: Sex.FEMALE,
       lifeEvent: null,
       familyId: null,
     },
@@ -154,15 +155,11 @@ export const data: LineAge = {
       lastName: 'James',
       middleName: 'Han',
       age: 88,
-      sex: Sex.Female,
+      sex: Sex.FEMALE,
       lifeEvent: null,
       familyId: 3,
     }],
   }, ],
-
-
-
-
   personList: [{
     // first family
     // father
@@ -171,7 +168,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 54,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
@@ -187,7 +184,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Kan',
     age: 45,
-    sex: Sex.Female,
+    sex: Sex.FEMALE,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
@@ -203,7 +200,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Tomson',
     age: 23,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: [
       {
         date: new Date('1998-05-12'),
@@ -219,7 +216,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Tomson',
     age: 29,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: [
       {
         date: new Date('1992-03-09'),
@@ -236,7 +233,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Kolin',
     age: 92,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -246,7 +243,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Han',
     age: 88,
-    sex: Sex.Female,
+    sex: Sex.FEMALE,
     lifeEvent: null,
     familyId: 3,
   }, {
@@ -256,7 +253,7 @@ export const data: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 58,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: null,
     familyId: 2,
   }, {
@@ -267,7 +264,7 @@ export const data: LineAge = {
     lastName: 'Long',
     middleName: 'Kan',
     age: 142,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -277,7 +274,7 @@ export const data: LineAge = {
     lastName: 'Long',
     middleName: 'Kolin',
     age: 137,
-    sex: Sex.Female,
+    sex: Sex.FEMALE,
     lifeEvent: null,
     familyId: null,
   }, ],
@@ -295,7 +292,7 @@ export const testData: LineAge = {
       lastName: 'James',
       middleName: 'Nickson',
       age: 54,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
@@ -311,7 +308,7 @@ export const testData: LineAge = {
       lastName: 'James',
       middleName: 'Kan',
       age: 45,
-      sex: Sex.Female,
+      sex: Sex.FEMALE,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
@@ -328,7 +325,7 @@ export const testData: LineAge = {
       lastName: 'James',
       middleName: 'Tomson',
       age: 23,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
@@ -344,7 +341,7 @@ export const testData: LineAge = {
       lastName: 'James',
       middleName: 'Tomson',
       age: 29,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
@@ -363,7 +360,7 @@ export const testData: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 54,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
@@ -378,10 +375,32 @@ export const testData: LineAge = {
     lastName: 'James',
     middleName: 'Nickson',
     age: 54,
-    sex: Sex.Male,
+    sex: Sex.MALE,
     lifeEvent: null,
     familyId: 2,
   } ],
+}
+
+export const testPerson: Person = {
+              id: 1,
+              firstName: 'John',
+              lastName: 'James',
+              middleName: 'Nickson',
+              age: 54,
+              sex: Sex.MALE,
+              lifeEvent: [
+                {
+                  date: new Date('1989-03-12'),
+                  type: Events.wedding,
+                  description: 'Married',
+                },
+              ],
+              familyId: 2,
+}
+
+export const testFamily = {
+  father: 6,
+  mother: 5,
 }
 
 export const GENEALOGY_STORAGE_KEY = 'Genealogy/LineAge';

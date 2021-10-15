@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  url: `http://scw000112219:8081/api/genealogy`,
 };
 
 /*

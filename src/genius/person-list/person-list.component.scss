@@ -15,6 +15,21 @@
     font-size: 21px;
   }
 
+  .list_action {
+    margin-bottom: 21px;
+    .action-add {
+      border:none;
+      border-radius: 50%;
+      padding: 12px 19px;
+      font-size: 21px;
+      text-align: left;
+      background-color: #90ee906e;
+      box-shadow: 0 2px 6px lightgrey;
+      cursor: pointer;
+      transition: 300ms;
+    }
+  }
+
   .item-person {
     margin-bottom: 15px;
     border-radius: 3px;
