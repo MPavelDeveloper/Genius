@@ -45,8 +45,8 @@ export class PersonFormComponent {
   }
 
   getPersons() {
-    this.DataProvider.getPersons().subscribe(persons => {
-        this.persons = persons
+    this.DataProvider.getPersons().subscribe(httpResponseGetPersons => {
+      this.persons = httpResponseGetPersons;
         if (this.personType === FormType.FATHER) {
           this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => person.sex === Sex.MALE))
         } else if (this.personType === FormType.MOTHER) {
@@ -61,18 +61,14 @@ export class PersonFormComponent {
         }
 
         if (this.selectPersonId) {
-          this.DataProvider.findPerson(Number(this.selectPersonId)).subscribe(res => this.person = res,
-            (err) => {
-              if (err.error.status >= 400) {
-                console.error(new Error(`Error status: ${err.error.status}\n Error message: ${err.error.message}\n Error path: ${err.error.path}\n`));
-              }
+          this.DataProvider.findPerson(Number(this.selectPersonId)).subscribe(httpResponseTargetPerson => this.person = httpResponseTargetPerson,
+            (errorHttpResponseGetPersons) => {
+              console.error(`Error status: ${errorHttpResponseGetPersons.error.status}\n Error message: ${errorHttpResponseGetPersons.error.message}\n Error path: ${errorHttpResponseGetPersons.error.path}\n`);
             })
         }
       },
-      (err) => {
-        if (err.error.status >= 400) {
-          console.log(new Error(`Error status ${err.error.status}`))
-        }
+      (errorHttpResponseGetPersons) => {
+        console.error(`Error status: ${errorHttpResponseGetPersons.error.status}\n Error message: ${errorHttpResponseGetPersons.error.message}\n Error path: ${errorHttpResponseGetPersons.error.path}\n`);
       })
   }
 

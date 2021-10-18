@@ -13,7 +13,7 @@
 //     lastName: 'James',
 //     middleName: 'Nickson',
 //     age: 54,
-//     sex: Sex.Male,
+//     sex: Sex.MALE,
 //     lifeEvent: null,
 //     familyId: 2,
 //   };
@@ -25,7 +25,7 @@
 //       lastName: 'James',
 //       middleName: 'Nickson',
 //       age: 54,
-//       sex: Sex.Male,
+//       sex: Sex.MALE,
 //       lifeEvent: [
 //         {
 //           date: new Date('1989-03-12'),
@@ -41,7 +41,7 @@
 //       lastName: 'James',
 //       middleName: 'Kan',
 //       age: 45,
-//       sex: Sex.Female,
+//       sex: Sex.FEMALE,
 //       lifeEvent: [
 //         {
 //           date: new Date('1989-03-12'),
@@ -58,7 +58,7 @@
 //       lastName: 'James',
 //       middleName: 'Tomson',
 //       age: 23,
-//       sex: Sex.Male,
+//       sex: Sex.MALE,
 //       lifeEvent: [
 //         {
 //           date: new Date('1998-05-12'),
@@ -74,7 +74,7 @@
 //       lastName: 'James',
 //       middleName: 'Tomson',
 //       age: 29,
-//       sex: Sex.Male,
+//       sex: Sex.MALE,
 //       lifeEvent: [
 //         {
 //           date: new Date('1992-03-09'),
@@ -93,6 +93,7 @@
 //     service = TestBed.inject(LocalStorageDataProvider);
 //     localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
 //   });
+//
 //   afterEach(() => {
 //     localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
 //   })
