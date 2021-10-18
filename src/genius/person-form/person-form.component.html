@@ -35,7 +35,6 @@
       <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
     </div>
   </form>
-
   <form *ngSwitchCase = "personFormTemplateVersion.PERSON_EDITOR" class="form-wrap" id="person_form" >
     <div class="wrap">
       <span class="btn-close" (click)="close()">X</span>
@@ -64,8 +63,6 @@
       </div>
     </div>
   </form>
-
-
 </ng-container>
 
 

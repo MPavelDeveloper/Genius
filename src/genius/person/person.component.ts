@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Person} from "../../model/person";
+import {Person} from '../../model/person';
 
 
 @Component({

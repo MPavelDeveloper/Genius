@@ -1,7 +1,7 @@
-import {Component, ViewChild} from "@angular/core";
-import {PersonFormTemplateVersion} from "../person-form/person-form.component";
-import {Person} from "../../model/person";
-import {DataProvider} from "../services/data-provider";
+import {Component} from '@angular/core';
+import {PersonFormTemplateVersion} from '../person-form/person-form.component';
+import {Person} from '../../model/person';
+import {DataProvider} from '../services/data-provider';
 
 @Component({
   selector: 'app-person-editor',
@@ -30,30 +30,46 @@ export class PersonEditorComponent {
   addPerson(person: Person): void {
     if (this.isPersonValid(person)) {
       this.dataProvider.addNewPerson(person)
-      this.personDialogVisible = false;
-      this.reloadPersons = true;
-      setTimeout(() => this.reloadPersons = false, 0)
+        .subscribe(responseHttpAddNewPerson => {
+            this.personDialogVisible = false;
+            this.reloadPersons = true;
+            setTimeout(() => this.reloadPersons = false, 0)
+          },
+          (errorHttpResponseAddNewPerson) => {
+            console.error(`Error status: ${errorHttpResponseAddNewPerson.error.status}\n Error message: ${errorHttpResponseAddNewPerson.error.message}\n Error path: ${errorHttpResponseAddNewPerson.error.path}\n`);
+          });
     } else {
       this.personDialogVisible = false;
     }
   }
 
   changePerson(person: Person): void {
-    this.dataProvider.changePerson(person);
-    this.personDialogVisible = false;
-    this.reloadPersons = true;
-    setTimeout(() => this.reloadPersons = false, 0)
+    this.dataProvider.changePerson(person)
+      .subscribe(responseHttpChangeFamily => {
+          this.personDialogVisible = false;
+          this.reloadPersons = true;
+          setTimeout(() => this.reloadPersons = false, 120)
+      },
+        (errorHttpResponseChangePerson) => {
+          console.error(`Error status: ${errorHttpResponseChangePerson.error.status}\n Error message: ${errorHttpResponseChangePerson.error.message}\n Error path: ${errorHttpResponseChangePerson.error.path}\n`);
+        });
   }
 
   deletePerson(person: Person): void {
     this.dataProvider.deletePerson(person.id)
-    this.personDialogVisible = false;
-    this.reloadPersons = true;
-    setTimeout(() => this.reloadPersons = false, 0)
+    .subscribe(responseDeleteFamily => {
+      console.log(responseDeleteFamily)
+      this.personDialogVisible = false;
+      this.reloadPersons = true;
+      setTimeout(() => this.reloadPersons = false, 0)
+      },
+      (errorHttpResponseDeletePerson) => {
+        console.error(`Error status: ${errorHttpResponseDeletePerson.error.status}\n Error message: ${errorHttpResponseDeletePerson.error.message}\n Error path: ${errorHttpResponseDeletePerson.error.path}\n`);
+      });
   }
 
   isPersonValid(person: Person): Boolean {
-    if(person) {
+    if (person) {
       let values = Object.values(person);
       if (values.length > 0) {
         return true

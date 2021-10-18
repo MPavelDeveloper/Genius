@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'genius',
@@ -6,6 +6,4 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ['./genius.component.scss']
 })
 export class GeniusComponent {
-
 }
-

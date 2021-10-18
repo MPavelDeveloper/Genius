@@ -80,8 +80,11 @@
         </div>
       </div>
     </div>
-    <person-form *ngIf="personDialogVisible" [templateVersion]="personComponentTemplate.FAMILY_FORM" (addedPerson)="addPersonInFamily($event)" [person]="currentPerson" [personType]="currentPersonType"></person-form>
-
+    <person-form *ngIf="personDialogVisible"
+                 [templateVersion]="personComponentTemplate.FAMILY_FORM"
+                 [person]="currentPerson"
+                 [personType]="currentPersonType"
+                 (addedPerson)="addPersonInFamily($event)"></person-form>
   </div>
 </div>
 

@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {Person, Sex} from "../../model/person";
-import {FormType} from "../family-form/family-form.component";
-import {DataProvider} from "../services/data-provider";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Person, Sex} from '../../model/person';
+import {FormType} from '../family-form/family-form.component';
+import {DataProvider} from '../services/data-provider';
 
 export enum PersonFormTemplateVersion {
   FAMILY_FORM = 'familyForm',

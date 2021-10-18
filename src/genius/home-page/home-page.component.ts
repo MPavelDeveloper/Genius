@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
-import {Person} from "../../model/person";
-import {DataProvider} from "../services/data-provider";
+import {Component, OnInit} from '@angular/core';
+import {Person} from '../../model/person';
+import {DataProvider} from '../services/data-provider';
 
 @Component({
   selector: 'home-page',
