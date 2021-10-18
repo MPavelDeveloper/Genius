@@ -47,8 +47,8 @@ const GeniusRoutes: Routes = [
     RouterModule.forRoot(GeniusRoutes),
     HttpClientModule,
   ],
-  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  providers: [{provide: DataProvider, useClass: HttpDataProvider}],
+  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
+  // providers: [{provide: DataProvider, useClass: HttpDataProvider}],
   bootstrap: [GeniusComponent]
 })
 export class GeniusModule {

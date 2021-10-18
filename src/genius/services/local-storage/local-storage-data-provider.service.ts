@@ -19,7 +19,6 @@ export class LocalStorageDataProvider extends DataProvider {
     this.reloadData();
   }
 
-  // OK
   protected mapPerson(obj: any): Person {
     let person = new Person();
     person.id = obj.id;
@@ -42,91 +41,124 @@ export class LocalStorageDataProvider extends DataProvider {
     return family;
   }
 
-  // OK
   public addNewFamily(family: Family): Observable<Object> {
+    let observableAddNewFamily: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('new family added to Local Storage')
+    });
     family.id = this.getNewFamilyID();
     this.setPersonsId(family);
     this.families.push(family);
     this.putData();
-    return new Observable<Object>();
+
+    return observableAddNewFamily;
   }
 
-  // change
   public addNewPerson(person: Person): Observable<Object> {
+    let observableAddNewPerson: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('new person added to Local Storage')
+    });
     person.id = this.getNewPersonID();
     this.persons.push(person);
-    return new Observable<Object>();
+    this.putData();
+    return observableAddNewPerson;
   }
 
-
   public changeFamily(family: Family): Observable<Object> {
-    // checking content
+    let observableChangeFamily: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('an existing family was modified in local storage')
+    });
     if (this.checkFamilyPerson(family)) {
       this.setPersonsId(family);
       this.putData();
     } else {
       this.deleteFamily(family.id);
     }
-    return new Observable<Object>();
+    return observableChangeFamily;
   }
 
   public changePerson(person: Person): Observable<Object> {
-    return new Observable<Object>();
+    let observableChangePerson: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('an existing person was modified in local storage');
+    });
+    console.log(person)
+    this.getPersons()
+      .subscribe((persons: Array<Person>) => {
+        if (person.familyId) {
+          this.findFamily(person.familyId)
+            .subscribe(family => {
+              if (family.father.id === person.id) {
+                family.father = person;
+              } else if (family.mother.id === person.id) {
+                family.mother = person;
+              } else {
+                family.children.forEach((child: Person, index: number) => {
+                  if (child.id === person.id) {
+                    family.children[index] = person;
+                  }
+                })
+              }
+
+            })
+        }
+      })
+    return observableChangePerson;
   }
 
-
-  // OK
   public deleteFamily(familyId: number): Observable<Object> {
+    let observableDeleteFamily: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('an existing family has been removed from local storage');
+    })
     const delIndex = this.families.findIndex(family => family.id === familyId)
     if (delIndex != -1) {
       this.families.splice(delIndex, 1);
     }
     this.putData();
-    return new Observable<Object>();
+    return observableDeleteFamily;
   }
 
   public deletePerson(personId: number): Observable<Object> {
-    const delIndex = this.persons.findIndex(person => person.id === personId)
+    let observableDeletePerson: Observable<Object> = new Observable(subscriber => {
+      subscriber.next('an existing person has been removed from local storage');
+    })
+    const delIndex = this.persons.findIndex(person => person.id === personId);
     if (delIndex != -1) {
       this.persons.splice(delIndex, 1);
     }
     this.putData();
-    return new Observable<Object>();
+    return observableDeletePerson;
   }
-
 
   public findPerson(personId: number): Observable<Person> {
     if (personId) {
       return new Observable(subscriber => {
-        subscriber.next(this.persons.find((p: Person) => p.id === personId))
+        subscriber.next(this.persons.find((p: Person) => p.id === personId));
       });
     }
-    return undefined
+    return undefined;
   }
 
   public findFamily(familyId: number): Observable<Family> {
     if (familyId) {
       return new Observable<Family>(subscriber => {
-        subscriber.next(this.families.find((family: Family) => family.id === familyId))
+        subscriber.next(this.families.find((family: Family) => family.id === familyId));
       });
     }
-    return undefined
+    return undefined;
   }
 
   public getFamilies(): Observable<Array<Family>> {
     let families: Observable<Array<Family>> = new Observable(subscriber => {
-      subscriber.next(this.families)
+      subscriber.next(this.families);
     });
     return families;
   }
 
   public getPersons(): Observable<Array<Person>> {
     let persons: Observable<Array<Person>> = new Observable(subscriber => {
-      subscriber.next(this.persons)
+      subscriber.next(this.persons);
     });
     return persons;
   }
-
 
   private changeExistFamilyChildren(person: Person): void {
     const targetFamily = this.findFamily(person.familyId);
@@ -144,8 +176,8 @@ export class LocalStorageDataProvider extends DataProvider {
 
   private getNewPersonID(): number {
     const currentId = this.persons.reduce((previusId: number, item: Person) => {
-      if (previusId < item.id) return item.id
-      return previusId
+      if (previusId < item.id) return item.id;
+      return previusId;
     }, 0);
 
     return currentId + 1;
@@ -153,8 +185,8 @@ export class LocalStorageDataProvider extends DataProvider {
 
   private getNewFamilyID(): number {
     const currentId = this.families.reduce((previusId: number, item: Family) => {
-      if (previusId < item.id) return item.id
-      return previusId
+      if (previusId < item.id) return item.id;
+      return previusId;
     }, 0);
 
     return currentId + 1;
@@ -188,7 +220,7 @@ export class LocalStorageDataProvider extends DataProvider {
   private checkFamilyPerson(family: Family): Boolean {
     return (family.father) ? true :
       (family.mother) ? true :
-        (family.children && family.children.length > 0) ? true : false
+        (family.children && family.children.length > 0) ? true : false;
   }
 
   private putData(): void {
