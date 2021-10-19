@@ -84,12 +84,12 @@ export class FamilyFormComponent {
 
   public changeParent(personType: FormType): void {
     if (personType === FormType.FATHER) {
-      this.currentPerson = this.family.father
+      this.currentPerson = this.family.husband
       this.currentPersonType = personType;
       this.personDialogVisible = true;
       this.currentPerson.sex = Sex.MALE;
     } else if (personType === FormType.MOTHER) {
-      this.currentPerson = this.family.mother
+      this.currentPerson = this.family.wife
       this.currentPersonType = personType;
       this.personDialogVisible = true;
       this.currentPerson.sex = Sex.FEMALE;
@@ -105,10 +105,10 @@ export class FamilyFormComponent {
 
   public deleteParent(personType: FormType): void {
     if (personType === FormType.FATHER) {
-      this.family.father = null;
+      this.family.husband = null;
       this.personDialogVisible = false;
     } else if (personType === FormType.MOTHER) {
-      this.family.mother = null;
+      this.family.wife = null;
       this.personDialogVisible = false;
     }
     this.getPersonsList();
@@ -155,15 +155,15 @@ export class FamilyFormComponent {
   }
 
   private getFamilyPersons(family: Family): Array<Person> {
-    let persons: Array<Person> = [];
-    if (family.father) {
-      persons.push(family.father)
+    const persons: Array<Person> = [];
+    if (family.husband) {
+      persons.push(family.husband);
     }
-    if (family.mother) {
-      persons.push(family.mother)
+    if (family.wife) {
+      persons.push(family.wife);
     }
     if (family.children && family.children.length > 0) {
-      family.children.forEach(child => persons.push(child));
+      persons.push(...family.children);
     }
     return persons;
   }
@@ -172,8 +172,8 @@ export class FamilyFormComponent {
     if (this.getCompleteChildrenAmount() > 0) {
       return true;
     }
-    if (family.father) return true;
-    if (family.mother) return true;
+    if (family.husband) return true;
+    if (family.wife) return true;
     console.log('check false');
     return false;
   }
@@ -185,9 +185,9 @@ export class FamilyFormComponent {
 
     if (person && Object.keys(person).length > 0) {
       if (this.currentPersonType === FormType.FATHER) {
-        this.family.father = person;
+        this.family.husband = person;
       } else if (this.currentPersonType === FormType.MOTHER) {
-        this.family.mother = person;
+        this.family.wife = person;
       }
     }
 

@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Family } from '../../../model/family';
-import { Person, Sex } from '../../../model/person';
+import { Person } from '../../../model/person';
 import { DataProvider } from '../data-provider';
 import { FamilyDTO, PersonDTO } from "../dto/dtOs";
 
@@ -58,10 +58,32 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public findFamily(familyId: number): Observable<Family> {
-    return this.http.get<FamilyDTO>(`${environment.url}/persons/${familyId}`, this.httpOptionsGet)
-    .pipe(
-      map(httpResponse => this.mapDtoToFamily(httpResponse))
-    )
+    return new Observable<Family>(subscriber => {
+
+      this.http.get<FamilyDTO>(`${environment.url}/families/${familyId}`, this.httpOptionsGet)
+      .subscribe(dto => {
+        const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId))
+
+        zip(personCalls).subscribe(persons => {
+          const family = new Family();
+          family.id = dto.id;
+          family.note = dto.note;
+
+          if (dto.husband) {
+            family.husband = persons.find(person => person.id == dto.husband);
+            this.removePerson(persons, family.husband);
+          }
+          if (dto.wife) {
+            family.wife = persons.find(person => person.id == dto.wife);
+            this.removePerson(persons, family.wife);
+          }
+          if (persons.length > 0) {
+            family.children.push(...persons);
+          }
+          subscriber.next(family);
+        });
+      });
+    });
   }
 
   public findPerson(personId: number): Observable<Person> {
@@ -72,10 +94,16 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public getFamilies(): Observable<Array<Family>> {
-    return this.http.get<Array<FamilyDTO>>(`${environment.url}/families`, this.httpOptionsGet)
-    .pipe(
-      map(httpResponse => httpResponse.map(obj => this.mapDtoToFamily(obj)))
-    );
+    return new Observable<Array<Family>>(subscriber => {
+
+      this.getPersons().subscribe(persons => {
+        this.http.get<Array<FamilyDTO>>(`${environment.url}/families`, this.httpOptionsGet)
+        .subscribe(families => {
+          const result: Array<Family> = families.map(family => this.mapDtoToFamily(family, persons));
+          subscriber.next(result);
+        });
+      });
+    });
   }
 
   public getPersons(): Observable<Array<Person>> {
@@ -85,20 +113,31 @@ export class HttpDataProvider extends DataProvider {
     );
   }
 
-  // private mapFamilyToDto(family: Family): FamilyDTO {
-  private mapFamilyToDto(family: Family) {
-    // let changeFamily = new FamilyDTO();
-    let changeFamily:any = {husband: null, mother:null, children: []};
-    if (family.father) {
-      changeFamily.husband = family.father.id;
+  private mapDtoToFamily(dto: FamilyDTO, persons: Array<Person>): Family {
+    let family = new Family();
+    family.id = dto.id;
+    family.note = dto.note;
+
+    family.wife = persons.find(person => dto.wife === person.id)
+    family.husband = persons.find(person => dto.husband === person.id)
+
+    if (dto.children && dto.children.length > 0) {
+      dto.children
+      .map((childId: number) => persons.find(person => person.id === childId))
+      .filter(person => !!person)
+      .forEach(child => family.children.push(child));
     }
-    if (family.mother) {
-      changeFamily.wife = family.mother.id;
-    }
-    if (family.children && family.children.length > 0) {
-      changeFamily.children = family.children.map(child => child.id)
-    }
-    return changeFamily;
+    return family;
+  }
+
+  private mapFamilyToDto(family: Family): FamilyDTO {
+    return {
+      id: family.id,
+      husband: family.husband?.id,
+      wife: family.wife?.id,
+      children: family.children?.map(child => child.id),
+      note: family.note
+    };
   }
 
   private mapPersonToDto(person: Person): PersonDTO {
@@ -118,37 +157,6 @@ export class HttpDataProvider extends DataProvider {
     };
   }
 
-  private mapDtoToFamily(dto: FamilyDTO): Family {
-    const family = new Family();
-    family.id = dto.id;
-    family.note = dto.note;
-
-    if (dto.wife) {
-      this.http.get<PersonDTO>(`${environment.url}/persons/${dto.wife}`, this.httpOptionsGet).subscribe(
-        person => {
-          family.mother = this.mapDtoToPerson(person);
-        }
-      );
-    }
-    if (dto.husband) {
-      this.http.get<PersonDTO>(`${environment.url}/persons/${dto.husband}`, this.httpOptionsGet).subscribe(
-        person => {
-          family.father = this.mapDtoToPerson(person);
-        }
-      );
-    }
-    if (dto.children && dto.children.length > 0) {
-      dto.children.forEach((childId: number) => {
-        this.http.get<PersonDTO>(`${environment.url}/persons/${childId}`, this.httpOptionsGet).subscribe(
-          person => {
-            family.children.push(this.mapDtoToPerson(person));
-          }
-        );
-      })
-    }
-    return family;
-  }
-
   private mapDtoToPerson(dto: PersonDTO): Person {
     let person = new Person();
     person.id = dto.id;
@@ -160,6 +168,25 @@ export class HttpDataProvider extends DataProvider {
     person.familyId = dto.parentFamilyId;
     return person;
   }
+
+  private getFamilyPersonIds(family: FamilyDTO): Array<number> {
+    const ids: Array<number> = [];
+    if (family.wife) {
+      ids.push(family.wife);
+    }
+    if (family.husband) {
+      ids.push(family.husband);
+    }
+    if (family.children) {
+      ids.push(...family.children);
+    }
+    return ids;
+  }
+
+  private removePerson(persons: Person[], person: Person) {
+    let index = persons.indexOf(person);
+    if (index > -1) {
+      persons.splice(index, 1);
+    }
+  }
 }
-
-

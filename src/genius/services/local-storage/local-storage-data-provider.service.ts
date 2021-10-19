@@ -35,8 +35,8 @@ export class LocalStorageDataProvider extends DataProvider {
   protected mapFamily(obj: any): Family {
     let family = new Family();
     family.id = obj.id;
-    family.father = obj.father;
-    family.mother = obj.mother;
+    family.husband = obj.father;
+    family.wife = obj.mother;
     family.children = obj.children;
     return family;
   }
@@ -85,10 +85,10 @@ export class LocalStorageDataProvider extends DataProvider {
 
     if (person.familyId) {
       this.findFamily(person.familyId).subscribe(family => {
-        if (family.father.id === person.id) {
-          family.father = person;
-        } else if (family.mother.id === person.id) {
-          family.mother = person;
+        if (family.husband.id === person.id) {
+          family.husband = person;
+        } else if (family.wife.id === person.id) {
+          family.wife = person;
         } else {
           family.children.forEach((child: Person, index: number) => {
             if (child.id === person.id) {
@@ -194,11 +194,11 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   private setPersonsId(family: Family): void {
-    if (family.father && !family.father.id) {
-      this.addNewPerson(family.father);
+    if (family.husband && !family.husband.id) {
+      this.addNewPerson(family.husband);
     }
-    if (family.mother && !family.mother.id) {
-      this.addNewPerson(family.mother);
+    if (family.wife && !family.wife.id) {
+      this.addNewPerson(family.wife);
     }
     if (family.children) {
       family.children.forEach(child => {
@@ -211,8 +211,8 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   private checkFamilyPerson(family: Family): Boolean {
-    return (family.father) ? true :
-      (family.mother) ? true :
+    return (family.husband) ? true :
+      (family.wife) ? true :
         (family.children && family.children.length > 0) ? true : false;
   }
 

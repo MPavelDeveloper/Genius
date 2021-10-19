@@ -7,7 +7,7 @@ export const data: LineAge = {
   familyList: [{
     id: 1,
     note: undefined,
-    father: {
+    husband: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
@@ -27,7 +27,7 @@ export const data: LineAge = {
       ],
       familyId: 2,
     },
-    mother: {
+    wife: {
       id: 2,
       firstName: 'Lola',
       lastName: 'James',
@@ -91,7 +91,7 @@ export const data: LineAge = {
   }, {
     id: 2,
     note: undefined,
-    father: {
+    husband: {
       id: 5,
       firstName: 'Nick',
       lastName: 'James',
@@ -105,7 +105,7 @@ export const data: LineAge = {
       lifeEvent: null,
       familyId: null,
     },
-    mother: {
+    wife: {
       // mother
       id: 6,
       firstName: 'Julia',
@@ -159,7 +159,7 @@ export const data: LineAge = {
   }, {
     id: 3,
     note: undefined,
-    father: {
+    husband: {
       // third family
       // father
       id: 8,
@@ -175,7 +175,7 @@ export const data: LineAge = {
       lifeEvent: null,
       familyId: null,
     },
-    mother: {
+    wife: {
       // mother
       id: 9,
       firstName: 'Jessica',
@@ -367,7 +367,7 @@ export const testData: LineAge = {
   familyList: [{
     id: 1,
     note: undefined,
-    father: {
+    husband: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
@@ -387,7 +387,7 @@ export const testData: LineAge = {
       ],
       familyId: 2,
     },
-    mother: {
+    wife: {
       id: 2,
       firstName: 'Lola',
       lastName: 'James',

@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {LocalStorageDataProvider} from './local-storage-data-provider.service';
-import {json, GENEALOGY_STORAGE_KEY, testData} from "../../../json";
-import {Person, Sex} from "../../../model/person";
-import {Family} from "../../../model/family";
-import {EventType} from "../../../model/life-event";
+import { TestBed } from '@angular/core/testing';
+import { GENEALOGY_STORAGE_KEY, json, testData } from "../../../json";
+import { Family } from "../../../model/family";
+import { EventType } from "../../../model/life-event";
+import { Person, Sex } from "../../../model/person";
+import { LocalStorageDataProvider } from './local-storage-data-provider.service';
 
 
 describe('LocalStorageDataProvider', () => {
@@ -25,7 +25,7 @@ describe('LocalStorageDataProvider', () => {
   let family: Family = {
     id: 1,
     note: undefined,
-    father: {
+    husband: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
@@ -45,7 +45,7 @@ describe('LocalStorageDataProvider', () => {
       ],
       familyId: 2,
     },
-    mother: {
+    wife: {
       id: 3,
       firstName: 'Lola',
       lastName: 'James',
