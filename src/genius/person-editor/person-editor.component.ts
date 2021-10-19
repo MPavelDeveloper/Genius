@@ -30,7 +30,7 @@ export class PersonEditorComponent {
   addPerson(person: Person): void {
     if (this.isPersonValid(person)) {
       this.dataProvider.addNewPerson(person)
-        .subscribe(() => {
+        .subscribe(responseHttpAddNewPerson => {
             this.personDialogVisible = false;
             this.reloadPersons = true;
             setTimeout(() => this.reloadPersons = false, 0)

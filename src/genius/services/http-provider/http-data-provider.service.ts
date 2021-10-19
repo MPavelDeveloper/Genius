@@ -85,14 +85,20 @@ export class HttpDataProvider extends DataProvider {
     );
   }
 
-  private mapFamilyToDto(family: Family): FamilyDTO {
-    return {
-      id: family.id,
-      husband: family.father?.id,
-      wife: family.mother?.id,
-      children: family.children?.map(child => child.id),
-      note: family.note
-    };
+  // private mapFamilyToDto(family: Family): FamilyDTO {
+  private mapFamilyToDto(family: Family) {
+    // let changeFamily = new FamilyDTO();
+    let changeFamily:any = {husband: null, mother:null, children: []};
+    if (family.father) {
+      changeFamily.husband = family.father.id;
+    }
+    if (family.mother) {
+      changeFamily.wife = family.mother.id;
+    }
+    if (family.children && family.children.length > 0) {
+      changeFamily.children = family.children.map(child => child.id)
+    }
+    return changeFamily;
   }
 
   private mapPersonToDto(person: Person): PersonDTO {
@@ -150,11 +156,8 @@ export class HttpDataProvider extends DataProvider {
     person.middleName = dto.name?.middle;
     person.lastName = dto.name?.last;
     // @ts-ignore
-    person.sex = (dto.gender) ? Sex[dto.gender.toLowerCase()] : null;
-    person.familyId = dto.familyId;
-    person.note = dto.note;
-    person.occupation = dto.occupation;
-    person.place = dto.place;
+    person.sex = (dto.gender) ? dto.gender.toLowerCase() : null;
+    person.familyId = dto.parentFamilyId;
     return person;
   }
 }

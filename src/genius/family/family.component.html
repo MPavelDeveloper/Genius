@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="family-children">
-    <ng-container *ngFor="let child of family.children">
+    <ng-container *ngFor="let child of family?.children">
       <person [person]="child" [templateVersion]="'shortestTemplate'"></person>
     </ng-container>
   </div>

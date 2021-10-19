@@ -33,6 +33,7 @@ export class PersonListComponent implements OnInit, OnChanges {
 
   private loadPersons(): void {
     this.dataProvider.getPersons().subscribe( persons => {
+      console.log(persons)
         this.persons = persons;
       },
       errorResponse => {

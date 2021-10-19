@@ -18,7 +18,7 @@
       <div class="person-valid" [hidden]="firstName.valid || !firstName.touched">This field is required. </div>
 
       <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)] = "person.lastName" name="lastName">
-      <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" name="middleName" [(ngModel)] = "person.middleName" name="middleName">
+      <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" [(ngModel)] = "person.middleName" name="middleName">
 
       <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" required tabindex="4" [(ngModel)] = "person.age" name="age" min="1">
       <div class="person-valid" [hidden]="age.valid || !age.touched">This field is required. </div>

@@ -1,9 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-import { GENEALOGY_STORAGE_KEY, json, testData } from "../../../json";
-import { Family } from "../../../model/family";
-import { EventType } from "../../../model/life-event";
-import { Person, Sex } from "../../../model/person";
-import { LocalStorageDataProvider } from './local-storage-data-provider.service';
+import {TestBed} from '@angular/core/testing';
+import {LocalStorageDataProvider} from './local-storage-data-provider.service';
+import {json, GENEALOGY_STORAGE_KEY, testData} from "../../../json";
+import {Person, Sex} from "../../../model/person";
+import {Family} from "../../../model/family";
+import {EventType} from "../../../model/life-event";
+
 
 describe('LocalStorageDataProvider', () => {
   let service: LocalStorageDataProvider
@@ -119,62 +120,105 @@ describe('LocalStorageDataProvider', () => {
     localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
   })
 
+
   it('should create the data-provider service', () => {
     expect(service).toBeTruthy();
   });
 
+
+  // OK
   it('addNewFamily();', () => {
-    service.addNewFamily(family);
+    let newFamily: Family = {
+      father:{
+        firstName: 'TestF',
+        sex: Sex.MALE,
+        age:27,
+      }
+    }
+    service.addNewFamily(newFamily).subscribe(null);
+    service.getFamilies().subscribe(families => {
+      expect(families.includes(newFamily)).toBeTrue();
+    })
   });
-
   it('addNewPerson();', () => {
-    service.addNewPerson(person);
+    let newPerson: Person = {
+      firstName: 'John',
+      sex: Sex.MALE,
+      age: 27,
+    }
+    service.addNewPerson(newPerson).subscribe(null);
+    service.getPersons().subscribe(persons => {
+      expect(persons.includes(newPerson)).toBeTrue();
+    })
   });
 
+
+  // OK
   it('changeFamily();', () => {
+    let testFamily = service.families[0]
+    person.id = 3;
+    testFamily.father = person;
+    service.changeFamily(testFamily).subscribe(null);
+    service.reloadData();
+    service.findFamily(testFamily.id).subscribe(targetFamily => {
+      expect(targetFamily.father.id).toBe(testFamily.father.id)
+    })
   });
-  it('changePerson();', () => {
+  it('changePerson(); should be the same', () => {
+    let testPerson = service.persons[0];
+    testPerson.firstName = 'Test';
+    service.changePerson(testPerson).subscribe(null);
+    service.reloadData();
+    service.findPerson(testPerson.id).subscribe(targetPerson => {
+      expect(targetPerson?.firstName).toBe(testPerson.firstName);
+    })
+
   });
 
+  // OK
   it('deleteFamily();', () => {
+    service.deleteFamily(family.id);
+    expect(service.families.includes(family)).toBeFalse();
   });
-  it('deletePerson();', () => {
+  it('deletePerson(); ', () => {
+    service.deletePerson(person.id);
+    expect(service.persons.includes(person)).toBeFalse();
+
   });
 
+  // OK
   it('findFamily(); correct data; should be family', () => {
     localStorage.clear()
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
-
     service.reloadData()
-
-    let res = service.findFamily(family.id)
-    expect(res).toBeDefined()
-    expect(res instanceof Family).toBeTrue()
+    service.findFamily(family.id).subscribe(targetFamily => {
+      expect(targetFamily).toBeDefined()
+      expect(targetFamily instanceof Family).toBeTrue()
+    })
   });
   it('findPerson(); correct data; should be person', () => {
+    const testPersonId = 2;
     localStorage.clear()
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
-
     service.reloadData()
-
-    let res = service.findPerson(person.id)
-    console.log(res)
-    expect(res).toBeDefined()
-    expect(res instanceof Person).toBeTrue()
+    service.findPerson(testPersonId).subscribe(targetPerson => {
+      expect(targetPerson.id).toBe(testPersonId)
+    })
   });
 
+  // OK
   it('getFamilies(); correct data; should be arr of families', () => {
     localStorage.clear()
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
-
     service.reloadData()
-
-    let res = service.getFamilies()
-    expect(res).toBeDefined()
-    expect(Array.isArray(res)).toBeTrue()
-    res.forEach(family => {
-      expect(family instanceof Family).toBeTrue()
+    service.getFamilies().subscribe(families => {
+      expect(families).toBeDefined()
+      expect(Array.isArray(families)).toBeTrue()
+      families.forEach(family => {
+        expect(family instanceof Family).toBeTrue()
+      })
     })
+
   });
   it('getPersons(); correct data; should be arr of persons', () => {
     localStorage.clear()
@@ -182,30 +226,25 @@ describe('LocalStorageDataProvider', () => {
 
     service.reloadData()
 
-    let res = service.getPersons()
-    expect(res).toBeDefined()
-    expect(Array.isArray(res)).toBeTrue()
-    res.forEach(person => {
-      expect(person instanceof Person).toBeTrue()
+    service.getPersons().subscribe(persons => {
+      expect(persons).toBeDefined()
+      expect(Array.isArray(persons)).toBeTrue()
+      persons.forEach(person => {
+        expect(person instanceof Person).toBeTrue()
+      })
     })
   });
 
-  it('setPersonsId();', () => {
-  });
-  it('checkFamilyPerson();', () => {
-  });
-
-
-  // negative test's
+  // OK
   it('findPerson(); fake data; should be undefined', () => {
-    let res = service.findPerson(300)
-    expect(res).toBeUndefined()
-  });
+    service.findPerson(300).subscribe(person => {
+      expect(person).toBeUndefined()
+    })
 
+  });
   it('findFamily(); fake data; should be undefined', () => {
-    let res = service.findFamily(300);
-    expect(res).toBeUndefined();
+    service.findFamily(300).subscribe(family => {
+      expect(family).toBeUndefined();
+    })
   });
-
-
 })

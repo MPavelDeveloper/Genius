@@ -67,12 +67,14 @@ export class LocalStorageDataProvider extends DataProvider {
     let observableChangeFamily: Observable<Object> = new Observable(subscriber => {
       subscriber.next('an existing family was modified in local storage')
     });
+
     if (this.checkFamilyPerson(family)) {
       this.setPersonsId(family);
       this.putData();
     } else {
       this.deleteFamily(family.id);
     }
+    this.reloadData();
     return observableChangeFamily;
   }
 
@@ -80,26 +82,25 @@ export class LocalStorageDataProvider extends DataProvider {
     let observableChangePerson: Observable<Object> = new Observable(subscriber => {
       subscriber.next('an existing person was modified in local storage');
     });
-    this.getPersons()
-      .subscribe(() => {
-        if (person.familyId) {
-          this.findFamily(person.familyId)
-            .subscribe(family => {
-              if (family.father.id === person.id) {
-                family.father = person;
-              } else if (family.mother.id === person.id) {
-                family.mother = person;
-              } else {
-                family.children.forEach((child: Person, index: number) => {
-                  if (child.id === person.id) {
-                    family.children[index] = person;
-                  }
-                })
-              }
 
-            })
+    if (person.familyId) {
+      this.findFamily(person.familyId).subscribe(family => {
+        if (family.father.id === person.id) {
+          family.father = person;
+        } else if (family.mother.id === person.id) {
+          family.mother = person;
+        } else {
+          family.children.forEach((child: Person, index: number) => {
+            if (child.id === person.id) {
+              family.children[index] = person;
+            }
+          })
         }
+
       })
+    }
+
+    this.putData();
     return observableChangePerson;
   }
 
@@ -196,17 +197,9 @@ export class LocalStorageDataProvider extends DataProvider {
     if (family.father && !family.father.id) {
       this.addNewPerson(family.father);
     }
-    // add in target family as child
-    // if (family.father && family.father.familyId) {
-    //   this.changeExistFamilyChildren(family.father)
-    // }
     if (family.mother && !family.mother.id) {
       this.addNewPerson(family.mother);
     }
-    // add in target family as child
-    // if (family.mother && family.mother.familyId) {
-    //   this.changeExistFamilyChildren(family.mother)
-    // }
     if (family.children) {
       family.children.forEach(child => {
         child.familyId = family.id;

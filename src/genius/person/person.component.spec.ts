@@ -7,11 +7,6 @@ describe('PersonComponent', () => {
   let component: PersonComponent;
   let fixture: ComponentFixture<PersonComponent>;
 
-  function createComponent() {
-    fixture = TestBed.createComponent(PersonComponent);
-    component = fixture.componentInstance;
-  }
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
