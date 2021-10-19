@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Person} from '../../model/person';
-import {DataProvider} from '../services/data-provider';
+import { Component, OnInit } from '@angular/core';
+import { Person } from '../../model/person';
+import { DataProvider } from '../services/data-provider';
 
 @Component({
   selector: 'home-page',
@@ -17,13 +17,11 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataProvider.getPersons().subscribe((res: Array<Person>) => {
-        this.persons = res;
+    this.dataProvider.getPersons().subscribe(persons => {
+        this.persons = persons;
       },
-      (err) => {
-        if (err.error.status >= 400) {
-          console.error(new Error(`Error status: ${err.error.status}\n Error message: ${err.error.message}\n Error path: ${err.error.path}\n`));
-        }
+      errorResponse => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       })
   }
 }

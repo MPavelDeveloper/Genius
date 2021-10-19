@@ -1,6 +1,6 @@
-import {Component, OnInit, EventEmitter, Output, Input, OnChanges, OnDestroy} from '@angular/core';
-import {Person, Sex} from '../../model/person';
-import {DataProvider} from '../services/data-provider';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Person, Sex } from '../../model/person';
+import { DataProvider } from '../services/data-provider';
 
 @Component({
   selector: 'person-list',
@@ -21,30 +21,30 @@ export class PersonListComponent implements OnInit, OnChanges {
     this.personSex = Sex;
   }
 
-  ngOnInit(): void {
-    this.getPersonsList()
+  public ngOnInit(): void {
+    this.loadPersons()
   }
 
-  ngOnChanges() {
+  public ngOnChanges() {
     if (this.reloadData) {
-      this.getPersonsList()
+      this.loadPersons()
     }
   }
 
-  getPersonsList(): void {
-    this.dataProvider.getPersons().subscribe( HttpResponseAddPerson => {
-        this.persons = HttpResponseAddPerson;
+  private loadPersons(): void {
+    this.dataProvider.getPersons().subscribe( persons => {
+        this.persons = persons;
       },
-      (errorHttpResponseAddPerson) => {
-        console.error(`Error status: ${errorHttpResponseAddPerson.error.status}\n Error message: ${errorHttpResponseAddPerson.error.message}\n Error path: ${errorHttpResponseAddPerson.error.path}\n`);
+      errorResponse => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       });
   }
 
-  returnPerson(person: Person) {
+  public returnPerson(person: Person) {
     return this.returnedPerson.emit(person);
   }
 
-  createPerson() {
+  public createPerson() {
     this.createNewPerson.emit(new Person());
   }
 }

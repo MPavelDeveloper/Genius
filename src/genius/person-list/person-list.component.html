@@ -1,17 +1,16 @@
-
-  <div class="select-persons-list">
+<div class="select-persons-list">
     <div class="list_title">
-      Persons
+        Persons
     </div>
     <div class="list_action">
-      <button class="action-add" (click)="createPerson()">+</button>
+        <button class="action-add" (click)="createPerson()">+</button>
     </div>
-    <ng-container *ngFor = "let person of persons">
-        <div class="item-person" *ngIf = "person.sex === personSex.MALE" style="background: lightblue">
-          <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
+    <ng-container *ngFor="let person of persons">
+        <div class="item-person" *ngIf="person.sex === personSex.MALE" style="background: lightblue">
+            <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
         </div>
-        <div class="item-person" *ngIf = "person.sex === personSex.FEMALE" style="background: pink">
-          <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
+        <div class="item-person" *ngIf="person.sex === personSex.FEMALE" style="background: pink">
+            <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'" (returnedPerson)="returnPerson($event)"></person>
         </div>
     </ng-container>
-  </div>
+</div>

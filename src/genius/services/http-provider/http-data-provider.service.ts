@@ -1,140 +1,52 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Family} from '../../../model/family';
-import {Person} from '../../../model/person';
-import {Observable} from 'rxjs';
-import {DataProvider} from '../data-provider';
-import {map} from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
-import {FamilyDTO, PersonDTO} from "../dto/dtOs";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { Family } from '../../../model/family';
+import { Person, Sex } from '../../../model/person';
+import { DataProvider } from '../data-provider';
+import { FamilyDTO, PersonDTO } from "../dto/dtOs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpDataProvider extends DataProvider {
 
-  public persons: Array<Person>;
+  private readonly httpOptionsSend = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  private readonly httpOptionsGet = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) {
     super();
-    this.getPersons().subscribe(httpResponseGetPersons => this.persons = httpResponseGetPersons,
-      (errorHttpResponseGetPersons) => {
-        console.error(`Error status: ${errorHttpResponseGetPersons.error?.status}\n Error message: ${errorHttpResponseGetPersons.error?.message}\n Error path: ${errorHttpResponseGetPersons.error?.path}\n`);
-      });
-  }
-
-  protected mapPerson(obj: any): Person {
-    let person = new Person();
-    person.id = obj.id;
-    person.firstName = (obj.name) ? obj.name.first : null;
-    person.middleName = (obj.name) ? obj.name.middle : null;
-    person.lastName = (obj.name) ? obj.name.last : null;
-    person.sex = (obj.gender) ? obj.gender.toLowerCase() : null;
-    person.familyId = obj.parentFamilyId;
-
-    return person;
-  }
-
-  protected mapFamily(obj: any): Family {
-    let family = new Family();
-    family.children = [];
-    family.id = obj.id;
-    family.mother = this.persons.find(person => obj.wife === person.id)
-    family.father = this.persons.find(person => obj.husband === person.id)
-    if (obj.children && obj.children.length > 0) {
-      obj.children.forEach((childId: number) => {
-        let target = this.persons.find(person => person.id === childId)
-        if (target) family.children.push(target)
-      })
-    }
-    return family;
   }
 
   public addNewFamily(family: Family): Observable<Object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      })
-    };
-
-    let newFamily: FamilyDTO = new FamilyDTO();
-    if (family.father) {
-      newFamily.husband = family.father.id
-    }
-    if (family.mother) {
-      newFamily.wife = family.mother.id
-    }
-    if (family.children) {
-      newFamily.children = family.children.map(child => child.id);
-    }
-
-    if (family.children && family.children.length > 0) {
-      family.children.forEach(child => newFamily.children.push(child.id))
-    }
-
-    return this.http.post(`${environment.url}/families`, newFamily, httpOptions)
+    const newFamily: FamilyDTO = this.mapFamilyToDto(family);
+    return this.http.post(`${environment.url}/families`, newFamily, this.httpOptionsSend)
   }
 
   public addNewPerson(person: Person): Observable<Object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      })
-    };
-    let newPerson = new PersonDTO();
-    newPerson.name = {};
-    if (person.firstName) {
-      newPerson.name.first = person.firstName;
-    }
-    if (person.lastName) {
-      newPerson.name.last = person.lastName;
-    }
-    if (person.middleName) {
-      newPerson.name.middle = person.middleName;
-    }
-    if (person.sex) {
-      newPerson.gender = person.sex.toUpperCase();
-    }
-
-    return this.http.post(`${environment.url}/persons`, newPerson, httpOptions)
+    const dto = this.mapPersonToDto(person);
+    return this.http.post(`${environment.url}/persons`, dto, this.httpOptionsSend)
   }
 
   public changeFamily(family: Family): Observable<Object> {
-    let changeFamily = new FamilyDTO()
-    if (family.father) {
-      changeFamily.husband = family.father.id;
-    }
-    if (family.mother) {
-      changeFamily.wife = family.mother.id;
-    }
-    if (family.children && family.children.length > 0) {
-      changeFamily.children = family.children.map(child => child.id)
-    } else {
-      changeFamily.children = [];
-    }
-
-     return this.http.put(`${environment.url}/families/${family.id}`, changeFamily)
+    const changeFamily = this.mapFamilyToDto(family);
+    return this.http.put(`${environment.url}/families/${family.id}`, changeFamily, this.httpOptionsSend)
   }
 
-  public changePerson(person: Person): Observable<Object>{
-    let changePerson = new PersonDTO();
-    changePerson.name = {first: null,}
-    if (person.firstName) {
-      changePerson.name.first = person.firstName;
-    }
-    if (person.lastName) {
-      changePerson.name.last = person.lastName;
-    }
-    if (person.middleName) {
-      changePerson.name.middle = person.middleName;
-    }
-    if (person.sex) {
-      changePerson.gender = person.sex.toUpperCase();
-    }
-
-     return this.http.put(`${environment.url}/persons/${person.id}`, changePerson)
+  public changePerson(person: Person): Observable<Object> {
+    let changePerson = this.mapPersonToDto(person);
+    return this.http.put(`${environment.url}/persons/${person.id}`, changePerson, this.httpOptionsSend)
   }
 
   public deleteFamily(familyId: number): Observable<Object> {
@@ -146,33 +58,104 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public findFamily(familyId: number): Observable<Family> {
-    return this.http.get<Object>(`${environment.url}/persons/${familyId}`)
-      .pipe(
-        map(httpResponse => this.mapFamily(httpResponse))
-      )
+    return this.http.get<FamilyDTO>(`${environment.url}/persons/${familyId}`, this.httpOptionsGet)
+    .pipe(
+      map(httpResponse => this.mapDtoToFamily(httpResponse))
+    )
   }
 
   public findPerson(personId: number): Observable<Person> {
-    return this.http.get<Object>(`${environment.url}/persons/${personId}`)
-      .pipe(
-        map(httpResponse => this.mapPerson(httpResponse))
-      )
+    return this.http.get<PersonDTO>(`${environment.url}/persons/${personId}`, this.httpOptionsGet)
+    .pipe(
+      map(httpResponse => this.mapDtoToPerson(httpResponse))
+    )
   }
 
   public getFamilies(): Observable<Array<Family>> {
-    return this.http.get<Array<Object>>(`${environment.url}/families`)
-      .pipe(
-        map(httpResponse => httpResponse.map(obj => this.mapFamily(obj)))
-      );
+    return this.http.get<Array<FamilyDTO>>(`${environment.url}/families`, this.httpOptionsGet)
+    .pipe(
+      map(httpResponse => httpResponse.map(obj => this.mapDtoToFamily(obj)))
+    );
   }
 
   public getPersons(): Observable<Array<Person>> {
-    return this.http.get<Array<Object>>(`${environment.url}/persons`)
-      .pipe(
-        map(httpResponse => httpResponse.map(obj => this.mapPerson(obj)))
-      );
+    return this.http.get<Array<PersonDTO>>(`${environment.url}/persons`, this.httpOptionsGet)
+    .pipe(
+      map(httpResponse => httpResponse.map(obj => this.mapDtoToPerson(obj)))
+    );
   }
 
+  private mapFamilyToDto(family: Family): FamilyDTO {
+    let changeFamily = new FamilyDTO()
+    if (family.father) {
+      changeFamily.husband = family.father.id;
+    }
+    if (family.mother) {
+      changeFamily.wife = family.mother.id;
+    }
+    if (family.children && family.children.length > 0) {
+      changeFamily.children = family.children.map(child => child.id)
+    }
+    return changeFamily;
+  }
+
+  private mapPersonToDto(person: Person): PersonDTO {
+    const dto = new PersonDTO();
+    if (person.firstName) {
+      dto.name.first = person.firstName;
+    }
+    if (person.lastName) {
+      dto.name.last = person.lastName;
+    }
+    if (person.middleName) {
+      dto.name.middle = person.middleName;
+    }
+    if (person.sex) {
+      dto.gender = person.sex.toUpperCase();
+    }
+    return dto;
+  }
+
+  private mapDtoToFamily(obj: FamilyDTO): Family {
+    const family = new Family();
+    family.id = obj.id;
+    if (obj.wife) {
+      this.http.get<PersonDTO>(`${environment.url}/persons/${obj.wife}`, this.httpOptionsGet).subscribe(
+        person => {
+          family.mother = this.mapDtoToPerson(person);
+        }
+      );
+    }
+    if (obj.husband) {
+      this.http.get<PersonDTO>(`${environment.url}/persons/${obj.husband}`, this.httpOptionsGet).subscribe(
+        person => {
+          family.father = this.mapDtoToPerson(person);
+        }
+      );
+    }
+    if (obj.children && obj.children.length > 0) {
+      obj.children.forEach((childId: number) => {
+        this.http.get<PersonDTO>(`${environment.url}/persons/${childId}`, this.httpOptionsGet).subscribe(
+          person => {
+            family.children.push(this.mapDtoToPerson(person));
+          }
+        );
+      })
+    }
+    return family;
+  }
+
+  private mapDtoToPerson(obj: PersonDTO): Person {
+    let person = new Person();
+    person.id = obj.id;
+    person.firstName = obj.name?.first;
+    person.middleName = obj.name?.middle;
+    person.lastName = obj.name?.last;
+    // @ts-ignore
+    person.sex = (obj.gender) ? Sex[obj.gender.toLowerCase()] : null;
+    person.familyId = obj.parentFamilyId;
+    return person;
+  }
 }
 
 

@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Family} from '../../../model/family';
-import {Person} from '../../../model/person';
-import {LineAge} from '../../../model/line-age';
-import {GENEALOGY_STORAGE_KEY} from '../../../json';
-import {Observable} from 'rxjs';
-import {DataProvider} from '../data-provider';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { GENEALOGY_STORAGE_KEY } from '../../../json';
+import { Family } from '../../../model/family';
+import { LineAge } from '../../../model/line-age';
+import { Person } from '../../../model/person';
+import { DataProvider } from '../data-provider';
 
 
 @Injectable({
@@ -146,25 +146,26 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   public getFamilies(): Observable<Array<Family>> {
-    let families: Observable<Array<Family>> = new Observable(subscriber => {
-      subscriber.next(this.families);
+      return new Observable(subscriber => {
+        subscriber.next(this.families);
     });
-    return families;
   }
 
   public getPersons(): Observable<Array<Person>> {
-    let persons: Observable<Array<Person>> = new Observable(subscriber => {
-      subscriber.next(this.persons);
+      return new Observable(subscriber => {
+        subscriber.next(this.persons);
     });
-    return persons;
   }
 
   private changeExistFamilyChildren(person: Person): void {
     const targetFamily = this.findFamily(person.familyId);
     targetFamily.subscribe((family: Family) => {
       if (family) {
-        (family.children === null) ? family.children = [person] :
-          family.children.push(person);
+          if (family.children === null) {
+              family.children = [person];
+          } else {
+              family.children.push(person);
+          }
       }
     })
     // if (targetFamily) {
