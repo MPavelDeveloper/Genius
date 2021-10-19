@@ -29,22 +29,30 @@ export class PersonFormComponent {
   public selectPersonId: string;
   public PersonSex: Array<string>;
 
-  constructor(private DataProvider: DataProvider) {
+  constructor(private dataProvider: DataProvider) {
     this.personFormTemplateVersion = PersonFormTemplateVersion;
     this.PersonSex = Object.values(Sex);
     this.selectPersonId = null;
   }
 
-  close() {
-    this.addedPerson.emit(null)
+  public close(): void {
+    this.addedPerson.emit(null);
   }
 
-  addPerson() {
+  public addPerson(): void {
     this.addedPerson.emit(this.person);
   }
 
-  getPersons() {
-    this.DataProvider.getPersons().subscribe(persons => {
+  public editPerson(): void {
+    this.editedPerson.emit(this.person);
+  }
+
+  public deletePerson(): void {
+    this.deletedPerson.emit(this.person);
+  }
+
+  public loadPersons(): void {
+    this.dataProvider.getPersons().subscribe(persons => {
         if (this.personType === FormType.FATHER) {
           this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.MALE))
         } else if (this.personType === FormType.MOTHER) {
@@ -54,7 +62,9 @@ export class PersonFormComponent {
         }
 
         if (this.selectPersonId) {
-          this.DataProvider.findPerson(Number(this.selectPersonId)).subscribe(targetPerson => this.person = targetPerson,
+          this.dataProvider.findPerson(Number(this.selectPersonId)).subscribe(person => {
+              this.person = person;
+            },
             (errorResponse) => {
               console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
             })
@@ -67,19 +77,11 @@ export class PersonFormComponent {
       })
   }
 
-  searchPersonsByCondition(persons: Array<Person>, condition: Function): Array<Person> {
+  private searchPersonsByCondition(persons: Array<Person>, condition: Function): Array<Person> {
     const result = persons.filter(person => condition(person));
     if (result.length > 0) {
       return result;
     }
     return undefined;
-  }
-
-  editPerson() {
-    this.editedPerson.emit(this.person)
-  }
-
-  deletePerson() {
-    this.deletedPerson.emit(this.person)
   }
 }

@@ -24,31 +24,28 @@ export enum SelectListType {
 })
 export class FamilyFormComponent {
 
-  public personComponentTemplate;
-  public selectListType;
+  public personComponentTemplate = PersonFormTemplateVersion;
+  public personType = FormType;
+  public selectListType = SelectListType;
+  public sex = Sex;
+
   public currentSelectType: SelectListType;
   public interfaceSelectPersonHint: Boolean;
   public persons: Array<Person>;
-  public personType;
   public currentPerson: Person;
   public currentPersonType: FormType;
   public families: Array<Family>;
   public family: Family;
-  public sex;
   public currentChildIndex: number;
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
-    this.personComponentTemplate = PersonFormTemplateVersion;
-    this.selectListType = SelectListType;
     this.currentSelectType = SelectListType.NONE;
     this.interfaceSelectPersonHint = false;
-    this.personType = FormType;
     this.currentPerson = new Person();
     this.currentPersonType = null;
     this.family = new Family();
     this.currentChildIndex = null;
-    this.sex = Sex;
   }
 
   private createNewParent(personType: FormType): void {

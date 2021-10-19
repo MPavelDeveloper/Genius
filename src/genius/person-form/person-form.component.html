@@ -4,7 +4,7 @@
       <span class="btn-close" (click)="close()">X</span>
       <div class="person-title">Create {{personType}}</div>
 
-      <select class="person-familyList" [(ngModel)]="selectPersonId" (click)="getPersons()" name="selectedPerson">
+      <select class="person-familyList" [(ngModel)]="selectPersonId" (click)="loadPersons()" name="selectedPerson">
         <option class="familyList-option" value="null">Select {{personType}}</option>
         <ng-container *ngFor="let person of persons">
           <option class="familyList-option" value="{{person?.id}}">
