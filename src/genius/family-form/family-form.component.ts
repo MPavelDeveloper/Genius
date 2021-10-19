@@ -3,6 +3,7 @@ import {Family} from '../../model/family';
 import {Person, Sex} from '../../model/person';
 import {PersonFormTemplateVersion} from '../person-form/person-form.component';
 import {DataProvider} from '../services/data-provider';
+import {forkJoin, Observable} from 'rxjs';
 
 export enum FormType {
   FATHER = 'father',
@@ -127,56 +128,46 @@ export class FamilyFormComponent {
 
   saveFamily(): void {
     if (this.familyValid(this.family)) {
-      // create new or change exist person
-      let persons = this.scanFamily(this.family);
-      persons.forEach((person: Person) => {
-        if (person.id) {
-          this.dataProvider.changePerson(person)
-          .subscribe(httpResponseChangeFamily => this.getPersonsList(),
-            (errorHttpResponseChangeNewPersons) => {
-              console.error(`Error status: ${errorHttpResponseChangeNewPersons.error.status}\n Error message: ${errorHttpResponseChangeNewPersons.error.message}\n Error path: ${errorHttpResponseChangeNewPersons.error.path}\n`);
+      let saveTasks: Array<Observable<Object>> = this.getFamilyPersons(this.family)
+        .map(person => person.id ? this.dataProvider.changePerson(person) : this.dataProvider.addNewPerson(person))
+
+      forkJoin(saveTasks).subscribe(() => {
+        if (this.family.id) {
+          console.log(111)
+          this.dataProvider.changeFamily(this.family).subscribe(() => {
+              this.getPersonsList();
+              this.getFamilyList();
+              this.family = new Family();
+              this.family.children = [];
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
             });
         } else {
-          this.dataProvider.addNewPerson(person).subscribe(responseAddPerson => this.getPersonsList(),
-            (errorHttpResponseAddNewPersons) => {
-              console.error(`Error status: ${errorHttpResponseAddNewPersons.error.status}\n Error message: ${errorHttpResponseAddNewPersons.error.message}\n Error path: ${errorHttpResponseAddNewPersons.error.path}\n`);
+          this.dataProvider.addNewFamily(this.family).subscribe(() => {
+              this.getPersonsList();
+              this.getFamilyList();
+              this.family = new Family();
+              this.family.children = [];
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
             });
         }
       });
-      // create new or change exist family
-      if (this.family.id) {
-        this.dataProvider.changeFamily(this.family)
-        .subscribe(httpResponseChangePerson => this.getFamilyList(),
-          (errorHttpResponseChangePerson) => {
-            console.error(`Error status: ${errorHttpResponseChangePerson.error.status}\n Error message: ${errorHttpResponseChangePerson.error.message}\n Error path: ${errorHttpResponseChangePerson.error.path}\n`);
-          });
-      } else {
-        this.dataProvider.addNewFamily(this.family)
-          .subscribe(httpResponseAddNewFamily => this.getFamilyList(),
-            (errorHttpResponseAddNewFamily) => {
-              console.error(`Error status: ${errorHttpResponseAddNewFamily.error.status}\n Error message: ${errorHttpResponseAddNewFamily.error.message}\n Error path: ${errorHttpResponseAddNewFamily.error.path}\n`);
-            });
-      }
-
-      // clean family
-      this.family = new Family();
-      this.family.children = [];
-
     }
-    this.family.children = [];
   }
 
-  scanFamily(family: Family): Array<Person> {
+  getFamilyPersons(family: Family): Array<Person> {
     let persons: Array<Person> = [];
-    let values = Object.values(family);
-    for (let value of values) {
-      if (Array.isArray(value)) {
-        if (value.length > 0) {
-          value.forEach(person => persons.push(person));
-        }
-        continue;
-      }
-      if (value instanceof Person) persons.push(value);
+    if (family.father) {
+      persons.push(family.father)
+    }
+    if (family.mother) {
+      persons.push(family.mother)
+    }
+    if (family.children && family.children.length > 0) {
+      family.children.forEach(child => persons.push(child));
     }
 
     return persons;
@@ -258,16 +249,16 @@ export class FamilyFormComponent {
   }
 
   getFamilyList(): void {
-    this.dataProvider.getFamilies().subscribe(httpResponseGetFamilies => this.families = httpResponseGetFamilies,
-      (errorHttpResponseGetFamilies) => {
-        console.error(`Error status: ${errorHttpResponseGetFamilies.error?.status}\n Error message: ${errorHttpResponseGetFamilies.error?.message}\n Error path: ${errorHttpResponseGetFamilies.error?.path}\n`);
+    this.dataProvider.getFamilies().subscribe(families => this.families = families,
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error?.status}\n Error message: ${errorResponse.error?.message}\n Error path: ${errorResponse.error?.path}\n`);
       });
   }
 
   getPersonsList(): void {
-    this.dataProvider.getPersons().subscribe(httpResponseGetPersons => this.persons = httpResponseGetPersons,
-      (errorHttpResponseGetPersons) => {
-        console.error(`Error status: ${errorHttpResponseGetPersons.error.status}\n Error message: ${errorHttpResponseGetPersons.error.message}\n Error path: ${errorHttpResponseGetPersons.error.path}\n`);
+    this.dataProvider.getPersons().subscribe(persons => this.persons = persons,
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       });
   }
 

@@ -80,9 +80,8 @@ export class LocalStorageDataProvider extends DataProvider {
     let observableChangePerson: Observable<Object> = new Observable(subscriber => {
       subscriber.next('an existing person was modified in local storage');
     });
-    console.log(person)
     this.getPersons()
-      .subscribe((persons: Array<Person>) => {
+      .subscribe(() => {
         if (person.familyId) {
           this.findFamily(person.familyId)
             .subscribe(family => {

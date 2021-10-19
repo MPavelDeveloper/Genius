@@ -3,7 +3,7 @@
                (createNewPerson)="createPerson($event)"
                (returnedPerson)="setCurrentPerson($event)"></person-list>
   <person-form *ngIf="personDialogVisible" [templateVersion]="personComponentTemplate.PERSON_EDITOR"
-               [hidden]="!currentPerson" [person]="currentPerson"
+               [person]="currentPerson"
                [createNewPerson]="createNewPerson"
                (addedPerson)="addPerson($event)"
                (editedPerson)="changePerson($event)"

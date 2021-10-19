@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Family} from '../../../model/family';
-import {Person, Sex} from '../../../model/person';
+import {Person} from '../../../model/person';
 import {Observable} from 'rxjs';
 import {DataProvider} from '../data-provider';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
+import {FamilyDTO, PersonDTO} from "../dto/dtOs";
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,8 @@ export class HttpDataProvider extends DataProvider {
   public addNewFamily(family: Family): Observable<Object> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       })
     };
 
@@ -77,7 +79,8 @@ export class HttpDataProvider extends DataProvider {
   public addNewPerson(person: Person): Observable<Object> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       })
     };
     let newPerson = new PersonDTO();
@@ -172,17 +175,4 @@ export class HttpDataProvider extends DataProvider {
 
 }
 
-class FamilyDTO {
-  husband: number;
-  wife: number;
-  children: Array<number>;
-}
 
-class PersonDTO {
-  name: {
-    first?: string,
-    middle?: string,
-    last?: string,
-  };
-  gender: string;
-}

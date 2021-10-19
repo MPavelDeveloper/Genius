@@ -45,30 +45,27 @@ export class PersonFormComponent {
   }
 
   getPersons() {
-    this.DataProvider.getPersons().subscribe(httpResponseGetPersons => {
-      this.persons = httpResponseGetPersons;
+    this.DataProvider.getPersons().subscribe(persons => {
+      this.persons = persons;
         if (this.personType === FormType.FATHER) {
           this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => person.sex === Sex.MALE))
         } else if (this.personType === FormType.MOTHER) {
           this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => person.sex === Sex.FEMALE))
         } else if (this.personType === FormType.CHILD) {
-          this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => true))
-        }
-
-        if (this.selectPersonId === 'null') {
-          this.person = new Person();
-          return
+          this.personsList = this.persons;
         }
 
         if (this.selectPersonId) {
-          this.DataProvider.findPerson(Number(this.selectPersonId)).subscribe(httpResponseTargetPerson => this.person = httpResponseTargetPerson,
-            (errorHttpResponseGetPersons) => {
-              console.error(`Error status: ${errorHttpResponseGetPersons.error.status}\n Error message: ${errorHttpResponseGetPersons.error.message}\n Error path: ${errorHttpResponseGetPersons.error.path}\n`);
+          this.DataProvider.findPerson(Number(this.selectPersonId)).subscribe(targetPerson => this.person = targetPerson,
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
             })
+        } else {
+          this.person = new Person();
         }
       },
-      (errorHttpResponseGetPersons) => {
-        console.error(`Error status: ${errorHttpResponseGetPersons.error.status}\n Error message: ${errorHttpResponseGetPersons.error.message}\n Error path: ${errorHttpResponseGetPersons.error.path}\n`);
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       })
   }
 

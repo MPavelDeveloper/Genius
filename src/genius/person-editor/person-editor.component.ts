@@ -30,13 +30,13 @@ export class PersonEditorComponent {
   addPerson(person: Person): void {
     if (this.isPersonValid(person)) {
       this.dataProvider.addNewPerson(person)
-        .subscribe(responseHttpAddNewPerson => {
+        .subscribe(() => {
             this.personDialogVisible = false;
             this.reloadPersons = true;
             setTimeout(() => this.reloadPersons = false, 0)
           },
-          (errorHttpResponseAddNewPerson) => {
-            console.error(`Error status: ${errorHttpResponseAddNewPerson.error.status}\n Error message: ${errorHttpResponseAddNewPerson.error.message}\n Error path: ${errorHttpResponseAddNewPerson.error.path}\n`);
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });
     } else {
       this.personDialogVisible = false;
@@ -45,27 +45,26 @@ export class PersonEditorComponent {
 
   changePerson(person: Person): void {
     this.dataProvider.changePerson(person)
-      .subscribe(responseHttpChangeFamily => {
+      .subscribe(() => {
           this.personDialogVisible = false;
           this.reloadPersons = true;
           setTimeout(() => this.reloadPersons = false, 120)
-      },
-        (errorHttpResponseChangePerson) => {
-          console.error(`Error status: ${errorHttpResponseChangePerson.error.status}\n Error message: ${errorHttpResponseChangePerson.error.message}\n Error path: ${errorHttpResponseChangePerson.error.path}\n`);
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
         });
   }
 
   deletePerson(person: Person): void {
     this.dataProvider.deletePerson(person.id)
-    .subscribe(responseDeleteFamily => {
-      console.log(responseDeleteFamily)
-      this.personDialogVisible = false;
-      this.reloadPersons = true;
-      setTimeout(() => this.reloadPersons = false, 0)
-      },
-      (errorHttpResponseDeletePerson) => {
-        console.error(`Error status: ${errorHttpResponseDeletePerson.error.status}\n Error message: ${errorHttpResponseDeletePerson.error.message}\n Error path: ${errorHttpResponseDeletePerson.error.path}\n`);
-      });
+      .subscribe(() => {
+          this.personDialogVisible = false;
+          this.reloadPersons = true;
+          setTimeout(() => this.reloadPersons = false, 0)
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
   }
 
   isPersonValid(person: Person): Boolean {

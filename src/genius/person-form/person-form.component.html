@@ -32,7 +32,7 @@
       </select>
       <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required.</div>
       <textarea class="person-event" rows="6" placeholder="Events"></textarea>
-      <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
+      <button class="person-create-btn" type="button"  [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Select</button>
     </div>
   </form>
   <form *ngSwitchCase = "personFormTemplateVersion.PERSON_EDITOR" class="form-wrap" id="person_form" >
@@ -57,9 +57,9 @@
       <div class="person-valid" [hidden]="sex.valid || !sex.touched">This field is required.</div>
       <textarea class="person-event" rows="6" placeholder="Events"></textarea>
       <div class="actions-wrap">
-        <button class="person-create-btn" type="button"  [hidden]="!createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
-        <button class="person-create-btn" type="button"  [hidden]="createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Edit</button>
-        <button class="person-create-btn" type="button"  [hidden]="createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
+        <button class="person-create-btn" type="button"  *ngIf="createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
+        <button class="person-create-btn" type="button"  *ngIf="!createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Edit</button>
+        <button class="person-create-btn" type="button"  *ngIf="!createNewPerson" [disabled] = '!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
       </div>
     </div>
   </form>
