@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { Family } from '../../../model/family';
-import { Person } from '../../../model/person';
-import { DataProvider } from '../data-provider';
-import { FamilyDTO, PersonDTO } from "../dto/dtOs";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, zip} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {environment} from '../../../environments/environment';
+import {Family} from '../../../model/family';
+import {Person} from '../../../model/person';
+import {DataProvider} from '../data-provider';
+import {FamilyDTO, PersonDTO} from "../dto/dtOs";
 
 @Injectable({
   providedIn: 'root'
@@ -70,12 +70,12 @@ export class HttpDataProvider extends DataProvider {
           family.note = dto.note;
 
           if (dto.husband) {
-            family.husband = persons.find(person => person.id == dto.husband);
-            this.removePerson(persons, family.husband);
+            family.husband = persons.find(person => person.id === dto.husband);
+            this.removeItem(persons, family.husband);
           }
           if (dto.wife) {
-            family.wife = persons.find(person => person.id == dto.wife);
-            this.removePerson(persons, family.wife);
+            family.wife = persons.find(person => person.id === dto.wife);
+            this.removeItem(persons, family.wife);
           }
           if (persons.length > 0) {
             family.children.push(...persons);
@@ -183,10 +183,10 @@ export class HttpDataProvider extends DataProvider {
     return ids;
   }
 
-  private removePerson(persons: Person[], person: Person) {
-    let index = persons.indexOf(person);
+  private removeItem(items: Array<any>, item: any) {
+    let index = items.indexOf(item);
     if (index > -1) {
-      persons.splice(index, 1);
+      items.splice(index, 1);
     }
   }
 }

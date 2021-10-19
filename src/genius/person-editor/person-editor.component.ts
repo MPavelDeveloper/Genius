@@ -30,7 +30,7 @@ export class PersonEditorComponent {
   addPerson(person: Person): void {
     if (this.isPersonValid(person)) {
       this.dataProvider.addNewPerson(person)
-        .subscribe(responseHttpAddNewPerson => {
+        .subscribe(() => {
             this.personDialogVisible = false;
             this.reloadPersons = true;
             setTimeout(() => this.reloadPersons = false, 0)
@@ -67,14 +67,14 @@ export class PersonEditorComponent {
         });
   }
 
-  isPersonValid(person: Person): Boolean {
+  isPersonValid(person: Person): boolean {
     if (person) {
       let values = Object.values(person);
       if (values.length > 0) {
-        return true
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   createPerson(person: Person): void {
@@ -82,8 +82,6 @@ export class PersonEditorComponent {
     this.createNewPerson = true;
     this.personDialogVisible = true;
   }
-
-
 }
 
 

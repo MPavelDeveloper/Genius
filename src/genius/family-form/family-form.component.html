@@ -5,83 +5,90 @@
         <div class="family-title">Create family</div>
         <div class="person-screen father">
           <div class="description" *ngIf="!family.husband">Father</div>
-          <div class="description" *ngIf = "family.husband">
+          <div class="description" *ngIf="family.husband">
             <person class="create-person" [person]="family.husband" [templateVersion]="'shortestTemplate'"></person>
           </div>
-          <div class="actions-wrap" >
-            <button class="action-btn" type="button" (click)="selectExistParent(personType.FATHER, selectListType.PERSONS);" *ngIf="!family.husband" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
-            <button class="action-btn change" type="button" (click)="changeParent(personType.FATHER)" *ngIf="family.husband">change</button>
-            <button class="action-btn delete" type="button" (click)="deleteParent(personType.FATHER)" *ngIf="family.husband">delete</button>
+          <div class="actions-wrap">
+            <button class="action-btn" (click)="selectExistParent(personType.FATHER, selectListType.PERSONS);" *ngIf="!family.husband" [ngClass]="{selectHint: interfaceSelectPersonHint}">
+              select
+            </button>
+            <button class="action-btn change" (click)="changeParent(personType.FATHER)" *ngIf="family.husband">change</button>
+            <button class="action-btn delete" (click)="deleteParent(personType.FATHER)" *ngIf="family.husband">delete</button>
           </div>
         </div>
 
         <div class="person-screen mother">
           <div class="description" *ngIf="!family.wife">Mother</div>
-          <div class="description" *ngIf = "family.wife">
+          <div class="description" *ngIf="family.wife">
             <person class="create-person" [person]="family.wife" [templateVersion]="'shortestTemplate'"></person>
           </div>
           <div class="actions-wrap">
-            <button class="action-btn" type="button" (click)="selectExistParent(personType.MOTHER, selectListType.PERSONS);" *ngIf="!family.wife" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
-            <button class="action-btn change" type="button" (click)="changeParent(personType.MOTHER)" *ngIf="family.wife">change</button>
-            <button class="action-btn delete" type="button" (click)="deleteParent(personType.MOTHER)" *ngIf="family.wife">delete</button>
+            <button class="action-btn" (click)="selectExistParent(personType.MOTHER, selectListType.PERSONS);" *ngIf="!family.wife" [ngClass]="{selectHint: interfaceSelectPersonHint}">
+              select
+            </button>
+            <button class="action-btn change" (click)="changeParent(personType.MOTHER)" *ngIf="family.wife">change</button>
+            <button class="action-btn delete" (click)="deleteParent(personType.MOTHER)" *ngIf="family.wife">delete</button>
           </div>
         </div>
 
         <div class="person-screen">
-          <div class="children-plus" >
-            <button class="btn-plus" type="button" (click)="addChildTemplate()" [disabled] = "isAddChildDisabled()">+</button>
+          <div class="children-plus">
+            <button class="btn-plus" (click)="addChildTemplate()" [disabled]="isAddChildDisabled()">+</button>
           </div>
-          <div class="child-container" *ngFor = 'let child of family.children; let index = index;'>
+          <div class="child-container" *ngFor='let child of family.children; let index = index;'>
             <div class="description" *ngIf="!checkChild(index)">Child</div>
-            <div class="description" *ngIf = "checkChild(index)">
-              <person class="create-person" [person]="child" [templateVersion]="'shortestTemplate'" ></person>
+            <div class="description" *ngIf="checkChild(index)">
+              <person class="create-person" [person]="child" [templateVersion]="'shortestTemplate'"></person>
             </div>
             <div class="actions-wrap">
-              <button class="action-btn" type="button" (click)="selectExistChild(index, selectListType.PERSONS)" *ngIf="!checkChild(index)" [ngClass] = "{selectHint: interfaceSelectPersonHint}">select</button>
-              <button class="action-btn delete" type="button" (click)="changeChild(index)" *ngIf="checkChild(index)">change</button>
-              <button class="action-btn change" type="button" (click)="deleteChild(index)" *ngIf="checkChild(index)">delete</button>
+              <button class="action-btn" (click)="selectExistChild(index, selectListType.PERSONS)" *ngIf="!checkChild(index)" [ngClass]="{selectHint: interfaceSelectPersonHint}">
+                select
+              </button>
+              <button class="action-btn delete" (click)="changeChild(index)" *ngIf="checkChild(index)">change</button>
+              <button class="action-btn change" (click)="deleteChild(index)" *ngIf="checkChild(index)">delete</button>
             </div>
           </div>
         </div>
         <div class="family-actions">
-          <button class="btn-add-family" type="button" (click)="saveFamily()">save Family</button>
-          <button class="btn-cancel" type="button" (click)="cleanForm()">cancel</button>
+          <button class="btn-add-family" (click)="saveFamily()">save Family</button>
+          <button class="btn-cancel" (click)="cleanForm()">cancel</button>
         </div>
       </div>
       <div class="select-list-wrap">
         <div class="select-list-actions">
           <div class="acrions-wrap">
-            <button class="action-open" (click)="setSelectListType(selectListType.PERSONS); getPersonsList()">Persons</button>
-            <button class="action-open" (click)="setSelectListType(selectListType.FAMILIES); getFamilyList()">Families</button>
+            <button class="action-open" (click)="setSelectListType(selectListType.PERSONS); loadPersons()">Persons</button>
+            <button class="action-open" (click)="setSelectListType(selectListType.FAMILIES); loadFamilies()">Families</button>
           </div>
           <button class="action-close" *ngIf='currentSelectType !== selectListType.NONE' (click)="setSelectListType(selectListType.NONE)">Close</button>
         </div>
-        <div class="select-persons-list" *ngIf ="currentSelectType === selectListType.PERSONS">
+
+        <div class="select-persons-list" *ngIf="currentSelectType === selectListType.PERSONS">
           <div class="list_title">
             Persons
           </div>
-          <ng-container *ngFor = 'let prs of persons'>
-            <div class="item-person" *ngIf="prs.sex === sex.MALE" style="background-color: lightblue">
-              <person class="person-short" [person]="prs" [templateVersion]="'shortTemplate'"  (returnedPerson)="setCurrentPerson($event)"></person>
-            </div>
-            <div class="item-person" *ngIf="prs.sex === sex.FEMALE" style="background-color: pink">
-              <person class="person-short" [person]="prs" [templateVersion]="'shortTemplate'"  (returnedPerson)="setCurrentPerson($event)"></person>
+          <ng-container *ngFor='let person of persons'>
+            <div class="item-person" [ngStyle]="{'background-color': person.sex === sex.FEMALE ? 'pink' : 'lightblue'}">
+              <person class="person-short" [person]="person" [templateVersion]="'shortTemplate'" (returnedPerson)="setCurrentPerson($event)"></person>
             </div>
           </ng-container>
         </div>
-        <div class="select-families-list" *ngIf ="currentSelectType === selectListType.FAMILIES">
+
+        <div class="select-families-list" *ngIf="currentSelectType === selectListType.FAMILIES">
           <div class="list_title">
             Families
           </div>
-          <family *ngFor = "let fml of families" [family]="fml" (returnedFamily)="setCurrentFamily($event)"></family>
+          <family *ngFor="let family of families" [family]="family" (returnedFamily)="setCurrentFamily($event)"></family>
         </div>
       </div>
     </div>
+
     <person-form *ngIf="personDialogVisible"
                  [templateVersion]="personComponentTemplate.FAMILY_FORM"
                  [person]="currentPerson"
                  [personType]="currentPersonType"
-                 (addedPerson)="addPersonInFamily($event)"></person-form>
+                 (addedPerson)="addPersonInFamily($event)">
+    </person-form>
   </div>
 </div>
 

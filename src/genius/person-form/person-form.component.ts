@@ -28,7 +28,6 @@ export class PersonFormComponent {
   public personFormTemplateVersion;
   public selectPersonId: string;
   public PersonSex: Array<string>;
-  public personsList: Array<Person>;
 
   constructor(private DataProvider: DataProvider) {
     this.personFormTemplateVersion = PersonFormTemplateVersion;
@@ -46,13 +45,12 @@ export class PersonFormComponent {
 
   getPersons() {
     this.DataProvider.getPersons().subscribe(persons => {
-      this.persons = persons;
         if (this.personType === FormType.FATHER) {
-          this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => person.sex === Sex.MALE))
+          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.MALE))
         } else if (this.personType === FormType.MOTHER) {
-          this.personsList = this.searchPersonsByCondition(this.persons, ((person: Person) => person.sex === Sex.FEMALE))
+          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.FEMALE))
         } else if (this.personType === FormType.CHILD) {
-          this.personsList = this.persons;
+          this.persons = persons;
         }
 
         if (this.selectPersonId) {

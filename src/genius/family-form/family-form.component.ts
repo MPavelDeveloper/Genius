@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
-import { Family } from '../../model/family';
-import { Person, Sex } from '../../model/person';
-import { PersonFormTemplateVersion } from '../person-form/person-form.component';
-import { DataProvider } from '../services/data-provider';
+import {Component} from '@angular/core';
+import {forkJoin, Observable} from 'rxjs';
+import {Family} from '../../model/family';
+import {Person, Sex} from '../../model/person';
+import {PersonFormTemplateVersion} from '../person-form/person-form.component';
+import {DataProvider} from '../services/data-provider';
 
 export enum FormType {
   FATHER = 'father',
@@ -71,7 +71,7 @@ export class FamilyFormComponent {
   public selectExistParent(personType: FormType, selectType: SelectListType) {
     this.setSelectListType(selectType);
     this.createNewParent(personType);
-    this.getPersonsList();
+    this.loadPersons();
   }
 
   public selectExistChild(index: number, selectType: SelectListType) {
@@ -79,7 +79,7 @@ export class FamilyFormComponent {
     this.currentChildIndex = index;
     this.personDialogVisible = true;
     this.currentPersonType = FormType.CHILD;
-    this.getPersonsList();
+    this.loadPersons();
   }
 
   public changeParent(personType: FormType): void {
@@ -111,8 +111,8 @@ export class FamilyFormComponent {
       this.family.wife = null;
       this.personDialogVisible = false;
     }
-    this.getPersonsList();
-    this.getFamilyList();
+    this.loadPersons();
+    this.loadFamilies();
   }
 
   public deleteChild(index: number): void {
@@ -134,7 +134,7 @@ export class FamilyFormComponent {
       forkJoin(saveTasks).subscribe(() => {
         if (this.family.id) {
           this.dataProvider.changeFamily(this.family).subscribe(() => {
-              this.getPersonsList();
+              this.loadPersons();
               this.family = new Family();
             },
             (errorResponse) => {
@@ -142,8 +142,8 @@ export class FamilyFormComponent {
             });
         } else {
           this.dataProvider.addNewFamily(this.family).subscribe(() => {
-              this.getPersonsList();
-              this.getFamilyList();
+              this.loadPersons();
+              this.loadFamilies();
               this.family = new Family();
             },
             (errorResponse) => {
@@ -219,7 +219,7 @@ export class FamilyFormComponent {
     return amount;
   }
 
-  public getFamilyList(): void {
+  public loadFamilies(): void {
     this.dataProvider.getFamilies().subscribe(families => {
         this.families = families;
       },
@@ -228,7 +228,7 @@ export class FamilyFormComponent {
       });
   }
 
-  public getPersonsList(): void {
+  public loadPersons(): void {
     this.dataProvider.getPersons().subscribe(persons => {
         this.persons = persons;
       },
