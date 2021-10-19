@@ -1,23 +1,27 @@
-import {LineAge} from "./model/line-age";
-import {Person, Sex} from "./model/person";
-import {Events} from "./model/life-event";
-import {Family} from "./model/family";
+import { EventType } from "./model/life-event";
+import { LineAge } from "./model/line-age";
+import { Person, Sex } from "./model/person";
 
 
 export const data: LineAge = {
   familyList: [{
     id: 1,
+    note: undefined,
     father: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
+      maidenName: undefined,
       age: 54,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -28,12 +32,16 @@ export const data: LineAge = {
       firstName: 'Lola',
       lastName: 'James',
       middleName: 'Kan',
+      maidenName: undefined,
       age: 45,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -45,12 +53,16 @@ export const data: LineAge = {
       firstName: 'John',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 23,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],
@@ -61,12 +73,16 @@ export const data: LineAge = {
       firstName: 'Sergey',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 29,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],
@@ -74,13 +90,18 @@ export const data: LineAge = {
     }],
   }, {
     id: 2,
+    note: undefined,
     father: {
       id: 5,
       firstName: 'Nick',
       lastName: 'James',
       middleName: 'Kolin',
+      maidenName: undefined,
       age: 92,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: null,
     },
@@ -90,8 +111,12 @@ export const data: LineAge = {
       firstName: 'Julia',
       lastName: 'James',
       middleName: 'Han',
+      maidenName: undefined,
       age: 88,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: 3,
     },
@@ -102,12 +127,16 @@ export const data: LineAge = {
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
+      maidenName: undefined,
       age: 54,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -118,13 +147,18 @@ export const data: LineAge = {
       firstName: 'Nolan',
       lastName: 'James',
       middleName: 'Nickson',
+      maidenName: undefined,
       age: 58,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: 2,
     }],
   }, {
     id: 3,
+    note: undefined,
     father: {
       // third family
       // father
@@ -132,8 +166,12 @@ export const data: LineAge = {
       firstName: 'Han',
       lastName: 'Long',
       middleName: 'Kan',
+      maidenName: undefined,
       age: 142,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: null,
     },
@@ -143,8 +181,12 @@ export const data: LineAge = {
       firstName: 'Jessica',
       lastName: 'Long',
       middleName: 'Kolin',
+      maidenName: undefined,
       age: 137,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: null,
     },
@@ -154,12 +196,16 @@ export const data: LineAge = {
       firstName: 'Julia',
       lastName: 'James',
       middleName: 'Han',
+      maidenName: undefined,
       age: 88,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: null,
       familyId: 3,
     }],
-  }, ],
+  },],
   personList: [{
     // first family
     // father
@@ -167,12 +213,16 @@ export const data: LineAge = {
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Nickson',
+    maidenName: undefined,
     age: 54,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: Events.wedding,
+        type: EventType.wedding,
         description: 'Married',
       },
     ],
@@ -183,12 +233,16 @@ export const data: LineAge = {
     firstName: 'Lola',
     lastName: 'James',
     middleName: 'Kan',
+    maidenName: undefined,
     age: 45,
     sex: Sex.FEMALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: Events.wedding,
+        type: EventType.wedding,
         description: 'Married',
       },
     ],
@@ -199,12 +253,16 @@ export const data: LineAge = {
     firstName: 'John',
     lastName: 'James',
     middleName: 'Tomson',
+    maidenName: undefined,
     age: 23,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: [
       {
         date: new Date('1998-05-12'),
-        type: Events.birthDay,
+        type: EventType.birthDay,
         description: 'Married',
       },
     ],
@@ -215,12 +273,16 @@ export const data: LineAge = {
     firstName: 'Sergey',
     lastName: 'James',
     middleName: 'Tomson',
+    maidenName: undefined,
     age: 29,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: [
       {
         date: new Date('1992-03-09'),
-        type: Events.birthDay,
+        type: EventType.birthDay,
         description: 'Married',
       },
     ],
@@ -232,8 +294,12 @@ export const data: LineAge = {
     firstName: 'Nick',
     lastName: 'James',
     middleName: 'Kolin',
+    maidenName: undefined,
     age: 92,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -242,8 +308,12 @@ export const data: LineAge = {
     firstName: 'Julia',
     lastName: 'James',
     middleName: 'Han',
+    maidenName: undefined,
     age: 88,
     sex: Sex.FEMALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: 3,
   }, {
@@ -252,8 +322,12 @@ export const data: LineAge = {
     firstName: 'Nolan',
     lastName: 'James',
     middleName: 'Nickson',
+    maidenName: undefined,
     age: 58,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: 2,
   }, {
@@ -263,8 +337,12 @@ export const data: LineAge = {
     firstName: 'Han',
     lastName: 'Long',
     middleName: 'Kan',
+    maidenName: undefined,
     age: 142,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: null,
   }, {
@@ -273,30 +351,37 @@ export const data: LineAge = {
     firstName: 'Jessica',
     lastName: 'Long',
     middleName: 'Kolin',
+    maidenName: undefined,
     age: 137,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     sex: Sex.FEMALE,
     lifeEvent: null,
     familyId: null,
-  }, ],
+  },],
 }
-
-
 
 
 export const testData: LineAge = {
   familyList: [{
     id: 1,
+    note: undefined,
     father: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
+      maidenName: undefined,
       age: 54,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -307,12 +392,16 @@ export const testData: LineAge = {
       firstName: 'Lola',
       lastName: 'James',
       middleName: 'Kan',
+      maidenName: undefined,
       age: 45,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -324,12 +413,16 @@ export const testData: LineAge = {
       firstName: 'John',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 23,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],
@@ -340,18 +433,22 @@ export const testData: LineAge = {
       firstName: 'Sergey',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 29,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],
       familyId: 1,
     }],
-  }, ],
+  },],
   personList: [{
     // first family
     // father
@@ -359,43 +456,55 @@ export const testData: LineAge = {
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Nickson',
+    maidenName: undefined,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     age: 54,
     sex: Sex.MALE,
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: Events.wedding,
+        type: EventType.wedding,
         description: 'Married',
       },
     ],
     familyId: 2,
-  },{
+  }, {
     id: 2,
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Nickson',
+    maidenName: undefined,
     age: 54,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: 2,
-  } ],
+  }],
 }
 
 export const testPerson: Person = {
-              id: 1,
-              firstName: 'John',
-              lastName: 'James',
-              middleName: 'Nickson',
-              age: 54,
-              sex: Sex.MALE,
-              lifeEvent: [
-                {
-                  date: new Date('1989-03-12'),
-                  type: Events.wedding,
-                  description: 'Married',
-                },
-              ],
-              familyId: 2,
+  id: 1,
+  firstName: 'John',
+  lastName: 'James',
+  middleName: 'Nickson',
+  maidenName: undefined,
+  age: 54,
+  sex: Sex.MALE,
+  place: undefined,
+  note: undefined,
+  occupation: undefined,
+  lifeEvent: [
+    {
+      date: new Date('1989-03-12'),
+      type: EventType.wedding,
+      description: 'Married',
+    },
+  ],
+  familyId: 2,
 }
 
 export const testFamily = {

@@ -30,8 +30,8 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public addNewFamily(family: Family): Observable<Object> {
-    const newFamily: FamilyDTO = this.mapFamilyToDto(family);
-    return this.http.post(`${environment.url}/families`, newFamily, this.httpOptionsSend)
+    const dto: FamilyDTO = this.mapFamilyToDto(family);
+    return this.http.post(`${environment.url}/families`, dto, this.httpOptionsSend)
   }
 
   public addNewPerson(person: Person): Observable<Object> {
@@ -40,13 +40,13 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public changeFamily(family: Family): Observable<Object> {
-    const changeFamily = this.mapFamilyToDto(family);
-    return this.http.put(`${environment.url}/families/${family.id}`, changeFamily, this.httpOptionsSend)
+    const dto = this.mapFamilyToDto(family);
+    return this.http.put(`${environment.url}/families/${family.id}`, dto, this.httpOptionsSend)
   }
 
   public changePerson(person: Person): Observable<Object> {
-    let changePerson = this.mapPersonToDto(person);
-    return this.http.put(`${environment.url}/persons/${person.id}`, changePerson, this.httpOptionsSend)
+    let dto = this.mapPersonToDto(person);
+    return this.http.put(`${environment.url}/persons/${person.id}`, dto, this.httpOptionsSend)
   }
 
   public deleteFamily(familyId: number): Observable<Object> {
@@ -86,55 +86,53 @@ export class HttpDataProvider extends DataProvider {
   }
 
   private mapFamilyToDto(family: Family): FamilyDTO {
-    let changeFamily = new FamilyDTO()
-    if (family.father) {
-      changeFamily.husband = family.father.id;
-    }
-    if (family.mother) {
-      changeFamily.wife = family.mother.id;
-    }
-    if (family.children && family.children.length > 0) {
-      changeFamily.children = family.children.map(child => child.id)
-    }
-    return changeFamily;
+    return {
+      id: family.id,
+      husband: family.father?.id,
+      wife: family.mother?.id,
+      children: family.children?.map(child => child.id),
+      note: family.note
+    };
   }
 
   private mapPersonToDto(person: Person): PersonDTO {
-    const dto = new PersonDTO();
-    if (person.firstName) {
-      dto.name.first = person.firstName;
-    }
-    if (person.lastName) {
-      dto.name.last = person.lastName;
-    }
-    if (person.middleName) {
-      dto.name.middle = person.middleName;
-    }
-    if (person.sex) {
-      dto.gender = person.sex.toUpperCase();
-    }
-    return dto;
+    return {
+      id: person.id,
+      name: {
+        first: person.firstName,
+        last: person.lastName,
+        middle: person.middleName,
+        maiden: person.maidenName
+      },
+      gender: person.sex.toUpperCase(),
+      place: person.place,
+      occupation: person.occupation,
+      note: person.note,
+      familyId: person.familyId
+    };
   }
 
-  private mapDtoToFamily(obj: FamilyDTO): Family {
+  private mapDtoToFamily(dto: FamilyDTO): Family {
     const family = new Family();
-    family.id = obj.id;
-    if (obj.wife) {
-      this.http.get<PersonDTO>(`${environment.url}/persons/${obj.wife}`, this.httpOptionsGet).subscribe(
+    family.id = dto.id;
+    family.note = dto.note;
+
+    if (dto.wife) {
+      this.http.get<PersonDTO>(`${environment.url}/persons/${dto.wife}`, this.httpOptionsGet).subscribe(
         person => {
           family.mother = this.mapDtoToPerson(person);
         }
       );
     }
-    if (obj.husband) {
-      this.http.get<PersonDTO>(`${environment.url}/persons/${obj.husband}`, this.httpOptionsGet).subscribe(
+    if (dto.husband) {
+      this.http.get<PersonDTO>(`${environment.url}/persons/${dto.husband}`, this.httpOptionsGet).subscribe(
         person => {
           family.father = this.mapDtoToPerson(person);
         }
       );
     }
-    if (obj.children && obj.children.length > 0) {
-      obj.children.forEach((childId: number) => {
+    if (dto.children && dto.children.length > 0) {
+      dto.children.forEach((childId: number) => {
         this.http.get<PersonDTO>(`${environment.url}/persons/${childId}`, this.httpOptionsGet).subscribe(
           person => {
             family.children.push(this.mapDtoToPerson(person));
@@ -145,15 +143,18 @@ export class HttpDataProvider extends DataProvider {
     return family;
   }
 
-  private mapDtoToPerson(obj: PersonDTO): Person {
+  private mapDtoToPerson(dto: PersonDTO): Person {
     let person = new Person();
-    person.id = obj.id;
-    person.firstName = obj.name?.first;
-    person.middleName = obj.name?.middle;
-    person.lastName = obj.name?.last;
+    person.id = dto.id;
+    person.firstName = dto.name?.first;
+    person.middleName = dto.name?.middle;
+    person.lastName = dto.name?.last;
     // @ts-ignore
-    person.sex = (obj.gender) ? Sex[obj.gender.toLowerCase()] : null;
-    person.familyId = obj.parentFamilyId;
+    person.sex = (dto.gender) ? Sex[dto.gender.toLowerCase()] : null;
+    person.familyId = dto.familyId;
+    person.note = dto.note;
+    person.occupation = dto.occupation;
+    person.place = dto.place;
     return person;
   }
 }

@@ -1,18 +1,25 @@
-export class FamilyDTO {
-  id: number;
+export interface FamilyDTO {
+  id?: number;
   husband: number;
   wife: number;
-  children: Array<number>;
-}
-interface PersonNameDTO {
-  first?: string,
-  middle?: string,
-  last?: string,
+  children?: Array<number>;
+  note?: string;
 }
 
-export class PersonDTO {
-  id: number;
-  name: PersonNameDTO = {};
+interface PersonNameDTO {
+  first: string;
+  middle?: string;
+  last?: string;
+  maiden?: string;
+}
+
+export interface PersonDTO {
+  id?: number;
+  name: PersonNameDTO;
   gender: string;
-  parentFamilyId: number;
+  place?: string;
+  occupation?: string;
+  note?: string;
+  familyId?: number;
+  parentFamilyId?: number;
 }

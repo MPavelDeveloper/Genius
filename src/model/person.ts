@@ -10,8 +10,12 @@ export class Person {
   public firstName: string;
   public lastName: string;
   public middleName: string;
+  public maidenName: string;
   public age: number;
   public sex: Sex;
   public lifeEvent: Array<LifeEvent>;
   public familyId: number;
+  public place: string;
+  public note: string;
+  public occupation: string;
 }

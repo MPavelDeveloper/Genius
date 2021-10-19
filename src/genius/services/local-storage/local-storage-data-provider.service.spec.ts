@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {LocalStorageDataProvider} from './local-storage-data-provider.service';
-import {json, GENEALOGY_STORAGE_KEY, testData} from "../../../json";
-import {Person, Sex} from "../../../model/person";
-import {Events} from "../../../model/life-event";
-import {Family} from "../../../model/family";
+import { TestBed } from '@angular/core/testing';
+import { GENEALOGY_STORAGE_KEY, json, testData } from "../../../json";
+import { Family } from "../../../model/family";
+import { EventType } from "../../../model/life-event";
+import { Person, Sex } from "../../../model/person";
+import { LocalStorageDataProvider } from './local-storage-data-provider.service';
 
 describe('LocalStorageDataProvider', () => {
   let service: LocalStorageDataProvider
@@ -12,24 +12,33 @@ describe('LocalStorageDataProvider', () => {
     firstName: 'Tom',
     lastName: 'James',
     middleName: 'Nickson',
+    maidenName: undefined,
     age: 54,
     sex: Sex.MALE,
+    place: undefined,
+    note: undefined,
+    occupation: undefined,
     lifeEvent: null,
     familyId: 2,
   };
   let family: Family = {
     id: 1,
+    note: undefined,
     father: {
       id: 2,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
+      maidenName: undefined,
       age: 54,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -40,12 +49,16 @@ describe('LocalStorageDataProvider', () => {
       firstName: 'Lola',
       lastName: 'James',
       middleName: 'Kan',
+      maidenName: undefined,
       age: 45,
       sex: Sex.FEMALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: Events.wedding,
+          type: EventType.wedding,
           description: 'Married',
         },
       ],
@@ -57,12 +70,16 @@ describe('LocalStorageDataProvider', () => {
       firstName: 'John',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 23,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],
@@ -73,12 +90,16 @@ describe('LocalStorageDataProvider', () => {
       firstName: 'Sergey',
       lastName: 'James',
       middleName: 'Tomson',
+      maidenName: undefined,
       age: 29,
       sex: Sex.MALE,
+      place: undefined,
+      note: undefined,
+      occupation: undefined,
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
-          type: Events.birthDay,
+          type: EventType.birthDay,
           description: 'Married',
         },
       ],

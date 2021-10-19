@@ -22,12 +22,12 @@ export class PersonListComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit(): void {
-    this.loadPersons()
+    this.loadPersons();
   }
 
   public ngOnChanges() {
     if (this.reloadData) {
-      this.loadPersons()
+      this.loadPersons();
     }
   }
 

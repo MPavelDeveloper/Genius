@@ -5,4 +5,5 @@ export class Family {
   public father: Person;
   public mother: Person;
   public children: Array<Person> = [];
+  public note: string;
 }
