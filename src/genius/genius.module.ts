@@ -17,6 +17,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
 import {DataProvider} from './services/data-provider';
 import {LocalStorageDataProvider} from "./services/local-storage/local-storage-data-provider.service";
+import {HttpTestingController} from "@angular/common/http/testing";
 
 
 const GeniusRoutes: Routes = [
@@ -46,9 +47,10 @@ const GeniusRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(GeniusRoutes),
     HttpClientModule,
+
   ],
-  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  // providers: [{provide: DataProvider, useClass: HttpDataProvider}],
+  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
+  providers: [{provide: DataProvider, useClass: HttpDataProvider}],
   bootstrap: [GeniusComponent]
 })
 export class GeniusModule {

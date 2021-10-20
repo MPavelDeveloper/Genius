@@ -113,7 +113,6 @@ export class HttpDataProvider extends DataProvider {
     );
   }
 
-
   private mapFamilyToDto(family: Family): FamilyDTO {
     return {
       id: family.id,
@@ -166,7 +165,7 @@ export class HttpDataProvider extends DataProvider {
     person.lastName = dto.name?.last;
     // @ts-ignore
     person.sex = (dto.gender) ? dto.gender.toLowerCase() : null;
-    person.familyId = dto.parentFamilyId;
+    person.familyId = dto?.parentFamilyId;
     return person;
   }
 

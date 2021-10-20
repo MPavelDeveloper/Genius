@@ -11,7 +11,7 @@ export class Person {
   public lastName?: string;
   public middleName?: string;
   public maidenName?: string;
-  public age: number;
+  public age?: number;
   public sex: Sex;
   public lifeEvent?: Array<LifeEvent>;
   public familyId?: number;
