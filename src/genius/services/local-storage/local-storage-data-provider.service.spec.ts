@@ -1,13 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-import { GENEALOGY_STORAGE_KEY, json, testData } from "../../../json";
-import { Family } from "../../../model/family";
-import { EventType } from "../../../model/life-event";
-import { Person, Sex } from "../../../model/person";
-import { LocalStorageDataProvider } from './local-storage-data-provider.service';
+import {TestBed} from '@angular/core/testing';
+import {GENEALOGY_STORAGE_KEY, json, testData} from "../../../json";
+import {Family} from "../../../model/family";
+import {Person, Sex} from "../../../model/person";
+import {LocalStorageDataProvider} from './local-storage-data-provider.service';
 
 
 describe('LocalStorageDataProvider', () => {
-  let service: LocalStorageDataProvider
+  let service: LocalStorageDataProvider;
   let person: Person = {
     id: 2,
     firstName: 'Tom',
@@ -22,124 +21,124 @@ describe('LocalStorageDataProvider', () => {
     lifeEvent: null,
     familyId: 2,
   };
-  let family: Family = {
-    id: 1,
-    note: undefined,
-    husband: {
-      id: 2,
-      firstName: 'Tom',
-      lastName: 'James',
-      middleName: 'Nickson',
-      maidenName: undefined,
-      age: 54,
-      sex: Sex.MALE,
-      place: undefined,
-      note: undefined,
-      occupation: undefined,
-      lifeEvent: [
-        {
-          date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
-        },
-      ],
-      familyId: 2,
-    },
-    wife: {
-      id: 3,
-      firstName: 'Lola',
-      lastName: 'James',
-      middleName: 'Kan',
-      maidenName: undefined,
-      age: 45,
-      sex: Sex.FEMALE,
-      place: undefined,
-      note: undefined,
-      occupation: undefined,
-      lifeEvent: [
-        {
-          date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
-        },
-      ],
-      familyId: null,
-    },
-    children: [{
-      // son first
-      id: 1,
-      firstName: 'John',
-      lastName: 'James',
-      middleName: 'Tomson',
-      maidenName: undefined,
-      age: 23,
-      sex: Sex.MALE,
-      place: undefined,
-      note: undefined,
-      occupation: undefined,
-      lifeEvent: [
-        {
-          date: new Date('1998-05-12'),
-          type: EventType.birthDay,
-          description: 'Married',
-        },
-      ],
-      familyId: 1,
-    }, {
-      // son second
-      id: 4,
-      firstName: 'Sergey',
-      lastName: 'James',
-      middleName: 'Tomson',
-      maidenName: undefined,
-      age: 29,
-      sex: Sex.MALE,
-      place: undefined,
-      note: undefined,
-      occupation: undefined,
-      lifeEvent: [
-        {
-          date: new Date('1992-03-09'),
-          type: EventType.birthDay,
-          description: 'Married',
-        },
-      ],
-      familyId: 1,
-    }],
-  };
+  // let family: Family = {
+  //   id: 1,
+  //   note: undefined,
+  //   husband: {
+  //     id: 2,
+  //     firstName: 'Tom',
+  //     lastName: 'James',
+  //     middleName: 'Nickson',
+  //     maidenName: undefined,
+  //     age: 54,
+  //     sex: Sex.MALE,
+  //     place: undefined,
+  //     note: undefined,
+  //     occupation: undefined,
+  //     lifeEvent: [
+  //       {
+  //         date: new Date('1989-03-12'),
+  //         type: EventType.wedding,
+  //         description: 'Married',
+  //       },
+  //     ],
+  //     familyId: 2,
+  //   },
+  //   wife: {
+  //     id: 3,
+  //     firstName: 'Lola',
+  //     lastName: 'James',
+  //     middleName: 'Kan',
+  //     maidenName: undefined,
+  //     age: 45,
+  //     sex: Sex.FEMALE,
+  //     place: undefined,
+  //     note: undefined,
+  //     occupation: undefined,
+  //     lifeEvent: [
+  //       {
+  //         date: new Date('1989-03-12'),
+  //         type: EventType.wedding,
+  //         description: 'Married',
+  //       },
+  //     ],
+  //     familyId: null,
+  //   },
+  //   children: [{
+  //     // son first
+  //     id: 1,
+  //     firstName: 'John',
+  //     lastName: 'James',
+  //     middleName: 'Tomson',
+  //     maidenName: undefined,
+  //     age: 23,
+  //     sex: Sex.MALE,
+  //     place: undefined,
+  //     note: undefined,
+  //     occupation: undefined,
+  //     lifeEvent: [
+  //       {
+  //         date: new Date('1998-05-12'),
+  //         type: EventType.birthDay,
+  //         description: 'Married',
+  //       },
+  //     ],
+  //     familyId: 1,
+  //   }, {
+  //     // son second
+  //     id: 4,
+  //     firstName: 'Sergey',
+  //     lastName: 'James',
+  //     middleName: 'Tomson',
+  //     maidenName: undefined,
+  //     age: 29,
+  //     sex: Sex.MALE,
+  //     place: undefined,
+  //     note: undefined,
+  //     occupation: undefined,
+  //     lifeEvent: [
+  //       {
+  //         date: new Date('1992-03-09'),
+  //         type: EventType.birthDay,
+  //         description: 'Married',
+  //       },
+  //     ],
+  //     familyId: 1,
+  //   }],
+  // };
+
+  let random = (max: number, min: number) => {
+    return Math.floor(Math.random() * (max - min + 1) - min)
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LocalStorageDataProvider]
     });
     service = TestBed.inject(LocalStorageDataProvider);
-    localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, json);
+    service.reloadData()
   });
-
-  afterEach(() => {
-    localStorage.setItem(GENEALOGY_STORAGE_KEY, json)
-  })
 
 
   it('should create the data-provider service', () => {
     expect(service).toBeTruthy();
   });
 
-
-  // OK
   it('addNewFamily();', () => {
     let newFamily: Family = {
-      father:{
+      husband: {
         firstName: 'TestF',
         sex: Sex.MALE,
-        age:27,
+        age: 27,
       }
     }
     service.addNewFamily(newFamily).subscribe(null);
-    service.getFamilies().subscribe(families => {
-      expect(families.includes(newFamily)).toBeTrue();
-    })
+    service.reloadData();
+    const targetFamily = service.families.find(family => family.id === newFamily.id);
+    expect(targetFamily.id).toBe(newFamily.id);
   });
+
   it('addNewPerson();', () => {
     let newPerson: Person = {
       firstName: 'John',
@@ -147,70 +146,82 @@ describe('LocalStorageDataProvider', () => {
       age: 27,
     }
     service.addNewPerson(newPerson).subscribe(null);
-    service.getPersons().subscribe(persons => {
-      expect(persons.includes(newPerson)).toBeTrue();
-    })
-  });
-
-
-  // OK
-  it('changeFamily();', () => {
-    let testFamily = service.families[0]
-    person.id = 3;
-    testFamily.father = person;
-    service.changeFamily(testFamily).subscribe(null);
     service.reloadData();
-    service.findFamily(testFamily.id).subscribe(targetFamily => {
-      expect(targetFamily.father.id).toBe(testFamily.father.id)
-    })
+    const targetPerson = service.persons.find(person => person.id = newPerson.id);
+    expect(targetPerson.id).toBe(newPerson.id);
   });
+
+  it('changeFamily();', () => {
+    const changedFamily = service.families[0];
+    changedFamily.husband = {id: 1, firstName: 'John', age: 27, sex: Sex.MALE,};
+    service.changeFamily(changedFamily).subscribe(null);
+    service.reloadData();
+    let targetFamily = service.families.find((family: Family) => family.id === changedFamily.id);
+    expect(targetFamily).toBeDefined();
+    expect(targetFamily.id).toBe(changedFamily.id);
+    expect(targetFamily.husband.firstName).toBe(changedFamily.husband.firstName);
+  })
+
   it('changePerson(); should be the same', () => {
     let testPerson = service.persons[0];
     testPerson.firstName = 'Test';
     service.changePerson(testPerson).subscribe(null);
     service.reloadData();
-    service.findPerson(testPerson.id).subscribe(targetPerson => {
-      expect(targetPerson?.firstName).toBe(testPerson.firstName);
-    })
-
+    let targetPerson = service.persons.find((person: Person) => person.id === testPerson.id);
+    expect(targetPerson?.firstName).toBe(testPerson.firstName);
   });
 
-  // OK
   it('deleteFamily();', () => {
-    service.deleteFamily(family.id);
-    expect(service.families.includes(family)).toBeFalse();
-  });
-  it('deletePerson(); ', () => {
-    service.deletePerson(person.id);
-    expect(service.persons.includes(person)).toBeFalse();
-
-  });
-
-  // OK
-  it('findFamily(); correct data; should be family', () => {
-    localStorage.clear()
-    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
-    service.reloadData()
-    service.findFamily(family.id).subscribe(targetFamily => {
-      expect(targetFamily).toBeDefined()
-      expect(targetFamily instanceof Family).toBeTrue()
-    })
-  });
-  it('findPerson(); correct data; should be person', () => {
-    const testPersonId = 2;
-    localStorage.clear()
+    localStorage.clear();
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
-    service.reloadData()
-    service.findPerson(testPersonId).subscribe(targetPerson => {
-      expect(targetPerson.id).toBe(testPersonId)
+    service.reloadData();
+
+    const ids = service.families.map(family => family.id);
+    const testFamilyId = ids[random(ids.length - 1, 0)]
+    service.deleteFamily(testFamilyId);
+    let findFamily = service.families.find(family => family.id === testFamilyId)
+    expect(findFamily).toBeUndefined();
+  });
+
+  it('deletePerson(); ', () => {
+    localStorage.clear();
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
+    service.reloadData();
+
+    const ids = service.persons.map(person => person.id);
+    const testPersonId = ids[random(ids.length - 1, 0)]
+    service.deletePerson(testPersonId);
+    let findPerson = service.persons.find(person => person.id === testPersonId)
+    expect(findPerson).toBeUndefined();
+  });
+
+  it('findFamily(); correct data; should be family', () => {
+    localStorage.clear();
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
+    service.reloadData();
+    const ids: Array<number> = service.families.map(family => family.id);
+    const testFamilyId = ids[random(ids.length - 1, 0)];
+    service.findFamily(testFamilyId).subscribe(targetFamily => {
+      expect(targetFamily.id).toBe(testFamilyId)
     })
   });
 
-  // OK
+  it('findPerson(); correct data; should be person', () => {
+    localStorage.clear();
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData));
+    service.reloadData();
+    const ids: Array<number> = service.persons.map((person) => person.id);
+    const testPersonId = ids[random(ids.length - 1, 0)];
+    service.findPerson(testPersonId).subscribe(targetPerson => {
+      expect(targetPerson.id).toBe(testPersonId);
+    })
+  });
+
   it('getFamilies(); correct data; should be arr of families', () => {
     localStorage.clear()
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
     service.reloadData()
+
     service.getFamilies().subscribe(families => {
       expect(families).toBeDefined()
       expect(Array.isArray(families)).toBeTrue()
@@ -218,12 +229,11 @@ describe('LocalStorageDataProvider', () => {
         expect(family instanceof Family).toBeTrue()
       })
     })
-
   });
+
   it('getPersons(); correct data; should be arr of persons', () => {
     localStorage.clear()
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(testData))
-
     service.reloadData()
 
     service.getPersons().subscribe(persons => {
@@ -235,13 +245,13 @@ describe('LocalStorageDataProvider', () => {
     })
   });
 
-  // OK
   it('findPerson(); fake data; should be undefined', () => {
     service.findPerson(300).subscribe(person => {
       expect(person).toBeUndefined()
     })
 
   });
+
   it('findFamily(); fake data; should be undefined', () => {
     service.findFamily(300).subscribe(family => {
       expect(family).toBeUndefined();

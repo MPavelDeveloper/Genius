@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { GENEALOGY_STORAGE_KEY } from '../../../json';
-import { Family } from '../../../model/family';
-import { LineAge } from '../../../model/line-age';
-import { Person } from '../../../model/person';
-import { DataProvider } from '../data-provider';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {GENEALOGY_STORAGE_KEY} from '../../../json';
+import {Family} from '../../../model/family';
+import {LineAge} from '../../../model/line-age';
+import {Person} from '../../../model/person';
+import {DataProvider} from '../data-provider';
 
 
 @Injectable({
@@ -35,8 +35,8 @@ export class LocalStorageDataProvider extends DataProvider {
   protected mapFamily(obj: any): Family {
     let family = new Family();
     family.id = obj.id;
-    family.husband = obj.father;
-    family.wife = obj.mother;
+    family.husband = obj.husband;
+    family.wife = obj.wife;
     family.children = obj.children;
     return family;
   }
@@ -67,13 +67,8 @@ export class LocalStorageDataProvider extends DataProvider {
     let observableChangeFamily: Observable<Object> = new Observable(subscriber => {
       subscriber.next('an existing family was modified in local storage')
     });
-
-    if (this.checkFamilyPerson(family)) {
-      this.setPersonsId(family);
-      this.putData();
-    } else {
-      this.deleteFamily(family.id);
-    }
+    this.setPersonsId(family);
+    this.putData();
     this.reloadData();
     return observableChangeFamily;
   }
@@ -147,14 +142,14 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   public getFamilies(): Observable<Array<Family>> {
-      return new Observable(subscriber => {
-        subscriber.next(this.families);
+    return new Observable(subscriber => {
+      subscriber.next(this.families);
     });
   }
 
   public getPersons(): Observable<Array<Person>> {
-      return new Observable(subscriber => {
-        subscriber.next(this.persons);
+    return new Observable(subscriber => {
+      subscriber.next(this.persons);
     });
   }
 
@@ -162,11 +157,11 @@ export class LocalStorageDataProvider extends DataProvider {
     const targetFamily = this.findFamily(person.familyId);
     targetFamily.subscribe((family: Family) => {
       if (family) {
-          if (family.children === null) {
-              family.children = [person];
-          } else {
-              family.children.push(person);
-          }
+        if (family.children === null) {
+          family.children = [person];
+        } else {
+          family.children.push(person);
+        }
       }
     })
     // if (targetFamily) {
@@ -216,7 +211,7 @@ export class LocalStorageDataProvider extends DataProvider {
         (family.children && family.children.length > 0) ? true : false;
   }
 
-  private putData(): void {
+  public putData(): void {
     let data: LineAge = new LineAge(this.families, this.persons);
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }

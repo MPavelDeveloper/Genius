@@ -113,22 +113,6 @@ export class HttpDataProvider extends DataProvider {
     );
   }
 
-  private mapDtoToFamily(dto: FamilyDTO, persons: Array<Person>): Family {
-    let family = new Family();
-    family.id = dto.id;
-    family.note = dto.note;
-
-    family.wife = persons.find(person => dto.wife === person.id)
-    family.husband = persons.find(person => dto.husband === person.id)
-
-    if (dto.children && dto.children.length > 0) {
-      dto.children
-      .map((childId: number) => persons.find(person => person.id === childId))
-      .filter(person => !!person)
-      .forEach(child => family.children.push(child));
-    }
-    return family;
-  }
 
   private mapFamilyToDto(family: Family): FamilyDTO {
     return {
@@ -155,6 +139,23 @@ export class HttpDataProvider extends DataProvider {
       note: person.note,
       familyId: person.familyId
     };
+  }
+
+  private mapDtoToFamily(dto: FamilyDTO, persons: Array<Person>): Family {
+    let family = new Family();
+    family.id = dto.id;
+    family.note = dto.note;
+
+    family.wife = persons.find(person => dto.wife === person.id)
+    family.husband = persons.find(person => dto.husband === person.id)
+
+    if (dto.children && dto.children.length > 0) {
+      dto.children
+        .map((childId: number) => persons.find(person => person.id === childId))
+        .filter(person => !!person)
+        .forEach(child => family.children.push(child));
+    }
+    return family;
   }
 
   private mapDtoToPerson(dto: PersonDTO): Person {
