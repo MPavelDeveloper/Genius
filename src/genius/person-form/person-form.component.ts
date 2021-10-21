@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Person, Sex} from '../../model/person';
 import {FormType} from '../family-form/family-form.component';
 import {DataProvider} from '../services/data-provider';
+import {LifeEvent} from '../../model/life-event';
 
 export enum PersonFormTemplateVersion {
   FAMILY_FORM = 'familyForm',
@@ -28,6 +29,7 @@ export class PersonFormComponent {
   public personFormTemplateVersion;
   public selectPersonId: string;
   public PersonSex: Array<string>;
+  public lifeEventDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
     this.personFormTemplateVersion = PersonFormTemplateVersion;
@@ -83,5 +85,13 @@ export class PersonFormComponent {
       return result;
     }
     return undefined;
+  }
+
+  public showLifeEventDialog() {
+    this.lifeEventDialogVisible = true;
+  }
+
+  public lifeEventHandler(lifeEvent: LifeEvent) {
+    this.lifeEventDialogVisible = false;
   }
 }

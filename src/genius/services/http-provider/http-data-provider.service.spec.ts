@@ -5,7 +5,6 @@ import {environment} from "../../../environments/environment";
 import {FamilyDTO, PersonDTO} from "../dto/dtOs";
 import {HttpErrorResponse} from "@angular/common/http";
 
-
 describe('HttpDataProviderService', () => {
   let service: HttpDataProvider;
   let backend: HttpTestingController;
@@ -18,7 +17,6 @@ describe('HttpDataProviderService', () => {
     service = TestBed.inject(HttpDataProvider);
     backend = TestBed.get(HttpTestingController);
   });
-
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -81,7 +79,6 @@ describe('HttpDataProviderService', () => {
     },];
 
     service.getFamilies().subscribe(responseFamilies => {
-      console.log(responseFamilies)
       responseFamilies.forEach((family, index) => {
         expect(responseFamilies[index].id).toBe(families[index].id);
         expect(responseFamilies[index].husband?.id).toBe(families[index].husband);
@@ -113,7 +110,6 @@ describe('HttpDataProviderService', () => {
 
     service.getFamilies().subscribe(() => fail('should fail with the 400 error'),
       (err:HttpErrorResponse) => {
-      console.log(err)
         expect(err.status).toBe(400, 'status');
         expect(err.error).toBe(errMessage, 'message');
       })

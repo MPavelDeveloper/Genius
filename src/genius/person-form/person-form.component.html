@@ -55,7 +55,8 @@
         </ng-container>
       </select>
       <div class="person-valid" *ngIf="!sex.valid && sex.touched">This field is required.</div>
-      <textarea class="person-event" rows="6" placeholder="Events"></textarea>
+
+      <button class="person__add-event-btn" type="button" (click)="showLifeEventDialog()">+ Event</button>
 
       <div class="actions-wrap">
         <button class="person-create-btn" type="button" *ngIf="createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
@@ -63,6 +64,8 @@
         <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
       </div>
     </div>
+
+    <life-event-form *ngIf="lifeEventDialogVisible" (addedLifeEvent)="lifeEventHandler($event)"></life-event-form>
   </form>
 </ng-container>
 

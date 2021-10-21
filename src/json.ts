@@ -1,12 +1,12 @@
-import { EventType } from "./model/life-event";
-import { LineAge } from "./model/line-age";
-import { Person, Sex } from "./model/person";
+import {LifeEventType} from "./model/life-event";
+import {LineAge} from "./model/line-age";
+import {Person, Sex} from "./model/person";
 
 
 export const data: LineAge = {
   familyList: [{
     id: 1,
-    note: undefined,
+    note: '',
     husband: {
       id: 2,
       firstName: 'Tom',
@@ -21,8 +21,8 @@ export const data: LineAge = {
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: 2,
@@ -41,8 +41,8 @@ export const data: LineAge = {
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: null,
@@ -62,8 +62,8 @@ export const data: LineAge = {
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
-          type: EventType.birthDay,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: 1,
@@ -82,15 +82,15 @@ export const data: LineAge = {
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
-          type: EventType.birthDay,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: 1,
     }],
   }, {
     id: 2,
-    note: undefined,
+    note: '',
     husband: {
       id: 5,
       firstName: 'Nick',
@@ -136,8 +136,8 @@ export const data: LineAge = {
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: 2,
@@ -158,7 +158,7 @@ export const data: LineAge = {
     }],
   }, {
     id: 3,
-    note: undefined,
+    note: '',
     husband: {
       // third family
       // father
@@ -222,8 +222,8 @@ export const data: LineAge = {
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: EventType.wedding,
-        description: 'Married',
+        type: LifeEventType.MARRIED,
+        note: 'test',
       },
     ],
     familyId: 2,
@@ -242,8 +242,8 @@ export const data: LineAge = {
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: EventType.wedding,
-        description: 'Married',
+        type: LifeEventType.MARRIED,
+        note: 'test',
       },
     ],
     familyId: null,
@@ -262,8 +262,8 @@ export const data: LineAge = {
     lifeEvent: [
       {
         date: new Date('1998-05-12'),
-        type: EventType.birthDay,
-        description: 'Married',
+        type: LifeEventType.MARRIED,
+        note: 'test',
       },
     ],
     familyId: 1,
@@ -282,8 +282,8 @@ export const data: LineAge = {
     lifeEvent: [
       {
         date: new Date('1992-03-09'),
-        type: EventType.birthDay,
-        description: 'Married',
+        type: LifeEventType.MARRIED,
+        note: 'test',
       },
     ],
     familyId: 1,
@@ -381,8 +381,8 @@ export const testData: LineAge = {
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: 2,
@@ -401,8 +401,8 @@ export const testData: LineAge = {
       lifeEvent: [
         {
           date: new Date('1989-03-12'),
-          type: EventType.wedding,
-          description: 'Married',
+          type: LifeEventType.MARRIED,
+          note: 'test',
         },
       ],
       familyId: null,
@@ -422,8 +422,8 @@ export const testData: LineAge = {
       lifeEvent: [
         {
           date: new Date('1998-05-12'),
-          type: EventType.birthDay,
-          description: 'Married',
+          type: LifeEventType.BIRTH,
+          note: 'birthday',
         },
       ],
       familyId: 1,
@@ -442,8 +442,8 @@ export const testData: LineAge = {
       lifeEvent: [
         {
           date: new Date('1992-03-09'),
-          type: EventType.birthDay,
-          description: 'Married',
+          type: LifeEventType.BIRTH,
+          note: 'Birthday',
         },
       ],
       familyId: 1,
@@ -465,8 +465,8 @@ export const testData: LineAge = {
     lifeEvent: [
       {
         date: new Date('1989-03-12'),
-        type: EventType.wedding,
-        description: 'Married',
+        type: LifeEventType.MARRIED,
+        note: 'test',
       },
     ],
     familyId: 2,
@@ -500,8 +500,8 @@ export const testPerson: Person = {
   lifeEvent: [
     {
       date: new Date('1989-03-12'),
-      type: EventType.wedding,
-      description: 'Married',
+      type: LifeEventType.MARRIED,
+      note: 'Married',
     },
   ],
   familyId: 2,

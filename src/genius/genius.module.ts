@@ -18,6 +18,9 @@ import {HttpDataProvider} from './services/http-provider/http-data-provider.serv
 import {DataProvider} from './services/data-provider';
 import {LocalStorageDataProvider} from "./services/local-storage/local-storage-data-provider.service";
 import {HttpTestingController} from "@angular/common/http/testing";
+import {LifeEventFormComponent} from "./life-event-form/life-event-form.component";
+import { LifeEventComponent } from './life-event/life-event.component';
+
 
 
 const GeniusRoutes: Routes = [
@@ -37,6 +40,8 @@ const GeniusRoutes: Routes = [
     HomePageComponent,
     PersonEditorComponent,
     PersonListComponent,
+    LifeEventFormComponent,
+    LifeEventComponent,
   ],
   imports: [
     BrowserModule,

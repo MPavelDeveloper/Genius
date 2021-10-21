@@ -1,0 +1,17 @@
+<div class="event__form">
+  <div class="form-wrap">
+    <button class="event__btn-close" (click)="returnLifeEvent(null)">X</button>
+    <select class="event__select" [(ngModel)] = "lifeEvent.type">
+      <ng-container *ngFor="let lifeEventType of lifeEventTypes">
+        <option class="select-option" value="{{lifeEventType}}">{{lifeEventType}}</option>
+      </ng-container>
+    </select>
+    <input type="date" class="event__calendare" [(ngModel)] = "lifeEvent.date">
+    <input type="text" class="event__place text-input" placeholder="enter place" [(ngModel)] = "lifeEvent.place">
+    <input type="text" class="event__note text-input" placeholder="enter note" [(ngModel)] = "lifeEvent.note">
+    <div class="event-actions">
+      <button class="event__save-btn" type="button" (click)="returnLifeEvent(lifeEvent)">save event</button>
+      <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(null)">cancel</button>
+    </div>
+  </div>
+</div>

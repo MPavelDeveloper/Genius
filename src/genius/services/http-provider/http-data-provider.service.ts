@@ -93,7 +93,6 @@ export class HttpDataProvider extends DataProvider {
     )
   }
 
-
   public getFamilies(): Observable<Array<Family>> {
     return new Observable<Array<Family>>(subscriber => {
 

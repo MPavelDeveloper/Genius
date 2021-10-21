@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="templateVersion">
+  <div *ngSwitchCase="lifeEventTemplateVersion.SHORTEST" class="life-event-shortest">
+    {{(lifeEvent) ? lifeEvent.type : ''}}
+    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
+  </div>
+  <div *ngSwitchCase="lifeEventTemplateVersion.SHORT" class="life-event-short">
+    {{(lifeEvent) ? lifeEvent.type : ''}}
+    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
+    {{(lifeEvent && lifeEvent.place) ? lifeEvent.place : ''}}
+  </div>
+  <div *ngSwitchCase="lifeEventTemplateVersion.FULL" class="life-event-full">
+    {{(lifeEvent) ? lifeEvent.type : ''}}
+    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
+    {{(lifeEvent && lifeEvent.place) ? lifeEvent.place : ''}}
+    {{(lifeEvent && lifeEvent.note) ? lifeEvent.note : ''}}
+  </div>
+</ng-container>

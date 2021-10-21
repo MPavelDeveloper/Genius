@@ -1,4 +1,4 @@
-export enum LifeEventType {
+export enum FamilyEventType {
   BIRTH = 'Birth',
   DEATH = 'Death',
   ENGAGEMENT = 'Engagement',
@@ -15,10 +15,10 @@ export enum LifeEventType {
   IMMIGRATION = 'Immigration',
 }
 
-export class LifeEvent {
-  public id?: number;
-  public type: LifeEventType;
+export class FamilyEvent {
+  public id: number;
+  public type: FamilyEventType;
   public date: Date;
-  public place?: string;
+  public place: string;
   public note: string;
 }

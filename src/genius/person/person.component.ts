@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
 import {Person} from '../../model/person';
 
 
@@ -19,10 +19,7 @@ export class PersonComponent{
     this.templateVersion = 'fullTemplate';
   }
 
-
   returnPerson() {
     this.returnedPerson.emit(this.person);
   }
-
-
 }

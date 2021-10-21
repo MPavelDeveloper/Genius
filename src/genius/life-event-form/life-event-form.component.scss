@@ -1,0 +1,84 @@
+.event__form {
+  border-radius: 3px;
+  padding: 12px;
+  box-shadow: 0 2px 6px grey;
+
+  .form-wrap {
+    display: flex;
+    flex-direction: column;
+
+    .event__btn-close {
+      margin-bottom: 12px;
+      border: 0px;
+      padding: 3px;
+      align-self: flex-end;
+      font-size: 16px;
+      font-weight: 900;
+      color: red;
+      background: none;
+      transition: 600ms;
+      cursor: pointer;
+    }
+
+    .event__select {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border-bottom: 3px solid gray;
+      padding: 6px;
+      font-size: 18px;
+      outline: none;
+      cursor: pointer;
+
+      .select-option {
+
+      }
+    }
+
+    .text-input {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 0px;
+      border-bottom: 1px solid black;
+      padding: 12px;
+      padding-bottom: 3px;
+      width: 21vw;
+      font-size: 18px;
+      outline: none;
+    }
+
+    .event__calendare {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .event__place {
+      margin-bottom: 12px;
+    }
+
+    .event__note {
+      margin-bottom: 12px;
+    }
+
+    .event-actions {
+      display: flex;
+      justify-content: space-around;
+
+      .event__save-btn, .event__cancel-btn {
+        margin-bottom: 12px;
+        border-radius: 12px;
+        border: 0;
+        padding: 12px;
+        background-color: lightblue;
+        font-size: 18px;
+        transition: 300ms;
+        cursor: pointer;
+        box-shadow: 0 2px 6px gray;
+
+        &:hover {
+          background-color: snow;
+        }
+      }
+    }
+  }
+
+}

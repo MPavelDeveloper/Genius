@@ -1,10 +1,11 @@
 
 .select-persons-list {
+  margin-right: 12px;
   align-self: flex-start;
   overflow-y: scroll;
   border: 12px solid white;
   border-radius: 3px;
-  padding: 21px 120px 90px;
+  padding: 21px 60px 90px;
   display: flex;
   flex-direction: column;
   max-height: 500px;
