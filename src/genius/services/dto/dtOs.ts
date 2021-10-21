@@ -1,7 +1,7 @@
 export interface FamilyDTO {
   id?: number;
   husband: number;
-  wife: number;
+  wife?: number;
   children?: Array<number>;
   note?: string;
 }
