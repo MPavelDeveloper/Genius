@@ -1,13 +1,33 @@
-<div class="person" *ngIf='!showShortView; else showShortTemplate'>
-  <p class="person-name">{{ person?.firstName }} {{ person?.lastName }} {{ person?.middleName }}</p>
-  <p class="person-age">{{ person?.age + ' years'}}</p>
-</div>
-
-
-<ng-template #showShortTemplate>
-  <div class="person-short" (click)="returnPerson()">
-    {{ person?.firstName }} {{ ' ' + person?.age + ' '}}
+<ng-container [ngSwitch] = "templateVersion">
+  <div *ngSwitchCase = "'shortestTemplate'" class="person-shortest" (click)="returnPerson()">
+    {{ (person && person.firstName) ? person.firstName : '' }}
+    {{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}
   </div>
-</ng-template>
+
+  <div *ngSwitchCase = "'shortTemplate'" class="person-short" (click)="returnPerson()">
+    {{ (person && person.firstName) ? person.firstName : ''  }}
+    {{ (person && person.age) ? ' ' + person?.age + ' ' : '' }}
+    {{(person && person.sex) ? person.sex : '' }}
+  </div>
+
+  <div class="person" *ngSwitchCase = "'fullTemplate'">
+    <p class="person-name">
+      {{ (person && person.firstName) ? person.firstName : ''   }}
+      {{ (person && person.lastName) ? person.lastName : ''  }}
+      {{ (person && person.middleName) ? person.middleName : ''  }}
+    </p>
+    <p class="person-age">
+      {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
+    </p>
+  </div>
+
+  <div *ngSwitchCase = "'fullDataTemplate'" class="person-short" (click)="returnPerson()">
+    {{ (person && person.firstName) ? person.firstName : ''   }}
+    {{ (person && person.lastName) ? person.lastName : ''  }}
+    {{ (person && person.middleName) ? person.middleName : ''  }}
+    {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
+    {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
+  </div>
+</ng-container>
 
 

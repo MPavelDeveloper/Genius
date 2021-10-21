@@ -34,6 +34,10 @@
         justify-content: center;
         align-items: center;
 
+        &.mother {
+          margin-bottom: 42px;
+        }
+
         &:nth-child(4) {
           display: block;
         }
@@ -63,39 +67,42 @@
           &:active {
             background-color: #aabbbf;
           }
-
         }
-        .selectHint{
+
+        .selectHint {
           background-color: snow;
           font-size: 24px;
         }
 
         .children-plus {
-          margin-bottom: 21px;
+          margin-bottom: 42px;
           font-size: 21px;
           font-weight: bold;
           text-align: right;
         }
 
-        .children-plus span {
-          border-radius: 12px;
-          border: 1px solid seagreen;
-          padding: 9px 12px;
+        .btn-plus {
+          border-radius: 50%;
+          border: 3px solid lightsteelblue;
+          padding: 12px 18px;
           cursor: pointer;
           transition: 300ms;
+          background-color: snow;
+          box-shadow: none;
 
           &:hover {
-            background-color: seagreen;
+            background-color: #fcfbfb;
           }
 
           &:active {
-            background-color: snow;
+            background-color: lightsteelblue;
           }
         }
 
         .child-container {
           margin-bottom: 12px;
           display: flex;
+          justify-content: center;
         }
       }
 
@@ -106,13 +113,33 @@
         cursor: pointer;
       }
 
+      .family-actions {
+        display: flex;
+        .btn-add-family {
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
 
-      .btn-add-family {
-        border-radius: 3px;
-        padding: 6px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 2px 6px lightgray;
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
+
+        .btn-cancel {
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
+
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
       }
     }
   }
@@ -209,11 +236,4 @@
       }
     }
   }
-
 }
-
-
-
-
-
-

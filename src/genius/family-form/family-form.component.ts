@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
-import {Family} from "../../model/family";
-import {DataProvider} from "../services/data-provider.service";
-import {Person, Sex} from "../../model/person";
+import {forkJoin, Observable} from 'rxjs';
+import {Family} from '../../model/family';
+import {Person, Sex} from '../../model/person';
+import {PersonFormTemplateVersion} from '../person-form/person-form.component';
+import {DataProvider} from '../services/data-provider';
 
 export enum FormType {
   FATHER = 'father',
@@ -9,7 +11,7 @@ export enum FormType {
   CHILD = 'child',
 }
 
-enum SelectListType {
+export enum SelectListType {
   PERSONS = 'persons',
   FAMILIES = 'families',
   NONE = 'none',
@@ -22,176 +24,228 @@ enum SelectListType {
 })
 export class FamilyFormComponent {
 
-  public interfaceSelectPersonHint: Boolean;
-  public selectListType;
+  public personComponentTemplate = PersonFormTemplateVersion;
+  public personType = FormType;
+  public selectListType = SelectListType;
+  public sex = Sex;
+
   public currentSelectType: SelectListType;
-  public formType;
-  public currentFormType: FormType;
-  public family: Family;
+  public interfaceSelectPersonHint: Boolean;
   public persons: Array<Person>;
   public currentPerson: Person;
-  public childrenAmount: Array<number>;
-  public personType: FormType;
+  public currentPersonType: FormType;
+  public families: Array<Family>;
+  public family: Family;
+  public currentChildIndex: number;
   public personDialogVisible: boolean;
 
   constructor(private dataProvider: DataProvider) {
-    this.interfaceSelectPersonHint = false;
-    this.selectListType = SelectListType;
     this.currentSelectType = SelectListType.NONE;
-    this.formType = FormType;
-    this.currentFormType = null;
-    this.family = new Family();
-    this.family.children = [];
+    this.interfaceSelectPersonHint = false;
     this.currentPerson = new Person();
-    this.persons = [];
-    this.childrenAmount = [];
+    this.currentPersonType = null;
+    this.family = new Family();
+    this.currentChildIndex = null;
   }
 
-  createNewPerson(personType: FormType): void {
-    if(this.personDialogVisible) {
-      console.log(111)
+  private createNewParent(personType: FormType): void {
+    if (this.personDialogVisible) {
       this.currentPerson = new Person();
       this.personDialogVisible = false;
     }
-    if (personType === FormType.FATHER) this.currentPerson.sex = Sex.Male;
-    if (personType === FormType.MOTHER) this.currentPerson.sex = Sex.Female;
-    if (personType === FormType.CHILD) this.currentPerson.sex = null;
-    this.currentFormType = personType;
+    this.currentPerson.sex = personType === FormType.FATHER ? Sex.MALE : Sex.FEMALE;
+    this.currentPersonType = personType;
     this.personDialogVisible = true;
-    this.personType = personType;
   }
 
-  addPersonInFamily(person: Person): void {
+  private createNewChild(index: number): void {
+    this.currentChildIndex = index;
+    this.currentPerson = this.family.children[index];
+    this.personDialogVisible = true;
+    this.currentPersonType = FormType.CHILD;
+  }
+
+  public selectExistParent(personType: FormType, selectType: SelectListType) {
+    this.setSelectListType(selectType);
+    this.createNewParent(personType);
+    this.loadPersons();
+  }
+
+  public selectExistChild(index: number, selectType: SelectListType) {
+    this.setSelectListType(selectType);
+    this.currentChildIndex = index;
+    this.personDialogVisible = true;
+    this.currentPersonType = FormType.CHILD;
+    this.loadPersons();
+  }
+
+  public changeParent(personType: FormType): void {
+    if (personType === FormType.FATHER) {
+      this.currentPerson = this.family.husband
+      this.currentPersonType = personType;
+      this.personDialogVisible = true;
+      this.currentPerson.sex = Sex.MALE;
+    } else if (personType === FormType.MOTHER) {
+      this.currentPerson = this.family.wife
+      this.currentPersonType = personType;
+      this.personDialogVisible = true;
+      this.currentPerson.sex = Sex.FEMALE;
+    }
+  }
+
+  public changeChild(index: number) {
+    this.currentChildIndex = index;
+    this.currentPerson = this.family.children[index];
+    this.personDialogVisible = true;
+    this.currentPersonType = FormType.CHILD;
+  }
+
+  public deleteParent(personType: FormType): void {
+    if (personType === FormType.FATHER) {
+      this.family.husband = null;
+      this.personDialogVisible = false;
+    } else if (personType === FormType.MOTHER) {
+      this.family.wife = null;
+      this.personDialogVisible = false;
+    }
+    this.loadPersons();
+    this.loadFamilies();
+  }
+
+  public deleteChild(index: number): void {
+    this.family.children.splice(index, 1);
+    if (this.family.children.length === 0) this.personDialogVisible = false;
+  }
+
+  public saveFamily(): void {
+    if (this.familyValid(this.family)) {
+      let saveTasks: Array<Observable<Object>> = this.getFamilyPersons(this.family)
+      .map(person => {
+        if (person.id) {
+          return this.dataProvider.changePerson(person);
+        } else {
+          return this.dataProvider.addNewPerson(person);
+        }
+      })
+
+      forkJoin(saveTasks).subscribe(() => {
+        if (this.family.id) {
+          this.dataProvider.changeFamily(this.family).subscribe(() => {
+              this.loadPersons();
+              this.family = new Family();
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+            });
+        } else {
+          this.dataProvider.addNewFamily(this.family).subscribe(() => {
+              this.loadPersons();
+              this.loadFamilies();
+              this.family = new Family();
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+            });
+        }
+      });
+    }
+  }
+
+  private getFamilyPersons(family: Family): Array<Person> {
+    const persons: Array<Person> = [];
+    if (family.husband) {
+      persons.push(family.husband);
+    }
+    if (family.wife) {
+      persons.push(family.wife);
+    }
+    if (family.children && family.children.length > 0) {
+      persons.push(...family.children);
+    }
+    return persons;
+  }
+
+  private familyValid(family: Family): boolean {
+    if (this.getCompleteChildrenAmount() > 0) {
+      return true;
+    }
+    if (family.husband) return true;
+    if (family.wife) return true;
+    console.log('check false');
+    return false;
+  }
+
+  public addPersonInFamily(person: Person): void {
+    if (this.currentPersonType === FormType.CHILD && person === null) {
+      this.family.children[this.currentChildIndex] = new Person();
+    }
+
     if (person && Object.keys(person).length > 0) {
-      if (this.personType === FormType.FATHER) {
-        this.setFather(person)
-      } else if (this.personType === FormType.MOTHER) {
-        this.setMother(person)
-      } else if (this.personType === FormType.CHILD) {
-        this.addChild(person)
+      if (this.currentPersonType === FormType.FATHER) {
+        this.family.husband = person;
+      } else if (this.currentPersonType === FormType.MOTHER) {
+        this.family.wife = person;
       }
     }
+
     this.currentPerson = new Person()
     this.personDialogVisible = false;
   }
 
-  saveFamily(): void {
-    if (this.familyValid(this.family)) {
-      // create new family
-      (!this.family.id) ? this.dataProvider.addNewFamily(this.family) :
-        this.dataProvider.changeFamily(this.family);
-      // clean family
-      this.family = new Family();
-      this.persons = [];
-      this.family.children = [];
-    }
-
+  public addChildTemplate(): void {
+    this.currentPerson = new Person();
+    this.addChild(this.currentPerson);
   }
 
-  familyValid(family: Family): boolean {
-    if (!family.father) family.father = null;
-    if (!family.mother) family.mother = null;
-    if (family.children && family.children.length === 0) family.children = null;
-
-    let values = Object.values(family)
-    for (let value of values) {
-      if (Array.isArray(value)) {
-        if (value.length > 0) return true
-        continue
-      }
-      if (value !== null) return true
-    }
-
-    return false
-  }
-
-  addPersonsToCollection(): void {
-    if (this.getFather()) this.persons.push(this.getFather());
-    if (this.getMother()) this.persons.push(this.getMother());
-
-    if (this.getChildren().length > 0) {
-      for (let child of this.getChildren()) {
-        this.persons.push(child);
-      }
-    }
-  }
-
-  addChildTemplate(): void {
-    this.childrenAmount.push(1);
-  }
-
-  deleteChildTemplate(): void {
-    this.childrenAmount.pop();
-  }
-
-  deletePerson(personType: FormType): void {
-    if (personType === FormType.FATHER) {
-      this.setFather(null)
-    } else if (personType === FormType.MOTHER) {
-      this.setMother(null)
-    }
-  }
-
-  changePerson(personType: FormType): void {
-    if (personType === FormType.FATHER) {
-      this.currentPerson = this.getFather()
-      this.createNewPerson(FormType.FATHER)
-
-    } else if (personType === FormType.MOTHER) {
-      this.currentPerson = this.getMother()
-      this.createNewPerson(FormType.MOTHER)
-    }
-  }
-
-  getFather(): Person {
-    return this.family.father;
-  }
-
-  getMother(): Person {
-    return this.family.mother;
-  }
-
-  getChildren(): Array<Person> {
-    return this.family.children;
-  }
-
-  setFather(person: Person): void {
-    this.family.father = person;
-  }
-
-  setMother(person: Person): void {
-    this.family.mother = person;
-  }
-
-  addChild(person: Person): void {
+  private addChild(person: Person): void {
     this.family.children.push(person)
   }
 
-  getFamilyList() {
-    return this.dataProvider.getFamilies();
+  public checkChild(index: number): Boolean {
+    return Object.keys(this.family.children[index]).length > 0
   }
 
-  getPersonsList() {
-    return this.dataProvider.getPersons();
+  private getCompleteChildrenAmount(): number {
+    let amount = 0;
+    if (this.family.children) {
+      this.family.children.forEach(child => {
+        if (Object.keys(child).length > 0) amount++;
+      })
+    }
+
+    return amount;
   }
 
-  setSelectListType(type: SelectListType) {
+  public loadFamilies(): void {
+    this.dataProvider.getFamilies().subscribe(families => {
+        this.families = families;
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error?.status}\n Error message: ${errorResponse.error?.message}\n Error path: ${errorResponse.error?.path}\n`);
+      });
+  }
+
+  public loadPersons(): void {
+    this.dataProvider.getPersons().subscribe(persons => {
+        this.persons = persons;
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
+  }
+
+  public setSelectListType(type: SelectListType): void {
     this.currentSelectType = type;
   }
 
-  selectExistPerson(personType: FormType, selectType: SelectListType) {
-    this.setSelectListType(selectType);
-    this.createNewPerson(personType);
-  }
-
-  setCurrentPerson(person: Person): void {
+  public setCurrentPerson(person: Person): void {
     if (this.personDialogVisible) {
-      console.log(111)
-      console.log(this.currentFormType)
-      if (person.sex === Sex.Male && this.currentFormType === FormType.FATHER ||
-          person.sex === Sex.Female && this.currentFormType === FormType.MOTHER ||
-          this.currentFormType === FormType.CHILD) {
+      if (person.sex === Sex.MALE && this.currentPersonType === FormType.FATHER ||
+        person.sex === Sex.FEMALE && this.currentPersonType === FormType.MOTHER) {
         this.currentPerson = person;
+      } else if (this.currentPersonType === FormType.CHILD) {
+        this.currentPerson = person;
+        this.family.children[this.currentChildIndex] = person;
       }
     } else {
       this.interfaceSelectPersonHint = true;
@@ -199,10 +253,20 @@ export class FamilyFormComponent {
     }
   }
 
-  setCurrentFamily(family: Family): void {
+  public setCurrentFamily(family: Family): void {
     this.family = family;
   }
 
+  public cleanForm(): void {
+    this.interfaceSelectPersonHint = false;
+    this.currentPerson = new Person();
+    this.family = new Family();
+    this.currentChildIndex = null;
+    this.personDialogVisible = false;
+  }
 
+  public isAddChildDisabled(): boolean {
+    return this.family.children && this.getCompleteChildrenAmount() + 1 === this.family.children.length
+  }
 }
 

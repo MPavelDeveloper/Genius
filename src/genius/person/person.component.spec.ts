@@ -1,16 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {PersonComponent} from './person.component';
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {PersonComponent} from "./person.component";
 import {Sex} from "../../model/person";
 
 
 describe('PersonComponent', () => {
   let component: PersonComponent;
   let fixture: ComponentFixture<PersonComponent>;
-
-  function createComponent() {
-    fixture = TestBed.createComponent(PersonComponent);
-    component = fixture.componentInstance;
-  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,7 +25,7 @@ describe('PersonComponent', () => {
       lastName: 'James',
       middleName: 'Kolin',
       age: 92,
-      sex: Sex.Male,
+      sex: Sex.MALE,
       lifeEvent: null,
       familyId: null,
     };

@@ -1,0 +1,11 @@
+<div class="editor-wrap">
+  <person-list [reloadData]="reloadPersons"
+               (createNewPerson)="createPerson($event)"
+               (returnedPerson)="setCurrentPerson($event)"></person-list>
+  <person-form *ngIf="personDialogVisible" [templateVersion]="personComponentTemplate.PERSON_EDITOR"
+               [person]="currentPerson"
+               [createNewPerson]="createNewPerson"
+               (addedPerson)="addPerson($event)"
+               (editedPerson)="changePerson($event)"
+               (deletedPerson)="deletePerson($event)"></person-form>
+</div>

@@ -6,18 +6,13 @@
       </div>
     </div>
     <div class="header-links">
-      <a class="link-item" routerLink = "/Home" type="button">Home</a>
-      <a class="link-item" routerLink = "/addFamily" type="button">Add Family</a>
-      <a class="link-item" routerLink = "/**" type="button">Search (Change / Delete)</a>
+      <a class="link-item" routerLink = "/Home" routerLinkActive="is-active" type="button">Home</a>
+      <a class="link-item" routerLink = "/createPerson" routerLinkActive="is-active" type="button">Create Person</a>
+      <a class="link-item" routerLink = "/createFamily" routerLinkActive="is-active" type="button">Create Family</a>
     </div>
   </div>
 </header>
 <router-outlet></router-outlet>
 
-<!--<div class="genus">-->
-<!--  <ng-container *ngFor = 'let person of persons' >-->
-<!--    <person [person]="person"></person>-->
-<!--  </ng-container>-->
-<!--</div>-->
 
 
