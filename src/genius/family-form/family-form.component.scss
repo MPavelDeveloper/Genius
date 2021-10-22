@@ -1,0 +1,239 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+
+  .create-family-wrap {
+    margin-right: 12px;
+  }
+
+  .create-family {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+
+    .wrap-family {
+      align-self: flex-start;
+      margin-bottom: 21px;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      box-shadow: 0 2px 6px gray;
+
+      .family-title {
+        align-self: flex-end;
+        padding: 12px;
+        font-size: 21px;
+      }
+
+      .person-screen {
+        margin-bottom: 12px;
+        min-width: 30vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.mother {
+          margin-bottom: 42px;
+        }
+
+        &:nth-child(4) {
+          display: block;
+        }
+
+        .description {
+          flex: 0 0 30%;
+          margin-right: 12px;
+          border-radius: 12px;
+          border: 3px solid lightgray;
+          padding: 12px;
+          font-size: 21px;
+          text-align: center;
+        }
+
+        .action-btn {
+          margin-right: 12px;
+          border-radius: 12px;
+          border: 0;
+          padding: 12px;
+          background-color: lightblue;
+          transition: 300ms;
+
+          &:hover {
+            background-color: snow;
+          }
+
+          &:active {
+            background-color: #aabbbf;
+          }
+        }
+
+        .selectHint {
+          background-color: snow;
+          font-size: 24px;
+        }
+
+        .children-plus {
+          margin-bottom: 42px;
+          font-size: 21px;
+          font-weight: bold;
+          text-align: right;
+        }
+
+        .btn-plus {
+          border-radius: 50%;
+          border: 3px solid lightsteelblue;
+          padding: 12px 18px;
+          cursor: pointer;
+          transition: 300ms;
+          background-color: snow;
+          box-shadow: none;
+
+          &:hover {
+            background-color: #fcfbfb;
+          }
+
+          &:active {
+            background-color: lightsteelblue;
+          }
+        }
+
+        .child-container {
+          margin-bottom: 12px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      button {
+        margin-right: 12px;
+        font-size: 21px;
+        box-shadow: 0 2px 6px gray;
+        cursor: pointer;
+      }
+
+      .family-actions {
+        display: flex;
+        .btn-add-family {
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
+
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
+
+        .btn-cancel {
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
+
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
+      }
+    }
+  }
+
+  .select-list-wrap {
+    align-self: flex-start;
+
+    .select-list-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .action-open {
+        margin-right: 3px;
+        border: 0;
+        border-radius: 3px;
+        padding: 12px;
+        font-size: 18px;
+        background-color: sandybrown;
+        cursor: pointer;
+        transition: 300ms;
+        box-shadow: 0 2px 6px grey;
+
+        &:focus {
+          background-color: #e97514;
+        }
+      }
+
+      .action-close {
+        margin-right: 3px;
+        border: 0;
+        border-radius: 3px;
+        padding: 12px;
+        font-size: 18px;
+        background-color: lightcoral;
+        cursor: pointer;
+        box-shadow: 0 2px 6px grey;
+      }
+    }
+
+    .select-families-list {
+      align-self: flex-start;
+      overflow-y: scroll;
+      border: 12px solid white;
+      border-radius: 3px;
+      padding: 21px 120px 90px;
+      max-height: 500px;
+      box-shadow: 0 2px 6px gray;
+
+      .list_title {
+        margin-bottom: 12px;
+        font-size: 21px;
+      }
+    }
+
+    .select-persons-list {
+      align-self: flex-start;
+      overflow-y: scroll;
+      border: 12px solid white;
+      border-radius: 3px;
+      padding: 21px 120px 90px;
+      display: flex;
+      flex-direction: column;
+      max-height: 500px;
+      box-shadow: 0 2px 6px gray;
+
+      .list_title {
+        margin-bottom: 12px;
+        font-size: 21px;
+      }
+
+      .item-person {
+        margin-bottom: 15px;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 285px;
+        font-size: 18px;
+        color: black;
+        background-color: #9da7b1;
+        box-shadow: 0 2px 6px lightgrey;
+        cursor: pointer;
+        transition: 300ms;
+
+        &:hover {
+          background-color: #c4c1c1;
+        }
+
+        person {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
