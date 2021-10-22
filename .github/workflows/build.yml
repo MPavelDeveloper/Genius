@@ -14,10 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Node $
+      - name: setup-nodejs 
         uses: actions/setup-node@v1
         with:
-          node-version: $
+          node-version: 14.17.5
 
       - name: npm install and npm run build
         run: |
