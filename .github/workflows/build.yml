@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: setup-nodejs 
+      - name: setup-nodejs
         uses: actions/setup-node@v1
         with:
           node-version: 14.17.5
@@ -22,4 +22,4 @@ jobs:
       - name: npm install and npm run build
         run: |
           npm ci
-          npm run build:ci
+          npm run build
