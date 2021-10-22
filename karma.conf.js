@@ -28,17 +28,17 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/test'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        {type: 'html'},
+        {type: 'text-summary'}
       ]
-    }, {
-  restartOnFileChange: true,
-  customLaunchers: {
-  ChromeHeadlessCustom: {
-    base: 'ChromeHeadless',
-    flags: ['--no-sandbox', '--disable-gpu']
-  }
-},
+    },
+
+    customLaunchers: {
+      ChromeHeadlessCustom: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
