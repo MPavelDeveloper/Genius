@@ -23,6 +23,6 @@ export class LifeEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.templateVersion = this.lifeEventTemplateVersion.FULL;
+    this.templateVersion = LifeEventTemplateVersion.FULL;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {LifeEvent, LifeEventType} from '../../model/life-event';
 
 
@@ -11,15 +11,18 @@ export class LifeEventFormComponent {
 
   @Input() lifeEvent: LifeEvent;
   @Output() addedLifeEvent = new EventEmitter<LifeEvent>();
-  public lifeEventTypes: Array<string>;
+  public eventTypes: Array<string>;
 
   constructor() {
     this.lifeEvent = new LifeEvent();
-    this.lifeEventTypes = Object.values(LifeEventType);
+    this.eventTypes = Object.values(LifeEventType);
   }
 
-  public returnLifeEvent(lifeEvent: LifeEvent){
-    this.addedLifeEvent.emit(lifeEvent);
-    console.log(this.lifeEvent)
+  public close(): void {
+    this.addedLifeEvent.emit(null);
+  }
+
+  public save(): void {
+    this.addedLifeEvent.emit(this.lifeEvent);
   }
 }
