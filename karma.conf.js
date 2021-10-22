@@ -31,7 +31,14 @@ module.exports = function (config) {
         { type: 'html' },
         { type: 'text-summary' }
       ]
-    },
+    }, {
+  restartOnFileChange: true,
+  customLaunchers: {
+  ChromeHeadlessCustom: {
+    base: 'ChromeHeadless',
+    flags: ['--no-sandbox', '--disable-gpu']
+  }
+},
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
