@@ -1,6 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Person, Sex } from '../../model/person';
-import { DataProvider } from '../services/data-provider';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Person, Sex} from '../../model/person';
+import {DataProvider} from '../services/data-provider';
+import {LifeEventDescriptor, PersonsTemplateType} from '../person/person.component';
+
+export enum PersonsListTemplateType {
+  PERSONS = 'persons',
+  PERSONS_EVENTS = 'persons_events',
+}
 
 @Component({
   selector: 'person-list',
@@ -9,16 +15,23 @@ import { DataProvider } from '../services/data-provider';
 })
 export class PersonListComponent implements OnInit, OnChanges {
 
+  @Input() templateVersion: PersonsListTemplateType;
   @Input() reloadData: Boolean;
   @Output() returnedPerson = new EventEmitter<Person>();
   @Output() reloadedPersons = new EventEmitter<Boolean>();
   @Output() createNewPerson = new EventEmitter<Person>();
+  @Output() returnedExistLifeEvent = new EventEmitter<LifeEventDescriptor>();
+  @Output() createNewLifeEvent = new EventEmitter<Person>();
 
   public persons: Array<Person>;
   public personSex;
+  public personsListTemplateVersion;
+  public personTemplateVersion;
 
   constructor(private dataProvider: DataProvider) {
     this.personSex = Sex;
+    this.personsListTemplateVersion = PersonsListTemplateType;
+    this.personTemplateVersion = PersonsTemplateType;
   }
 
   public ngOnInit(): void {
@@ -32,8 +45,8 @@ export class PersonListComponent implements OnInit, OnChanges {
   }
 
   private loadPersons(): void {
-    this.dataProvider.getPersons().subscribe( persons => {
-      console.log(persons)
+    this.dataProvider.getPersons().subscribe(persons => {
+        console.log(persons)
         this.persons = persons;
       },
       errorResponse => {
@@ -42,10 +55,19 @@ export class PersonListComponent implements OnInit, OnChanges {
   }
 
   public returnPerson(person: Person) {
+    console.log(person)
     return this.returnedPerson.emit(person);
   }
 
   public createPerson() {
     this.createNewPerson.emit(new Person());
+  }
+
+  public returnExistPersonLifeEvent(descriptor:LifeEventDescriptor) {
+    return this.returnedExistLifeEvent.emit(descriptor);
+  }
+
+  public createNewPersonLifeEvent(person: Person) {
+    return this.createNewLifeEvent.emit(person);
   }
 }

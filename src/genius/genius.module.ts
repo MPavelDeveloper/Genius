@@ -14,18 +14,18 @@ import {HomePageComponent} from './home-page/home-page.component';
 import {PersonEditorComponent} from './person-editor/person-editor.component';
 import {PersonListComponent} from './person-list/person-list.component';
 import {HttpClientModule} from '@angular/common/http';
-import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
 import {DataProvider} from './services/data-provider';
 import {LocalStorageDataProvider} from "./services/local-storage/local-storage-data-provider.service";
-import {HttpTestingController} from "@angular/common/http/testing";
 import {LifeEventFormComponent} from "./life-event-form/life-event-form.component";
 import { LifeEventComponent } from './life-event/life-event.component';
+import {PersonEventEditorComponent} from './person-event-editor/person-event-editor.component';
 
 
 
 const GeniusRoutes: Routes = [
   {path: 'Home', component: HomePageComponent,},
   {path: 'createPerson', component: PersonEditorComponent,},
+  {path: 'createPersonEvent', component: PersonEventEditorComponent,},
   {path: 'createFamily', component: FamilyFormComponent,},
   {path: '**', redirectTo: 'Home',},
 ]
@@ -40,8 +40,9 @@ const GeniusRoutes: Routes = [
     HomePageComponent,
     PersonEditorComponent,
     PersonListComponent,
-    LifeEventFormComponent,
     LifeEventComponent,
+    LifeEventFormComponent,
+    PersonEventEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,8 +55,8 @@ const GeniusRoutes: Routes = [
     HttpClientModule,
 
   ],
-  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  providers: [{provide: DataProvider, useClass: HttpDataProvider}],
+  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
+  // providers: [{provide: DataProvider, useClass: HttpDataProvider}],
   bootstrap: [GeniusComponent]
 })
 export class GeniusModule {

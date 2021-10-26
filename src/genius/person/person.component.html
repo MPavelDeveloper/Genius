@@ -1,16 +1,16 @@
 <ng-container [ngSwitch] = "templateVersion">
-  <div *ngSwitchCase = "'shortestTemplate'" class="person-shortest" (click)="returnPerson()">
+  <div *ngSwitchCase = "personsTemplateType.SHORTEST" class="person-shortest" (click)="returnPerson()">
     {{ (person && person.firstName) ? person.firstName : '' }}
     {{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}
   </div>
 
-  <div *ngSwitchCase = "'shortTemplate'" class="person-short" (click)="returnPerson()">
+  <div *ngSwitchCase = "personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
     {{ (person && person.firstName) ? person.firstName : ''  }}
     {{ (person && person.age) ? ' ' + person?.age + ' ' : '' }}
     {{(person && person.sex) ? person.sex : '' }}
   </div>
 
-  <div class="person" *ngSwitchCase = "'fullTemplate'">
+  <div class="person" *ngSwitchCase = "personsTemplateType.FULL" (click)="returnPerson()">
     <p class="person-name">
       {{ (person && person.firstName) ? person.firstName : ''   }}
       {{ (person && person.lastName) ? person.lastName : ''  }}
@@ -21,12 +21,22 @@
     </p>
   </div>
 
-  <div *ngSwitchCase = "'fullDataTemplate'" class="person-short" (click)="returnPerson()">
+  <div *ngSwitchCase = "personsTemplateType.FULL_DATA" class="person-short" (click)="returnPerson()">
     {{ (person && person.firstName) ? person.firstName : ''   }}
     {{ (person && person.lastName) ? person.lastName : ''  }}
     {{ (person && person.middleName) ? person.middleName : ''  }}
     {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
     {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
+  </div>
+
+  <div *ngSwitchCase = "personsTemplateType.EVENTS" class="person-short">
+    {{ (person && person.firstName) ? person.firstName : ''   }}
+    {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
+    {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
+    <ng-container *ngFor = "let lifeEvent of person.lifeEvents">
+      <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST" [lifeEvent]="lifeEvent" (returnedLifeEvent)="returnExistLifeEvent($event)"></life-event>
+    </ng-container>
+    <button type="button" (click)="createNewLifeEvent()">new</button>
   </div>
 </ng-container>
 

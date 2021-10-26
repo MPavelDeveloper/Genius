@@ -64,8 +64,6 @@
         <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
       </div>
     </div>
-
-    <life-event-form *ngIf="lifeEventDialogVisible" (addedLifeEvent)="lifeEventHandler($event)"></life-event-form>
   </form>
 </ng-container>
 

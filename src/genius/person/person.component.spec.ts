@@ -26,7 +26,7 @@ describe('PersonComponent', () => {
       middleName: 'Kolin',
       age: 92,
       sex: Sex.MALE,
-      lifeEvent: null,
+      // lifeEventType: null,
       familyId: null,
     };
     fixture.detectChanges();

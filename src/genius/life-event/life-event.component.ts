@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {LifeEvent} from '../../model/life-event';
 
 export enum LifeEventTemplateVersion {
@@ -12,17 +12,18 @@ export enum LifeEventTemplateVersion {
   templateUrl: './life-event.component.html',
   styleUrls: ['./life-event.component.scss']
 })
-export class LifeEventComponent implements OnInit {
+export class LifeEventComponent {
 
   @Input() lifeEvent: LifeEvent;
   @Input() templateVersion: string;
+  @Output() returnedLifeEvent = new EventEmitter<LifeEvent>();
   lifeEventTemplateVersion;
 
   constructor() {
     this.lifeEventTemplateVersion = LifeEventTemplateVersion;
   }
 
-  ngOnInit(): void {
-    this.templateVersion = LifeEventTemplateVersion.FULL;
+  returnLifeEvent() {
+    return this.returnedLifeEvent.emit(this.lifeEvent)
   }
 }

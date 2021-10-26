@@ -5,7 +5,8 @@ import {Family} from '../../../model/family';
 import {LineAge} from '../../../model/line-age';
 import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
-
+import * as moment from 'moment'
+import {LifeEvent} from '../../../model/life-event';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ import {DataProvider} from '../data-provider';
 export class LocalStorageDataProvider extends DataProvider {
   public persons: Array<Person>;
   public families: Array<Family>;
+  public lifeEvents: Array<LifeEvent>;
 
   constructor() {
     super();
@@ -27,7 +29,15 @@ export class LocalStorageDataProvider extends DataProvider {
     person.middleName = obj.middleName;
     person.age = obj.age;
     person.sex = obj.sex;
-    person.lifeEvent = obj.lifeEvent;
+    if (obj.lifeEvents) {
+      obj.lifeEvents.forEach((lifeEvent: any) => {
+        let date = moment(lifeEvent.date).format('YYYY-MM-DD');
+        lifeEvent.date = date;
+      })
+      person.lifeEvents = obj.lifeEvents;
+    } else {
+      person.lifeEvents = [];
+    }
     person.familyId = obj.familyId;
     return person;
   }
@@ -171,22 +181,32 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   private getNewPersonID(): number {
-    const currentId = this.persons.reduce((previusId: number, item: Person) => {
-      if (previusId < item.id) return item.id;
-      return previusId;
+    const currentId = this.persons.reduce((previousId: number, item: Person) => {
+      if (previousId < item.id) return item.id;
+      return previousId;
     }, 0);
 
     return currentId + 1;
   }
 
   private getNewFamilyID(): number {
-    const currentId = this.families.reduce((previusId: number, item: Family) => {
-      if (previusId < item.id) return item.id;
-      return previusId;
+    const currentId = this.families.reduce((previousId: number, item: Family) => {
+      if (previousId < item.id) return item.id;
+      return previousId;
     }, 0);
 
     return currentId + 1;
   }
+
+  private getNewLifeEventID(): number {
+    const currentId = this.lifeEvents.reduce((previousId: number, item: LifeEvent) => {
+      if(previousId < item.id) return item.id;
+      return previousId;
+    }, 0)
+
+    return currentId + 1;
+  }
+
 
   private setPersonsId(family: Family): void {
     if (family.husband && !family.husband.id) {
@@ -216,13 +236,77 @@ export class LocalStorageDataProvider extends DataProvider {
     localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON.stringify(data));
   }
 
-  public reloadData() {
+  public reloadData(): void {
     const data = JSON.parse(localStorage.getItem(GENEALOGY_STORAGE_KEY));
     if (data) {
       this.persons = data.personList.map((obj: any) => this.mapPerson(obj));
       this.families = data.familyList.map((obj: any) => this.mapFamily(obj));
+      this.getLifeEvents();
+      console.log(this.lifeEvents)
     }
   }
 
+  private getLifeEvents(){
+    const lifeEvents: Array<LifeEvent> = [];
+    this.persons.forEach(person => {
+      if(person.lifeEvents.length > 0) {
+        lifeEvents.push(...person.lifeEvents);
+      }
+    })
+    this.lifeEvents = lifeEvents;
+  }
 
+  public addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    this.findPerson(person.id).subscribe(targetPerson => {
+      lifeEvent.id = this.getNewLifeEventID();
+      targetPerson.lifeEvents.push(lifeEvent)
+      if (person.familyId) {
+        this.replacePersonInFamily(person);
+      }
+      this.putData();
+      this.reloadData();
+    })
+    return new Observable(subscriber => {
+      subscriber.next('person event saved');
+    })
+  }
+
+  public deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    let deleteLifeEventIndex = person.lifeEvents.findIndex(currentLifeEvent => currentLifeEvent.id === lifeEvent.id);
+    person.lifeEvents.splice(deleteLifeEventIndex, 1);
+    if (person.familyId) {
+      this.replacePersonInFamily(person);
+    }
+    this.putData();
+    return new Observable(subscriber => {
+      subscriber.next('person event deleted');
+    })
+  }
+
+  public changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    if(person.familyId) {
+      this.replacePersonInFamily(person)
+    }
+    this.putData();
+    return new Observable<Object>(subscriber => {
+      subscriber.next('person event changed');
+    })
+  }
+
+  private replacePersonInFamily(person: Person): void {
+    this.findFamily(person.familyId).subscribe(targetFamily => {
+      if (targetFamily.husband && targetFamily.husband.id === person.id) {
+        targetFamily.husband = person;
+      }
+      if (targetFamily.wife && targetFamily.wife.id === person.id) {
+        targetFamily.wife = person;
+      }
+      if (targetFamily.children) {
+        targetFamily.children.forEach((child, index) => {
+          if (child.id === person.id)
+            targetFamily.children[index] = person;
+        })
+      }
+    });
+  }
 }

@@ -1,17 +1,24 @@
 <div class="event__form">
   <div class="form-wrap">
-    <button class="event__btn-close" (click)="close()">X</button>
-    <select class="event__select" [(ngModel)]="lifeEvent.type">
-      <ng-container *ngFor="let eventType of eventTypes">
-        <option class="select-option" value="{{eventType}}">{{eventType}}</option>
+    {{personFullName}}
+    <button class="event__btn-close" (click)="returnLifeEvent(lifeEventFormAction.CANCEL)">X</button>
+    <select class="event__select" [(ngModel)] = "lifeEvent.type">
+      <ng-container *ngFor="let lifeEventType of eventTypes">
+        <option class="select-option" value="{{lifeEventType}}">{{lifeEventType}}</option>
       </ng-container>
     </select>
-    <input type="date" class="event__calendare" [(ngModel)]="lifeEvent.date">
-    <input type="text" class="event__place text-input" placeholder="enter place" [(ngModel)]="lifeEvent.place">
-    <input type="text" class="event__note text-input" placeholder="enter note" [(ngModel)]="lifeEvent.note">
-    <div class="event-actions">
-      <button class="event__save-btn" (click)="save()">save event</button>
-      <button class="event__cancel-btn" (click)="close()">cancel</button>
-    </div>
+    <input type="date" class="event__calendare" [(ngModel)] = "lifeEvent.date" >
+    <input type="text" class="event__place text-input" placeholder="enter place" [(ngModel)] = "lifeEvent.place">
+    <input type="text" class="event__note text-input" placeholder="enter note" [(ngModel)] = "lifeEvent.note">
+    <ng-container [ngSwitch] = "templateVersion">
+      <div *ngSwitchCase = "lifeEventFormType.NEW_EVENT" class="event-actions">
+        <button class="event__save-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.SAVE)">save event</button>
+        <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.CANCEL)">cancel</button>
+      </div>
+      <div *ngSwitchCase = "lifeEventFormType.EXIST_EVENT" class="event-actions">
+        <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.CHANGE)">change</button>
+        <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.DELETE)">delete</button>
+      </div>
+    </ng-container>
   </div>
 </div>

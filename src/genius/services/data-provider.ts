@@ -1,6 +1,7 @@
 import {Observable} from 'rxjs';
 import {Person} from '../../model/person';
 import {Family} from '../../model/family';
+import {LifeEvent} from '../../model/life-event';
 
 export abstract class DataProvider {
   abstract getPersons(): Observable<Array<Person>>;
@@ -23,5 +24,10 @@ export abstract class DataProvider {
 
   abstract changePerson(person: Person): Observable<Object>;
 
+  abstract addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
+
+  abstract deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
+
+  abstract changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
 
 }

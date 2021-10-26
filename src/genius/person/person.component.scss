@@ -59,6 +59,19 @@
   width: 100%;
 }
 
+life-event {
+  margin-top: 6px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  display: block;
+  font-size: 16px;
+  text-align: left;
+  transition: 300ms;
+  &:hover {
+    background: snow;
+  }
+}
+
 
 
 

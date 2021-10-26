@@ -1,6 +1,22 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {LifeEvent, LifeEventType} from '../../model/life-event';
 
+export enum LifeEventFormType {
+  NEW_EVENT = 'newEvent',
+  EXIST_EVENT = 'existEvent',
+}
+
+export enum LifeEventFormAction {
+  SAVE = 'save',
+  CHANGE = 'change',
+  DELETE = 'delete',
+  CANCEL = 'cancel',
+}
+
+export interface LifeEventActionDescriptor {
+  action: LifeEventFormAction,
+  lifeEvent: LifeEvent,
+}
 
 @Component({
   selector: 'life-event-form',
@@ -9,20 +25,26 @@ import {LifeEvent, LifeEventType} from '../../model/life-event';
 })
 export class LifeEventFormComponent {
 
+  @Input() templateVersion: LifeEventFormType;
   @Input() lifeEvent: LifeEvent;
-  @Output() addedLifeEvent = new EventEmitter<LifeEvent>();
+  @Input() personFullName: string;
+  @Output() addedLifeEvent = new EventEmitter<LifeEventActionDescriptor>();
   public eventTypes: Array<string>;
+  public lifeEventFormType;
+  public lifeEventFormAction;
 
   constructor() {
     this.lifeEvent = new LifeEvent();
     this.eventTypes = Object.values(LifeEventType);
+    this.lifeEventFormType = LifeEventFormType;
+    this.lifeEventFormAction = LifeEventFormAction;
   }
 
-  public close(): void {
-    this.addedLifeEvent.emit(null);
-  }
-
-  public save(): void {
-    this.addedLifeEvent.emit(this.lifeEvent);
+  public returnLifeEvent(lifeEventFormAction: LifeEventFormAction) {
+    (lifeEventFormAction === LifeEventFormAction.CANCEL) ? this.addedLifeEvent.emit(null) :
+      this.addedLifeEvent.emit({
+        action: lifeEventFormAction,
+        lifeEvent: this.lifeEvent,
+      });
   }
 }

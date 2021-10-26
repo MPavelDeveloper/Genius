@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {PersonFormTemplateVersion} from '../person-form/person-form.component';
 import {Person} from '../../model/person';
 import {DataProvider} from '../services/data-provider';
+import {PersonsListTemplateType} from '../person-list/person-list.component';
 
 @Component({
   selector: 'app-person-editor',
@@ -13,12 +14,14 @@ export class PersonEditorComponent {
   public currentPerson: Person;
   public personDialogVisible: Boolean;
   public personComponentTemplate;
+  public personListComponentTemplate;
   public reloadPersons: Boolean;
   public createNewPerson: Boolean;
 
   constructor(private dataProvider: DataProvider) {
     this.personDialogVisible = false;
     this.personComponentTemplate = PersonFormTemplateVersion;
+    this.personListComponentTemplate = PersonsListTemplateType;
   }
 
   setCurrentPerson(person: Person): void {

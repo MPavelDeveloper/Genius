@@ -7,6 +7,7 @@ import {Family} from '../../../model/family';
 import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
 import {FamilyDTO, PersonDTO} from "../dto/dtOs";
+import {LifeEvent} from '../../../model/life-event';
 
 @Injectable({
   providedIn: 'root'
@@ -188,5 +189,17 @@ export class HttpDataProvider extends DataProvider {
     if (index > -1) {
       items.splice(index, 1);
     }
+  }
+
+  addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    return undefined;
+  }
+
+  deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    return undefined;
+  }
+
+  changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+    return undefined;
   }
 }
