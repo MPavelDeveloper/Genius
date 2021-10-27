@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LifeEvent, LifeEventType} from '../../model/life-event';
+import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../model/life-event';
 
 export enum LifeEventFormType {
   NEW_EVENT = 'newEvent',
@@ -24,18 +24,19 @@ export interface LifeEventActionDescriptor {
   styleUrls: ['./life-event-form.component.scss']
 })
 export class LifeEventFormComponent {
-
   @Input() templateVersion: LifeEventFormType;
   @Input() lifeEvent: LifeEvent;
   @Input() personFullName: string;
   @Output() addedLifeEvent = new EventEmitter<LifeEventActionDescriptor>();
   public eventTypes: Array<string>;
+  public lifeEventPrefix: Array<string>;
   public lifeEventFormType;
   public lifeEventFormAction;
 
   constructor() {
     this.lifeEvent = new LifeEvent();
     this.eventTypes = Object.values(LifeEventType);
+    this.lifeEventPrefix = Object.values(LifeEventPrefix);
     this.lifeEventFormType = LifeEventFormType;
     this.lifeEventFormAction = LifeEventFormAction;
   }

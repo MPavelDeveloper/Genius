@@ -1,7 +1,7 @@
 <div class="personEvent-wrap">
   <person-list [templateVersion]="personsListTemplateType.PERSONS_EVENTS"
                (returnedExistLifeEvent)="setSelectedLifeEvent($event)"
-               (createNewLifeEvent)="createNewLifeEvent($event)" ></person-list>
+               (createNewLifeEvent)="createNewLifeEvent($event)"></person-list>
   <life-event-form *ngIf = "lifeEventDialigVisable"
                    [templateVersion] = lifeEventFormTemplateVersion
                    [lifeEvent]="currentLifeEvent"

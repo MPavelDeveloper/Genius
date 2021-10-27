@@ -2,9 +2,16 @@
   <div class="form-wrap">
     {{personFullName}}
     <button class="event__btn-close" (click)="returnLifeEvent(lifeEventFormAction.CANCEL)">X</button>
+    <p class="title__select">select event</p>
     <select class="event__select" [(ngModel)] = "lifeEvent.type">
       <ng-container *ngFor="let lifeEventType of eventTypes">
         <option class="select-option" value="{{lifeEventType}}">{{lifeEventType}}</option>
+      </ng-container>
+    </select>
+    <p class="title__select">select range</p>
+    <select class="event__select" [(ngModel)] = "lifeEvent.prefix">
+      <ng-container *ngFor="let eventPrefix of lifeEventPrefix; let i = index">
+        <option class="select-option" value="{{eventPrefix}}">{{eventPrefix}}</option>
       </ng-container>
     </select>
     <input type="date" class="event__calendare" [(ngModel)] = "lifeEvent.date" >

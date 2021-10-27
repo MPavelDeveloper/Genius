@@ -36,7 +36,7 @@
     <ng-container *ngFor = "let lifeEvent of person.lifeEvents">
       <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST" [lifeEvent]="lifeEvent" (returnedLifeEvent)="returnExistLifeEvent($event)"></life-event>
     </ng-container>
-    <button type="button" (click)="createNewLifeEvent()">new</button>
+    <button class="btn-add-event" type="button" (click)="createNewLifeEvent()">new</button>
   </div>
 </ng-container>
 

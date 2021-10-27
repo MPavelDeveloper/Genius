@@ -10,6 +10,7 @@ export enum PersonsTemplateType {
   FULL_DATA = 'fullDataTemplate',
   EVENTS = 'eventsTemplate',
 }
+
 export interface LifeEventDescriptor {
   person: Person;
   lifeEvent: LifeEvent;
@@ -21,7 +22,7 @@ export interface LifeEventDescriptor {
   styleUrls: ['./person.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
 })
-export class PersonComponent implements OnInit{
+export class PersonComponent {
 
   @Input() person: Person;
   @Input() templateVersion: string;
@@ -37,16 +38,12 @@ export class PersonComponent implements OnInit{
     this.personsTemplateType = PersonsTemplateType;
   }
 
-  ngOnInit(): void {
-    console.log(this.person)
-  }
-
   returnPerson() {
     this.returnedPerson.emit(this.person);
   }
 
   returnExistLifeEvent(lifeEvent: LifeEvent) {
-    const descriptor: LifeEventDescriptor =  {
+    const descriptor: LifeEventDescriptor = {
       person: this.person,
       lifeEvent: lifeEvent
     }

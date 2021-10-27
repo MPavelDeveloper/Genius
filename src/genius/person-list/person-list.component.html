@@ -9,11 +9,11 @@
     <ng-container *ngFor="let person of persons">
       <div class="item-person" *ngIf="person.sex === personSex.MALE" style="background: lightblue">
         <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'"
-                (returnedPerson)="returnPerson($event)"></person>
+                (returnedPerson)="returnExistPerson($event)"></person>
       </div>
       <div class="item-person" *ngIf="person.sex === personSex.FEMALE" style="background: pink">
         <person class="person-short" [person]="person" [templateVersion]="'fullDataTemplate'"
-                (returnedPerson)="returnPerson($event)"></person>
+                (returnedPerson)="returnExistPerson($event)"></person>
       </div>
     </ng-container>
   </div>
@@ -27,7 +27,7 @@
                 [person]="person"
                 [templateVersion]="personTemplateVersion.EVENTS"
                 (returnedLifeEvent)="returnExistPersonLifeEvent($event)"
-                (returnedPerson)="returnPerson($event)"
+                (returnedPerson)="returnExistPerson($event)"
                 (newLifeEvent)="createNewPersonLifeEvent($event)"></person>
       </div>
       <div class="item-person" *ngIf="person.sex === personSex.FEMALE" style="background: pink">
@@ -35,7 +35,7 @@
                 [person]="person"
                 [templateVersion]="personTemplateVersion.EVENTS"
                 (returnedLifeEvent)="returnExistPersonLifeEvent($event)"
-                (returnedPerson)="returnPerson($event)"
+                (returnedPerson)="returnExistPerson($event)"
                 (newLifeEvent)="createNewPersonLifeEvent($event)"></person>
       </div>
     </ng-container>

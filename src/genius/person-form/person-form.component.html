@@ -56,8 +56,6 @@
       </select>
       <div class="person-valid" *ngIf="!sex.valid && sex.touched">This field is required.</div>
 
-      <button class="person__add-event-btn" type="button" (click)="showLifeEventDialog()">+ Event</button>
-
       <div class="actions-wrap">
         <button class="person-create-btn" type="button" *ngIf="createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
         <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Edit</button>

@@ -14,15 +14,12 @@ export enum PersonsListTemplateType {
   styleUrls: ['./person-list.component.scss']
 })
 export class PersonListComponent implements OnInit, OnChanges {
-
   @Input() templateVersion: PersonsListTemplateType;
   @Input() reloadData: Boolean;
   @Output() returnedPerson = new EventEmitter<Person>();
-  @Output() reloadedPersons = new EventEmitter<Boolean>();
   @Output() createNewPerson = new EventEmitter<Person>();
   @Output() returnedExistLifeEvent = new EventEmitter<LifeEventDescriptor>();
   @Output() createNewLifeEvent = new EventEmitter<Person>();
-
   public persons: Array<Person>;
   public personSex;
   public personsListTemplateVersion;
@@ -35,18 +32,17 @@ export class PersonListComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit(): void {
-    this.loadPersons();
+    this.getPersons();
   }
 
   public ngOnChanges() {
     if (this.reloadData) {
-      this.loadPersons();
+      this.getPersons();
     }
   }
 
-  private loadPersons(): void {
+  public getPersons(): void {
     this.dataProvider.getPersons().subscribe(persons => {
-        console.log(persons)
         this.persons = persons;
       },
       errorResponse => {
@@ -54,7 +50,7 @@ export class PersonListComponent implements OnInit, OnChanges {
       });
   }
 
-  public returnPerson(person: Person) {
+  public returnExistPerson(person: Person) {
     console.log(person)
     return this.returnedPerson.emit(person);
   }

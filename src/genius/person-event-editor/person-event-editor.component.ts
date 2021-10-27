@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {PersonsListTemplateType} from '../person-list/person-list.component';
-import {LifeEvent} from '../../model/life-event';
+import {Component, ViewChild} from '@angular/core';
+import {PersonListComponent, PersonsListTemplateType} from '../person-list/person-list.component';
+import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../model/life-event';
 import {Person} from '../../model/person';
 import {LifeEventDescriptor} from '../person/person.component';
 import {
@@ -16,7 +16,8 @@ import {DataProvider} from '../services/data-provider';
   styleUrls: ['./person-event-editor.component.scss']
 })
 export class PersonEventEditorComponent {
-
+  @ViewChild(PersonListComponent, {static: false})
+  private personListComponent: PersonListComponent;
   public currentPerson: Person;
   public currentLifeEvent: LifeEvent;
   public lifeEventDialigVisable: Boolean;
@@ -38,25 +39,40 @@ export class PersonEventEditorComponent {
   public createNewLifeEvent(person: Person): void {
     this.currentPerson = person;
     this.currentLifeEvent = new LifeEvent();
+    this.currentLifeEvent.type = LifeEventType.MARRIED;
+    this.currentLifeEvent.prefix = LifeEventPrefix.NONE;
     this.lifeEventFormTemplateVersion = LifeEventFormType.NEW_EVENT;
     this.lifeEventDialigVisable = true;
   }
 
   public lifeEventHandler(lifeEventActionDescriptor: LifeEventActionDescriptor): void {
-    if(lifeEventActionDescriptor) {
-      if(lifeEventActionDescriptor.action === LifeEventFormAction.SAVE) {
-        this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent);
+    if (lifeEventActionDescriptor) {
+      if (lifeEventActionDescriptor.action === LifeEventFormAction.SAVE) {
+        this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+          this.personListComponent.getPersons();
+        },
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+          });
       }
-      if(lifeEventActionDescriptor.action === LifeEventFormAction.DELETE) {
-        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent);
+      if (lifeEventActionDescriptor.action === LifeEventFormAction.DELETE) {
+        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+            this.personListComponent.getPersons();
+          },
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+          });
       }
-      if(lifeEventActionDescriptor.action === LifeEventFormAction.CHANGE) {
-        this.dataProvider.changeLifeEvent(this.currentPerson, this.currentLifeEvent);
+      if (lifeEventActionDescriptor.action === LifeEventFormAction.CHANGE) {
+        this.dataProvider.changeLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+            this.personListComponent.getPersons();
+          },
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+          });
       }
     }
-
     this.lifeEventDialigVisable = false;
-    console.log(lifeEventActionDescriptor);
   }
 
   public getFullPersonName(): string {

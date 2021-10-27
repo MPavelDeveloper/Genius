@@ -242,7 +242,6 @@ export class LocalStorageDataProvider extends DataProvider {
       this.persons = data.personList.map((obj: any) => this.mapPerson(obj));
       this.families = data.familyList.map((obj: any) => this.mapFamily(obj));
       this.getLifeEvents();
-      console.log(this.lifeEvents)
     }
   }
 

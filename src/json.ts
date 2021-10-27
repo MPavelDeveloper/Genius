@@ -1,4 +1,4 @@
-import {LifeEventType} from "./model/life-event";
+import {LifeEventPrefix, LifeEventType} from './model/life-event';
 import {LineAge} from "./model/line-age";
 import {Person, Sex} from "./model/person";
 
@@ -221,6 +221,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:1,
+        prefix: LifeEventPrefix.NONE,
         date: new Date('1989-03-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -242,6 +243,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:2,
+        prefix: LifeEventPrefix.NONE,
         date: new Date('1989-03-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -263,6 +265,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:3,
+        prefix: LifeEventPrefix.NONE,
         date: new Date('1998-05-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -284,6 +287,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:4,
+        prefix: LifeEventPrefix.NONE,
         date: new Date('1992-03-09'),
         type: LifeEventType.MARRIED,
         note: 'Married',
