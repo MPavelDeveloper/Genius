@@ -57,41 +57,47 @@
   padding: var(--padding);
   height: 100%;
   width: 100%;
+
 }
 
-life-event {
-  margin-top: 6px;
-  border: 1px solid gray;
-  border-radius: 3px;
-  display: block;
-  font-size: 16px;
-  text-align: left;
-  transition: 300ms;
+.person-short-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding);
+  height: 100%;
+  width: 100%;
 
-  &:hover {
-    background: snow;
+  .person-description {
+    margin-bottom: 12px;
   }
 }
 
 life-event {
   margin-bottom: 12px;
+  border: 1px solid gray;
   border-radius: 6px;
+  display: block;
+  font-size: 16px;
+  text-align: left;
   box-shadow: 0 2px 4px gray;
 }
 
 .btn-add-event {
-  border-radius: 12px;
-  border: none;
-  padding: 12px;
-  font-size: 18px;
-  background: snow;
-  box-shadow: 0px 2px 6px gray;
+  align-self: flex-end;
+  border-radius: 6px;
+  border: 3px solid snow;
+  padding: 1px 8px;
+  font-size: 27px;
+  color: snow;
+  background: none;
   cursor: pointer;
   transition: 300ms;
 
   &:hover {
-    transform:translateY(-3px) ;
+    color: black;
+    background-color: snow;
   }
+
   &:active {
     background-color: lightgoldenrodyellow;
     transition: 30ms;

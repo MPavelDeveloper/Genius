@@ -6,7 +6,7 @@ export enum LifeEventFormType {
   EXIST_EVENT = 'existEvent',
 }
 
-export enum LifeEventFormAction {
+export enum LifeEventFormTemplateAction {
   SAVE = 'save',
   CHANGE = 'change',
   DELETE = 'delete',
@@ -14,7 +14,7 @@ export enum LifeEventFormAction {
 }
 
 export interface LifeEventActionDescriptor {
-  action: LifeEventFormAction,
+  action: LifeEventFormTemplateAction,
   lifeEvent: LifeEvent,
 }
 
@@ -38,11 +38,11 @@ export class LifeEventFormComponent {
     this.eventTypes = Object.values(LifeEventType);
     this.lifeEventPrefix = Object.values(LifeEventPrefix);
     this.lifeEventFormType = LifeEventFormType;
-    this.lifeEventFormAction = LifeEventFormAction;
+    this.lifeEventFormAction = LifeEventFormTemplateAction;
   }
 
-  public returnLifeEvent(lifeEventFormAction: LifeEventFormAction) {
-    (lifeEventFormAction === LifeEventFormAction.CANCEL) ? this.addedLifeEvent.emit(null) :
+  public returnLifeEvent(lifeEventFormAction: LifeEventFormTemplateAction) {
+    (lifeEventFormAction === LifeEventFormTemplateAction.CANCEL) ? this.addedLifeEvent.emit(null) :
       this.addedLifeEvent.emit({
         action: lifeEventFormAction,
         lifeEvent: this.lifeEvent,

@@ -1,10 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Person} from '../../model/person';
-import {LifeEventTemplateVersion} from '../life-event/life-event.component';
+import {
+  LifeEventActionDescriptor,
+  LifeEventTemplateAction,
+  LifeEventTemplateVersion
+} from '../life-event/life-event.component';
 import {LifeEvent} from '../../model/life-event';
 
 export enum PersonsTemplateType {
   SHORTEST = 'shortestTemplate',
+  SHORTEST_DEL = 'shortestDelTemplate',
   SHORT = 'shortTemplate',
   FULL = 'fullTemplate',
   FULL_DATA = 'fullDataTemplate',
@@ -12,6 +17,7 @@ export enum PersonsTemplateType {
 }
 
 export interface LifeEventDescriptor {
+  action: LifeEventTemplateAction,
   person: Person;
   lifeEvent: LifeEvent;
 }
@@ -42,10 +48,11 @@ export class PersonComponent {
     this.returnedPerson.emit(this.person);
   }
 
-  returnExistLifeEvent(lifeEvent: LifeEvent) {
+  returnExistLifeEvent(lifeEventActionDescriptor: LifeEventActionDescriptor) {
     const descriptor: LifeEventDescriptor = {
       person: this.person,
-      lifeEvent: lifeEvent
+      action: lifeEventActionDescriptor.action,
+      lifeEvent: lifeEventActionDescriptor.lifeEvent,
     }
     return this.returnedLifeEvent.emit(descriptor);
   }

@@ -5,11 +5,11 @@ import {Person} from '../../model/person';
 import {LifeEventDescriptor} from '../person/person.component';
 import {
   LifeEventActionDescriptor,
-  LifeEventFormAction,
+  LifeEventFormTemplateAction,
   LifeEventFormType
 } from '../life-event-form/life-event-form.component';
 import {DataProvider} from '../services/data-provider';
-import {Observable} from 'rxjs';
+import {LifeEventTemplateAction} from '../life-event/life-event.component';
 
 @Component({
   selector: 'app-person-event-editor',
@@ -21,9 +21,10 @@ export class PersonEventEditorComponent {
   private personListComponent: PersonListComponent;
   public currentPerson: Person;
   public currentLifeEvent: LifeEvent;
-  public lifeEventDialigVisable: Boolean;
-  public personsListTemplateType;
   public lifeEventFormTemplateVersion: LifeEventFormType;
+  public personsListTemplateType;
+  public lifeEventDialigVisable: Boolean;
+  public deleteConfirmationDialogVisable: boolean;
 
   constructor(private dataProvider: DataProvider) {
     this.personsListTemplateType = PersonsListTemplateType;
@@ -31,10 +32,23 @@ export class PersonEventEditorComponent {
   }
 
   public setSelectedLifeEvent(lifeEventDescriptor: LifeEventDescriptor): void {
-    this.currentPerson = lifeEventDescriptor.person;
-    this.currentLifeEvent = lifeEventDescriptor.lifeEvent;
-    this.lifeEventFormTemplateVersion = LifeEventFormType.EXIST_EVENT;
-    this.lifeEventDialigVisable = true;
+    if (lifeEventDescriptor.action === LifeEventTemplateAction.GET) {
+      this.currentPerson = lifeEventDescriptor.person;
+      this.currentLifeEvent = this.cloneLifeEvent(lifeEventDescriptor.lifeEvent);
+      this.lifeEventFormTemplateVersion = LifeEventFormType.EXIST_EVENT;
+      this.lifeEventDialigVisable = true;
+    } else {
+      this.currentPerson = lifeEventDescriptor.person;
+      this.currentLifeEvent = lifeEventDescriptor.lifeEvent;
+      this.deleteConfirmationDialogVisable = true;
+      // this.dataProvider.deleteLifeEvent(lifeEventDescriptor.person, lifeEventDescriptor.lifeEvent).subscribe(() => {
+      //     this.personListComponent.getPersons();
+      //     this.lifeEventDialigVisable = false;
+      //   },
+      //   (errorResponse) => {
+      //     console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      //   });
+    }
   }
 
   public createNewLifeEvent(person: Person): void {
@@ -48,15 +62,15 @@ export class PersonEventEditorComponent {
 
   public lifeEventHandler(lifeEventActionDescriptor: LifeEventActionDescriptor): void {
     if (lifeEventActionDescriptor) {
-      if (lifeEventActionDescriptor.action === LifeEventFormAction.SAVE) {
+      if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.SAVE) {
         this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
-          this.personListComponent.getPersons();
-        },
+            this.personListComponent.getPersons();
+          },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });
       }
-      if (lifeEventActionDescriptor.action === LifeEventFormAction.DELETE) {
+      if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.DELETE) {
         this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
             this.personListComponent.getPersons();
           },
@@ -64,15 +78,15 @@ export class PersonEventEditorComponent {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });
       }
-      if (lifeEventActionDescriptor.action === LifeEventFormAction.CHANGE) {
-        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe( () => {
-          this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
-              this.personListComponent.getPersons();
-            },
-            (errorResponse) => {
-              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-            });
-        },
+      if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
+        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+            this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+                this.personListComponent.getPersons();
+              },
+              (errorResponse) => {
+                console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+              });
+          },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });
@@ -81,7 +95,27 @@ export class PersonEventEditorComponent {
     this.lifeEventDialigVisable = false;
   }
 
+  public cloneLifeEvent(lifeEvent: LifeEvent): LifeEvent {
+    let cloneLifeEvent = {}
+    Object.assign(cloneLifeEvent, lifeEvent)
+    return cloneLifeEvent;
+  }
+
   public getFullPersonName(): string {
-    return `${this.currentPerson.firstName}  ${this.currentPerson.middleName} ${this.currentPerson.lastName}`;
+    return `${(this.currentPerson.firstName) ? this.currentPerson.firstName : ''}` +
+      ` ${(this.currentPerson.middleName) ? this.currentPerson.middleName : ''}` +
+      ` ${(this.currentPerson.lastName) ? this.currentPerson.lastName : ''}`;
+  }
+
+  confirmActionHandler(deletePersonEventFlag: boolean) {
+    this.deleteConfirmationDialogVisable = false;
+    if(deletePersonEventFlag) {
+      this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+          this.personListComponent.getPersons();
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
+    }
   }
 }

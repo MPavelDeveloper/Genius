@@ -20,6 +20,7 @@ import {LifeEventFormComponent} from "./life-event-form/life-event-form.componen
 import { LifeEventComponent } from './life-event/life-event.component';
 import {PersonEventEditorComponent} from './person-event-editor/person-event-editor.component';
 import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 
@@ -44,6 +45,7 @@ const GeniusRoutes: Routes = [
     LifeEventComponent,
     LifeEventFormComponent,
     PersonEventEditorComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

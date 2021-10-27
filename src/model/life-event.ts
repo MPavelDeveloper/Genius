@@ -24,9 +24,9 @@ export enum LifeEventPrefix {
 
 export class LifeEvent {
   public id?: number;
-  public type: LifeEventType;
+  public type?: LifeEventType;
   public prefix?: LifeEventPrefix;
-  public date: Date;
+  public date?: Date;
   public place?: string;
-  public note: string;
+  public note?: string;
 }

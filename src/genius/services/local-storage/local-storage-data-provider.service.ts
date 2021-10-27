@@ -207,7 +207,6 @@ export class LocalStorageDataProvider extends DataProvider {
     return currentId + 1;
   }
 
-
   private setPersonsId(family: Family): void {
     if (family.husband && !family.husband.id) {
       this.addNewPerson(family.husband);

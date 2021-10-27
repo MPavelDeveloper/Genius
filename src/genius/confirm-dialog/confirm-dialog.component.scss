@@ -1,0 +1,29 @@
+.confirm {
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .confirm-layer {
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+    height: 100%;
+    width: 100%;
+    background-color: #aba5a570;
+    .confirm-window {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+      width: 300px;
+      .confirm-title {
+        margin-bottom: 12px;
+        font-size: 21px;
+      }
+      .confirm-actions {
+        font-size: 21px;
+      }
+    }
+  }
+}

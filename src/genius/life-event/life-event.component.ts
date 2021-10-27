@@ -3,8 +3,19 @@ import {LifeEvent} from '../../model/life-event';
 
 export enum LifeEventTemplateVersion {
   SHORTEST = 'shortest',
+  SHORTEST_DEL = 'shotest_delete',
   SHORT = 'short',
   FULL = 'full',
+}
+
+export enum LifeEventTemplateAction {
+  GET = 'get',
+  DELETE = 'delete',
+}
+
+export interface LifeEventActionDescriptor {
+  action: LifeEventTemplateAction,
+  lifeEvent: LifeEvent,
 }
 
 @Component({
@@ -16,14 +27,19 @@ export class LifeEventComponent {
 
   @Input() lifeEvent: LifeEvent;
   @Input() templateVersion: string;
-  @Output() returnedLifeEvent = new EventEmitter<LifeEvent>();
+  @Output() returnedLifeEvent = new EventEmitter<LifeEventActionDescriptor>();
   lifeEventTemplateVersion;
+  lifeEventTemplateAction;
 
   constructor() {
     this.lifeEventTemplateVersion = LifeEventTemplateVersion;
+    this.lifeEventTemplateAction = LifeEventTemplateAction
   }
 
-  returnLifeEvent() {
-    return this.returnedLifeEvent.emit(this.lifeEvent)
+  returnLifeEvent(lifeEventTemplateAction: LifeEventTemplateAction) {
+    return this.returnedLifeEvent.emit({
+      action: lifeEventTemplateAction,
+      lifeEvent: this.lifeEvent,
+    })
   }
 }

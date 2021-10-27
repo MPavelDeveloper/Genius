@@ -19,7 +19,7 @@
   </div>
   <div *ngSwitchCase="personsListTemplateVersion.PERSONS_EVENTS" class="select-persons-list">
     <div class="list_title">
-      Persons
+      Select event
     </div>
     <ng-container *ngFor="let person of persons">
       <div class="item-person" *ngIf="person.sex === personSex.MALE" style="background: lightblue">

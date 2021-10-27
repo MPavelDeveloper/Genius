@@ -8,3 +8,5 @@
                    [personFullName]="getFullPersonName()"
                    (addedLifeEvent)="lifeEventHandler($event)"></life-event-form>
 </div>
+
+<confirm-dialog *ngIf = "deleteConfirmationDialogVisable" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
