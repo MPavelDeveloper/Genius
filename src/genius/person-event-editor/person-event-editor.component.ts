@@ -9,6 +9,7 @@ import {
   LifeEventFormType
 } from '../life-event-form/life-event-form.component';
 import {DataProvider} from '../services/data-provider';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-person-event-editor',
@@ -64,9 +65,14 @@ export class PersonEventEditorComponent {
           });
       }
       if (lifeEventActionDescriptor.action === LifeEventFormAction.CHANGE) {
-        this.dataProvider.changeLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
-            this.personListComponent.getPersons();
-          },
+        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe( () => {
+          this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+              this.personListComponent.getPersons();
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+            });
+        },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });

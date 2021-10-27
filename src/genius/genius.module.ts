@@ -19,6 +19,7 @@ import {LocalStorageDataProvider} from "./services/local-storage/local-storage-d
 import {LifeEventFormComponent} from "./life-event-form/life-event-form.component";
 import { LifeEventComponent } from './life-event/life-event.component';
 import {PersonEventEditorComponent} from './person-event-editor/person-event-editor.component';
+import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
 
 
 
@@ -55,8 +56,8 @@ const GeniusRoutes: Routes = [
     HttpClientModule,
 
   ],
-  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  // providers: [{provide: DataProvider, useClass: HttpDataProvider}],
+  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
+  providers: [{provide: DataProvider, useClass: HttpDataProvider}],
   bootstrap: [GeniusComponent]
 })
 export class GeniusModule {

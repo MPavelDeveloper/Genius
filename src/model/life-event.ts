@@ -2,7 +2,7 @@ export enum LifeEventType {
   BIRTH = 'Birth',
   DEATH = 'Death',
   ENGAGEMENT = 'Engagement',
-  MARRIED = 'Married',
+  MARRIED = 'Marriage',
   DIVORCE = 'Divorce',
   ADOPTION = 'Adoption',
   CHRISTENING = 'Christening',
@@ -16,10 +16,10 @@ export enum LifeEventType {
 }
 
 export enum LifeEventPrefix {
-  NONE = 'none',
-  BEFORE = 'before',
-  ABOUT = 'about',
-  AFTER = 'after',
+  NONE = 'None',
+  BEFORE = 'Before',
+  ABOUT = 'About',
+  AFTER = 'After',
 }
 
 export class LifeEvent {

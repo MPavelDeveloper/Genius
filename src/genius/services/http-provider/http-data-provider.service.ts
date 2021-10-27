@@ -6,7 +6,7 @@ import {environment} from '../../../environments/environment';
 import {Family} from '../../../model/family';
 import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
-import {FamilyDTO, PersonDTO} from "../dto/dtOs";
+import {FamilyDTO, PersonDTO} from '../dto/dtOs';
 import {LifeEvent} from '../../../model/life-event';
 
 @Injectable({
@@ -62,36 +62,36 @@ export class HttpDataProvider extends DataProvider {
     return new Observable<Family>(subscriber => {
 
       this.http.get<FamilyDTO>(`${environment.url}/families/${familyId}`, this.httpOptionsGet)
-      .subscribe(dto => {
-        const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId))
+        .subscribe(dto => {
+          const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId))
 
-        zip(personCalls).subscribe(persons => {
-          const family = new Family();
-          family.id = dto.id;
-          family.note = dto.note;
+          zip(personCalls).subscribe(persons => {
+            const family = new Family();
+            family.id = dto.id;
+            family.note = dto.note;
 
-          if (dto.husband) {
-            family.husband = persons.find(person => person.id === dto.husband);
-            this.removeItem(persons, family.husband);
-          }
-          if (dto.wife) {
-            family.wife = persons.find(person => person.id === dto.wife);
-            this.removeItem(persons, family.wife);
-          }
-          if (persons.length > 0) {
-            family.children.push(...persons);
-          }
-          subscriber.next(family);
+            if (dto.husband) {
+              family.husband = persons.find(person => person.id === dto.husband);
+              this.removeItem(persons, family.husband);
+            }
+            if (dto.wife) {
+              family.wife = persons.find(person => person.id === dto.wife);
+              this.removeItem(persons, family.wife);
+            }
+            if (persons.length > 0) {
+              family.children.push(...persons);
+            }
+            subscriber.next(family);
+          });
         });
-      });
     });
   }
 
   public findPerson(personId: number): Observable<Person> {
     return this.http.get<PersonDTO>(`${environment.url}/persons/${personId}`, this.httpOptionsGet)
-    .pipe(
-      map(httpResponse => this.mapDtoToPerson(httpResponse))
-    )
+      .pipe(
+        map(httpResponse => this.mapDtoToPerson(httpResponse))
+      )
   }
 
   public getFamilies(): Observable<Array<Family>> {
@@ -99,19 +99,19 @@ export class HttpDataProvider extends DataProvider {
 
       this.getPersons().subscribe(persons => {
         this.http.get<Array<FamilyDTO>>(`${environment.url}/families`, this.httpOptionsGet)
-        .subscribe(families => {
-          const result: Array<Family> = families.map(family => this.mapDtoToFamily(family, persons));
-          subscriber.next(result);
-        });
+          .subscribe(families => {
+            const result: Array<Family> = families.map(family => this.mapDtoToFamily(family, persons));
+            subscriber.next(result);
+          });
       });
     });
   }
 
   public getPersons(): Observable<Array<Person>> {
     return this.http.get<Array<PersonDTO>>(`${environment.url}/persons`, this.httpOptionsGet)
-    .pipe(
-      map(httpResponse => httpResponse.map(obj => this.mapDtoToPerson(obj)))
-    );
+      .pipe(
+        map(httpResponse => httpResponse.map(obj => this.mapDtoToPerson(obj)))
+      );
   }
 
   private mapFamilyToDto(family: Family): FamilyDTO {
@@ -137,6 +137,7 @@ export class HttpDataProvider extends DataProvider {
       place: person.place,
       occupation: person.occupation,
       note: person.note,
+      events: person.lifeEvents,
       familyId: person.familyId
     };
   }
@@ -167,6 +168,7 @@ export class HttpDataProvider extends DataProvider {
     // @ts-ignore
     person.sex = (dto.gender) ? dto.gender.toLowerCase() : null;
     person.familyId = dto?.parentFamilyId;
+    person.lifeEvents = dto.events;
     return person;
   }
 
@@ -191,15 +193,26 @@ export class HttpDataProvider extends DataProvider {
     }
   }
 
+
+  // Event's
+
   addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
-    return undefined;
+    console.log(person)
+    console.log(lifeEvent);
+    return this.http.post(`${environment.url}/persons/${person.id}/events`, lifeEvent, this.httpOptionsSend);
   }
 
   deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
-    return undefined;
+    return this.http.delete(`${environment.url}/persons/${person.id}/events/${lifeEvent.id}`)
   }
 
+//: Observable<Object>
   changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
-    return undefined;
+    return new Observable(subscriber => {
+      this.deleteLifeEvent(person, lifeEvent)
+        .subscribe(() => {
+          subscriber.next(this.addNewLifeEvent(person, lifeEvent));
+        })
+    })
   }
 }
