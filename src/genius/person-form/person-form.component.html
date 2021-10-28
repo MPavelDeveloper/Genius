@@ -3,7 +3,6 @@
     <div class="wrap">
       <span class="btn-close" (click)="close()">X</span>
       <div class="person-title">Create {{personType}}</div>
-
       <select class="person-familyList" [(ngModel)]="selectPersonId" (click)="loadPersons()" name="selectedPerson">
         <option class="familyList-option" value="null">Select {{personType}}</option>
         <ng-container *ngFor="let person of persons">
@@ -13,17 +12,12 @@
           </option>
         </ng-container>
       </select>
-
-      <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)]="person.firstName"
-             name="firstName" autocomplete="off">
+      <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)]="person.firstName" name="firstName" autocomplete="off">
       <div class="person-valid" *ngIf="!firstName.valid && firstName.touched">This field is required.</div>
-
       <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName">
       <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName">
-
       <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" required tabindex="4" [(ngModel)]="person.age" name="age" min="1">
       <div class="person-valid" *ngIf="!age.valid && age.touched">This field is required.</div>
-
       <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5" required>
         <option value="null">Select sex</option>
         <ng-container *ngFor="let sex of PersonSex">
@@ -39,15 +33,10 @@
     <div class="wrap">
       <span class="btn-close" (click)="close()">X</span>
       <div class="person-title">Person</div>
-
-      <input class="person-fn person-input" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name"
-             minlength="2" tabindex="1" autofocus>
-
+      <input class="person-fn person-input" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
       <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" autocomplete="off">
       <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" autocomplete="off">
-
       <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="person.age" name="age" min="1" autocomplete="off">
-
       <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5">
         <option value="null">Select sex</option>
         <ng-container *ngFor="let sex of PersonSex">
@@ -55,11 +44,10 @@
         </ng-container>
       </select>
       <div class="person-valid" *ngIf="!sex.valid && sex.touched">This field is required.</div>
-
       <div class="actions-wrap">
-        <button class="person-create-btn" type="button" *ngIf="createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Create</button>
-        <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Edit</button>
-        <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>
+        <button class="person-create-btn" type="button" *ngIf="createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Save</button>
+        <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Save</button>
+<!--        <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="deletePerson()">Delete</button>-->
       </div>
     </div>
   </form>

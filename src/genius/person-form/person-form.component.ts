@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Person, Sex} from '../../model/person';
 import {FormType} from '../family-form/family-form.component';
 import {DataProvider} from '../services/data-provider';
 import {LifeEvent} from '../../model/life-event';
+import {ActivatedRoute} from '@angular/router';
 
 export enum PersonFormTemplateVersion {
   FAMILY_FORM = 'familyForm',
@@ -14,7 +15,7 @@ export enum PersonFormTemplateVersion {
   templateUrl: './person-form.component.html',
   styleUrls: ['./person-form.component.scss']
 })
-export class PersonFormComponent {
+export class PersonFormComponent implements OnInit {
 
   @Input() templateVersion: string;
   @Input() person: Person;
@@ -31,10 +32,22 @@ export class PersonFormComponent {
   public PersonSex: Array<string>;
   public lifeEventDialogVisible: boolean;
 
-  constructor(private dataProvider: DataProvider) {
+  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute) {
     this.personFormTemplateVersion = PersonFormTemplateVersion;
     this.PersonSex = Object.values(Sex);
     this.selectPersonId = null;
+  }
+
+  ngOnInit(): void {
+    if (this.activateRoute.snapshot.params.id) {
+      this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
+          this.person = person
+          this.templateVersion = PersonFormTemplateVersion.PERSON_EDITOR;
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
+    }
   }
 
   public close(): void {

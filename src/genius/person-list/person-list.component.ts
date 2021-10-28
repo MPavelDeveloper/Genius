@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Person, Sex} from '../../model/person';
 import {DataProvider} from '../services/data-provider';
-import {LifeEventDescriptor, PersonsTemplateType} from '../person/person.component';
+import {LifeEventDescriptor, PersonTemplateType} from '../person/person.component';
 
 export enum PersonsListTemplateType {
   PERSONS = 'persons',
   PERSONS_EVENTS = 'persons_events',
+  PERSONS_LIST = 'list',
 }
 
 @Component({
@@ -13,9 +14,8 @@ export enum PersonsListTemplateType {
   templateUrl: './person-list.component.html',
   styleUrls: ['./person-list.component.scss']
 })
-export class PersonListComponent implements OnInit, OnChanges {
+export class PersonListComponent implements OnInit {
   @Input() templateVersion: PersonsListTemplateType;
-  @Input() reloadData: Boolean;
   @Output() returnedPerson = new EventEmitter<Person>();
   @Output() createNewPerson = new EventEmitter<Person>();
   @Output() returnedExistLifeEvent = new EventEmitter<LifeEventDescriptor>();
@@ -28,17 +28,11 @@ export class PersonListComponent implements OnInit, OnChanges {
   constructor(private dataProvider: DataProvider) {
     this.personSex = Sex;
     this.personsListTemplateVersion = PersonsListTemplateType;
-    this.personTemplateVersion = PersonsTemplateType;
+    this.personTemplateVersion = PersonTemplateType;
   }
 
   public ngOnInit(): void {
     this.getPersons();
-  }
-
-  public ngOnChanges() {
-    if (this.reloadData) {
-      this.getPersons();
-    }
   }
 
   public getPersons(): void {

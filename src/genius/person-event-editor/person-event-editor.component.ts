@@ -41,21 +41,15 @@ export class PersonEventEditorComponent {
       this.currentPerson = lifeEventDescriptor.person;
       this.currentLifeEvent = lifeEventDescriptor.lifeEvent;
       this.deleteConfirmationDialogVisable = true;
-      // this.dataProvider.deleteLifeEvent(lifeEventDescriptor.person, lifeEventDescriptor.lifeEvent).subscribe(() => {
-      //     this.personListComponent.getPersons();
-      //     this.lifeEventDialigVisable = false;
-      //   },
-      //   (errorResponse) => {
-      //     console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-      //   });
     }
   }
 
   public createNewLifeEvent(person: Person): void {
     this.currentPerson = person;
     this.currentLifeEvent = new LifeEvent();
-    this.currentLifeEvent.type = LifeEventType.MARRIED;
+    this.currentLifeEvent.type = LifeEventType.DEFAULT;
     this.currentLifeEvent.prefix = LifeEventPrefix.NONE;
+    this.currentLifeEvent.date;
     this.lifeEventFormTemplateVersion = LifeEventFormType.NEW_EVENT;
     this.lifeEventDialigVisable = true;
   }

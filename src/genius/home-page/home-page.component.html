@@ -1,8 +1,20 @@
-<div class="persons-list">
-  <ng-container>
-    {{ [families] }}
+<div class="table-persons">
+  <ng-container *ngFor="let person of persons; let personIndex = index">
+    <div class="row">
+      <div class="person-wrap-man" *ngIf="person.sex === gender.MALE">
+        <person [person]="person"
+                [templateVersion]="personTemplateType.FULL"></person>
+      </div>
+      <div class="person-wrap-woman" *ngIf="person.sex === gender.FEMALE">
+        <person [person]="person"
+                [templateVersion]="personTemplateType.FULL"></person>
+      </div>
+      <div class="row-actions">
+        <button type="button" class="button-add" (click)="showPersonView(personIndex)" [routerLink] = "['/editPerson', getPersonId(personIndex)]">add</button>
+        <button type="button" class="button-delete" (click)="showConfirm(personIndex)">delete</button>
+      </div>
+    </div>
   </ng-container>
-  <ng-container *ngFor='let person of persons'>
-    <person [templateVersion]="'fullTemplate'" [person]="person"></person>
-  </ng-container>
+  <confirm-dialog *ngIf = "showConfirmDialog" (confirmAction)="deletePerson($event)"></confirm-dialog>
 </div>
+

@@ -7,7 +7,7 @@ import {
 } from '../life-event/life-event.component';
 import {LifeEvent} from '../../model/life-event';
 
-export enum PersonsTemplateType {
+export enum PersonTemplateType {
   SHORTEST = 'shortestTemplate',
   SHORTEST_DEL = 'shortestDelTemplate',
   SHORT = 'shortTemplate',
@@ -16,10 +16,20 @@ export enum PersonsTemplateType {
   EVENTS = 'eventsTemplate',
 }
 
+export enum PersonTemplateAction {
+  GET = 'get',
+  DELETE = 'delete',
+}
+
+export interface PersonDescriptor {
+  action: PersonTemplateAction,
+  person: Person,
+}
+
 export interface LifeEventDescriptor {
   action: LifeEventTemplateAction,
-  person: Person;
-  lifeEvent: LifeEvent;
+  person: Person,
+  lifeEvent: LifeEvent,
 }
 
 @Component({
@@ -36,16 +46,22 @@ export class PersonComponent {
   @Output() returnedLifeEvent = new EventEmitter<LifeEventDescriptor>();
   @Output() newLifeEvent = new EventEmitter<Person>();
   personsTemplateType;
+  personTemplateAction;
   lifeEventTemplateVersion;
 
   constructor() {
     this.templateVersion = 'fullTemplate';
     this.lifeEventTemplateVersion = LifeEventTemplateVersion;
-    this.personsTemplateType = PersonsTemplateType;
+    this.personsTemplateType = PersonTemplateType;
+    this.personTemplateAction = PersonTemplateAction;
   }
 
-  returnPerson() {
-    this.returnedPerson.emit(this.person);
+  returnPerson(personComponentAction: PersonTemplateAction) {
+    // this.returnedPerson.emit({
+    //   action: personComponentAction,
+    //   person: this.person,
+    // });
+    this.returnedPerson.emit(this.person)
   }
 
   returnExistLifeEvent(lifeEventActionDescriptor: LifeEventActionDescriptor) {
@@ -54,10 +70,11 @@ export class PersonComponent {
       action: lifeEventActionDescriptor.action,
       lifeEvent: lifeEventActionDescriptor.lifeEvent,
     }
-    return this.returnedLifeEvent.emit(descriptor);
+    this.returnedLifeEvent.emit(descriptor);
   }
 
   createNewLifeEvent() {
-    return this.newLifeEvent.emit(this.person);
+    this.newLifeEvent.emit(this.person);
   }
+
 }

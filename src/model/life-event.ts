@@ -1,4 +1,5 @@
 export enum LifeEventType {
+  DEFAULT = 'Other',
   BIRTH = 'Birth',
   DEATH = 'Death',
   ENGAGEMENT = 'Engagement',

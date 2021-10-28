@@ -1,28 +1,54 @@
+
 .confirm {
   position: absolute;
-  top:0;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+
   .confirm-layer {
     display: flex;
     justify-content: center;
-    align-items:center ;
+    align-items: center;
     height: 100%;
     width: 100%;
     background-color: #aba5a570;
+
     .confirm-window {
+      border-radius: 12px;
       display: flex;
+      flex-flow: column nowrap;
       justify-content: center;
       align-items: center;
-      height: 300px;
+      height: 201px;
       width: 300px;
+      box-shadow: 0 4px 6px grey;
+      background-color: #fffafaa8;
+
       .confirm-title {
         margin-bottom: 12px;
         font-size: 21px;
       }
+
       .confirm-actions {
-        font-size: 21px;
+        button {
+          margin-right: 12px;
+          padding: 12px;
+          border: 1px solid lightgray;
+          border-radius: 6px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: 300ms;
+
+          &:nth-last-child(1) {
+            margin-right: 0px;
+          }
+
+          &:hover {
+            background-color: snow;
+          }
+        }
+
       }
     }
   }

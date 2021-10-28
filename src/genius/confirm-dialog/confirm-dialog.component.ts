@@ -1,8 +1,9 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent {

@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {PersonFormTemplateVersion} from '../person-form/person-form.component';
 import {Person} from '../../model/person';
 import {DataProvider} from '../services/data-provider';
-import {PersonsListTemplateType} from '../person-list/person-list.component';
+import {PersonListComponent, PersonsListTemplateType} from '../person-list/person-list.component';
 
 @Component({
   selector: 'app-person-editor',
@@ -10,12 +10,12 @@ import {PersonsListTemplateType} from '../person-list/person-list.component';
   styleUrls: ['./person-editor.component.scss']
 })
 export class PersonEditorComponent {
-
+  @ViewChild(PersonListComponent, {static: false})
+  private personListComponent: PersonListComponent;
   public currentPerson: Person;
   public personDialogVisible: Boolean;
   public personComponentTemplate;
   public personListComponentTemplate;
-  public reloadPersons: Boolean;
   public createNewPerson: Boolean;
 
   constructor(private dataProvider: DataProvider) {
@@ -35,8 +35,7 @@ export class PersonEditorComponent {
       this.dataProvider.addNewPerson(person)
         .subscribe(() => {
             this.personDialogVisible = false;
-            this.reloadPersons = true;
-            setTimeout(() => this.reloadPersons = false, 0)
+            this.personListComponent.getPersons()
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -50,8 +49,7 @@ export class PersonEditorComponent {
     this.dataProvider.changePerson(person)
       .subscribe(() => {
           this.personDialogVisible = false;
-          this.reloadPersons = true;
-          setTimeout(() => this.reloadPersons = false, 120)
+          this.personListComponent.getPersons();
         },
         (errorResponse) => {
           console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -62,8 +60,7 @@ export class PersonEditorComponent {
     this.dataProvider.deletePerson(person.id)
       .subscribe(() => {
           this.personDialogVisible = false;
-          this.reloadPersons = true;
-          setTimeout(() => this.reloadPersons = false, 0)
+          this.personListComponent.getPersons();
         },
         (errorResponse) => {
           console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);

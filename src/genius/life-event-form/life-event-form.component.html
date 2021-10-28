@@ -1,7 +1,9 @@
 <div class="event__form">
   <div class="form-wrap">
-    {{personFullName}}
+    <p class="event-person">{{personFullName}}<p>
+
     <button class="event__btn-close" (click)="returnLifeEvent(lifeEventFormAction.CANCEL)">X</button>
+
     <p class="title__select">event type</p>
     <select class="event__select" [(ngModel)] = "lifeEvent.type">
       <ng-container *ngFor="let lifeEventType of eventTypes">
@@ -14,6 +16,7 @@
         <option class="select-option" value="{{eventPrefix}}">{{eventPrefix}}</option>
       </ng-container>
     </select>
+    <p class="title__select">date</p>
     <input type="date" class="event__calendare" [(ngModel)] = "lifeEvent.date" >
     <input type="text" class="event__place text-input" placeholder="enter place" [(ngModel)] = "lifeEvent.place">
     <input type="text" class="event__note text-input" placeholder="enter note" [(ngModel)] = "lifeEvent.note">
@@ -23,7 +26,6 @@
       </div>
       <div *ngSwitchCase = "lifeEventFormType.EXIST_EVENT" class="event-actions">
         <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.CHANGE)">save</button>
-<!--        <button class="event__cancel-btn" type="button" (click)="returnLifeEvent(lifeEventFormAction.DELETE)">delete</button>-->
       </div>
     </ng-container>
   </div>

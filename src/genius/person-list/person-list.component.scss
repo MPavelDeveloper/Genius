@@ -1,5 +1,5 @@
 
-.select-persons-list {
+.select-persons-list, .persons-list {
   margin-right: 12px;
   align-self: flex-start;
   overflow-y: scroll;
@@ -30,8 +30,21 @@
       transition: 300ms;
     }
   }
+  .item-person-man {
+    background: lightblue;
+    &:hover {
+      background-color: #c2e9f3;
+    }
+  }
+  .item-person-woman {
+    background: pink;
+    &:hover {
+      background: #ffdbdf;
+    }
+  }
 
-  .item-person {
+  .item-person-man,
+  .item-person-woman {
     margin-bottom: 15px;
     border-radius: 3px;
     display: flex;
@@ -40,17 +53,28 @@
     min-width: 285px;
     font-size: 18px;
     color: black;
-    background-color: #9da7b1;
     box-shadow: 0 2px 6px lightgrey;
     transition: 300ms;
 
-    &:hover {
-      background-color: #c4c1c1;
-    }
+
 
     person {
       height: 100%;
       width: 100%;
     }
   }
+}
+
+.persons-list {
+  margin-right: 0px;
+  align-self: flex-start;
+  padding: 21px 60px 90px;
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+  overflow-y: visible;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }

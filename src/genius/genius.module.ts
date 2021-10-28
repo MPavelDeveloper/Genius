@@ -29,6 +29,7 @@ const GeniusRoutes: Routes = [
   {path: 'createPerson', component: PersonEditorComponent,},
   {path: 'createPersonEvent', component: PersonEventEditorComponent,},
   {path: 'createFamily', component: FamilyFormComponent,},
+  {path: 'editPerson/:id', component: PersonFormComponent,},
   {path: '**', redirectTo: 'Home',},
 ]
 
