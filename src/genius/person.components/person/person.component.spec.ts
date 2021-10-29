@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {PersonComponent} from "./person.component";
-import {Sex} from "../../model/person";
+import {Sex} from "../../../model/person";
 
 
 describe('PersonComponent', () => {

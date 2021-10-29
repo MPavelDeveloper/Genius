@@ -1,17 +1,15 @@
 <div class="table-persons">
+  <button class="button-add-new" type="button" routerLink = '/createPerson'>+</button>
   <ng-container *ngFor="let person of persons; let personIndex = index">
     <div class="row">
-      <div class="person-wrap-man" *ngIf="person.sex === gender.MALE">
-        <person [person]="person"
-                [templateVersion]="personTemplateType.FULL"></person>
-      </div>
-      <div class="person-wrap-woman" *ngIf="person.sex === gender.FEMALE">
+      <div [ngClass]="{'person-wrap-man': person.sex === gender.MALE, 'person-wrap-woman':person.sex === gender.FEMALE}"
+           [routerLink] = "['/editPerson', person.id]">
         <person [person]="person"
                 [templateVersion]="personTemplateType.FULL"></person>
       </div>
       <div class="row-actions">
-        <button type="button" class="button-add" (click)="showPersonView(personIndex)" [routerLink] = "['/editPerson', getPersonId(personIndex)]">add</button>
-        <button type="button" class="button-delete" (click)="showConfirm(personIndex)">delete</button>
+        <button class="button-add" type="button" [routerLink] = "['/editPerson', person.id]">add</button>
+        <button class="button-delete" type="button" (click)="showConfirm(personIndex)">delete</button>
       </div>
     </div>
   </ng-container>

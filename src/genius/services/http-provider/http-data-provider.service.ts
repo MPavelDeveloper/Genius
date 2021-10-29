@@ -12,6 +12,7 @@ import {LifeEvent} from '../../../model/life-event';
 @Injectable({
   providedIn: 'root'
 })
+
 export class HttpDataProvider extends DataProvider {
 
   private readonly httpOptionsSend = {
@@ -193,25 +194,19 @@ export class HttpDataProvider extends DataProvider {
     }
   }
 
-
-  // Event's
-
-  addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
-    console.log(person)
-    console.log(lifeEvent);
-    return this.http.post(`${environment.url}/persons/${person.id}/events`, lifeEvent, this.httpOptionsSend);
+  public addNewPersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
+    return this.http.post(`${environment.url}/persons/${personId}/events`, lifeEvent, this.httpOptionsSend);
   }
 
-  deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
-    return this.http.delete(`${environment.url}/persons/${person.id}/events/${lifeEvent.id}`)
+  public deletePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
+    return this.http.delete(`${environment.url}/persons/${personId}/events/${lifeEvent.id}`)
   }
 
-//: Observable<Object>
-  changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object> {
+  public changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
     return new Observable(subscriber => {
-      this.deleteLifeEvent(person, lifeEvent)
+      this.deletePersonEvent(personId, lifeEvent)
         .subscribe(() => {
-          subscriber.next(this.addNewLifeEvent(person, lifeEvent));
+          subscriber.next(this.addNewPersonEvent(personId, lifeEvent));
         })
     })
   }

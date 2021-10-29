@@ -1,4 +1,5 @@
 <ng-container [ngSwitch]="templateVersion">
+
   <div *ngSwitchCase="personsListTemplateVersion.PERSONS" class="select-persons-list">
     <div class="list_title">
       Persons
@@ -7,13 +8,7 @@
       <button class="action-add" (click)="createPerson()">+</button>
     </div>
     <ng-container *ngFor="let person of persons">
-      <div class="item-person-man" *ngIf="person.sex === personSex.MALE" >
-        <person class="person-short"
-                [person]="person"
-                [templateVersion]="personTemplateVersion.FULL_DATA"
-                (returnedPerson)="returnExistPerson($event)"></person>
-      </div>
-      <div class="item-person-woman" *ngIf="person.sex === personSex.FEMALE" >
+      <div class="item-person-man" [ngClass]="{'item-person-man': person.sex === personSex.MALE, 'item-person-woman': person.sex === personSex.FEMALE}">
         <person class="person-short"
                 [person]="person"
                 [templateVersion]="personTemplateVersion.FULL_DATA"
@@ -21,20 +16,13 @@
       </div>
     </ng-container>
   </div>
+
   <div *ngSwitchCase="personsListTemplateVersion.PERSONS_EVENTS" class="select-persons-list">
     <div class="list_title">
       Select event
     </div>
     <ng-container *ngFor="let person of persons">
-      <div class="item-person-man" *ngIf="person.sex === personSex.MALE" style="background: lightblue">
-        <person class="person-short"
-                [person]="person"
-                [templateVersion]="personTemplateVersion.EVENTS"
-                (returnedLifeEvent)="returnExistPersonLifeEvent($event)"
-                (returnedPerson)="returnExistPerson($event)"
-                (newLifeEvent)="createNewPersonLifeEvent($event)"></person>
-      </div>
-      <div class="item-person-woman" *ngIf="person.sex === personSex.FEMALE" style="background: pink">
+      <div class="item-person-man" [ngClass]="{'item-person-man': person.sex === personSex.MALE, 'item-person-woman': person.sex === personSex.FEMALE}">
         <person class="person-short"
                 [person]="person"
                 [templateVersion]="personTemplateVersion.EVENTS"
@@ -44,18 +32,13 @@
       </div>
     </ng-container>
   </div>
+
   <div *ngSwitchCase="personsListTemplateVersion.PERSONS_LIST" class="persons-list">
     <div class="list_action">
       <button class="action-add" (click)="createPerson()">+</button>
     </div>
     <ng-container *ngFor="let person of persons">
-      <div class="item-person-man" *ngIf="person.sex === personSex.MALE" >
-        <person class="person-short"
-                [person]="person"
-                [templateVersion]="personTemplateVersion.FULL_DATA"
-                (returnedPerson)="returnExistPerson($event)"></person>
-      </div>
-      <div class="item-person-woman" *ngIf="person.sex === personSex.FEMALE" >
+      <div class="item-person-man" [ngClass]="{'item-person-man': person.sex === personSex.MALE, 'item-person-woman': person.sex === personSex.FEMALE}" >
         <person class="person-short"
                 [person]="person"
                 [templateVersion]="personTemplateVersion.FULL_DATA"

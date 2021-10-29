@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {PersonFormTemplateVersion} from '../person-form/person-form.component';
-import {Person} from '../../model/person';
-import {DataProvider} from '../services/data-provider';
+import {Person} from '../../../model/person';
+import {DataProvider} from '../../services/data-provider';
 import {PersonListComponent, PersonsListTemplateType} from '../person-list/person-list.component';
 
 @Component({

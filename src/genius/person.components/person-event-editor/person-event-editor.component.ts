@@ -1,15 +1,15 @@
 import {Component, ViewChild} from '@angular/core';
 import {PersonListComponent, PersonsListTemplateType} from '../person-list/person-list.component';
-import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../model/life-event';
-import {Person} from '../../model/person';
+import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
+import {Person} from '../../../model/person';
 import {LifeEventDescriptor} from '../person/person.component';
 import {
-  LifeEventActionDescriptor,
+  LifeEventFormActionDescriptor,
   LifeEventFormTemplateAction,
   LifeEventFormType
-} from '../life-event-form/life-event-form.component';
-import {DataProvider} from '../services/data-provider';
-import {LifeEventTemplateAction} from '../life-event/life-event.component';
+} from '../../life-event-form/life-event-form.component';
+import {DataProvider} from '../../services/data-provider';
+import {LifeEventTemplateAction} from '../../life-event/life-event.component';
 
 @Component({
   selector: 'app-person-event-editor',
@@ -54,10 +54,10 @@ export class PersonEventEditorComponent {
     this.lifeEventDialigVisable = true;
   }
 
-  public lifeEventHandler(lifeEventActionDescriptor: LifeEventActionDescriptor): void {
+  public lifeEventHandler(lifeEventActionDescriptor: LifeEventFormActionDescriptor): void {
     if (lifeEventActionDescriptor) {
       if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.SAVE) {
-        this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+        this.dataProvider.addNewPersonEvent(this.currentPerson.id, this.currentLifeEvent).subscribe(() => {
             this.personListComponent.getPersons();
           },
           (errorResponse) => {
@@ -65,7 +65,7 @@ export class PersonEventEditorComponent {
           });
       }
       if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.DELETE) {
-        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+        this.dataProvider.deletePersonEvent(this.currentPerson.id, this.currentLifeEvent).subscribe(() => {
             this.personListComponent.getPersons();
           },
           (errorResponse) => {
@@ -73,8 +73,8 @@ export class PersonEventEditorComponent {
           });
       }
       if (lifeEventActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
-        this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
-            this.dataProvider.addNewLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+        this.dataProvider.deletePersonEvent(this.currentPerson.id, this.currentLifeEvent).subscribe(() => {
+            this.dataProvider.addNewPersonEvent(this.currentPerson.id, this.currentLifeEvent).subscribe(() => {
                 this.personListComponent.getPersons();
               },
               (errorResponse) => {
@@ -104,7 +104,7 @@ export class PersonEventEditorComponent {
   confirmActionHandler(deletePersonEventFlag: boolean) {
     this.deleteConfirmationDialogVisable = false;
     if(deletePersonEventFlag) {
-      this.dataProvider.deleteLifeEvent(this.currentPerson, this.currentLifeEvent).subscribe(() => {
+      this.dataProvider.deletePersonEvent(this.currentPerson.id, this.currentLifeEvent).subscribe(() => {
           this.personListComponent.getPersons();
         },
         (errorResponse) => {

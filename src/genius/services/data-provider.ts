@@ -24,10 +24,10 @@ export abstract class DataProvider {
 
   abstract changePerson(person: Person): Observable<Object>;
 
-  abstract addNewLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
+  abstract addNewPersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object>;
 
-  abstract deleteLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
+  abstract deletePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object>;
 
-  abstract changeLifeEvent(person: Person, lifeEvent: LifeEvent): Observable<Object>;
+  abstract changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object>;
 
 }

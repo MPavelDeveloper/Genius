@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Person} from '../../model/person';
+import {Person} from '../../../model/person';
 import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
   LifeEventTemplateVersion
-} from '../life-event/life-event.component';
-import {LifeEvent} from '../../model/life-event';
+} from '../../life-event/life-event.component';
+import {LifeEvent} from '../../../model/life-event';
 
 export enum PersonTemplateType {
   SHORTEST = 'shortestTemplate',

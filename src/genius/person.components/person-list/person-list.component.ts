@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {Person, Sex} from '../../model/person';
-import {DataProvider} from '../services/data-provider';
+import {Person, Sex} from '../../../model/person';
+import {DataProvider} from '../../services/data-provider';
 import {LifeEventDescriptor, PersonTemplateType} from '../person/person.component';
 
 export enum PersonsListTemplateType {

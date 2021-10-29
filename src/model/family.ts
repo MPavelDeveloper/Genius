@@ -1,5 +1,5 @@
 import { Person } from "./person";
-import {FamilyEvent} from "./family-event";
+import {LifeEvent} from './life-event';
 
 export class Family {
   public id?: number;
@@ -7,5 +7,5 @@ export class Family {
   public wife?: Person;
   public children?: Array<Person> = [];
   public note?: string;
-  public events?: Array<FamilyEvent>;
+  public events?: Array<LifeEvent>;
 }

@@ -1,0 +1,119 @@
+<ng-container [ngSwitch]="templateVersion">
+  <form *ngSwitchCase="personFormTemplateVersion.FAMILY_FORM" class="form-wrap">
+    <div class="wrap">
+      <span class="btn-close" (click)="close()">X</span>
+      <div class="person-title">Create {{personType}}</div>
+      <select class="person-familyList" [(ngModel)]="selectPersonId" (click)="loadPersons()" name="selectedPerson">
+        <option class="familyList-option" value="null">Select {{personType}}</option>
+        <ng-container *ngFor="let person of persons">
+          <option class="familyList-option" value="{{person?.id}}">
+            {{personType}}
+            <person [person]="person" [templateVersion]="'shortestTemplate'"></person>
+          </option>
+        </ng-container>
+      </select>
+      <input class="person-fn person-input" #firstName="ngModel" type="text" placeholder="First name" required minlength="2" tabindex="1" autofocus [(ngModel)]="person.firstName" name="firstName" autocomplete="off">
+      <div class="person-valid" *ngIf="!firstName.valid && firstName.touched">This field is required.</div>
+      <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName">
+      <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName">
+      <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" required tabindex="4" [(ngModel)]="person.age" name="age" min="1">
+      <div class="person-valid" *ngIf="!age.valid && age.touched">This field is required.</div>
+      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5" required>
+        <ng-container *ngFor="let sex of PersonSex">
+          <option [value]="sex">{{sex}}</option>
+        </ng-container>
+      </select>
+      <div class="person-valid" *ngIf="!sex.valid && sex.touched">This field is required.</div>
+      <button class="person-create-btn" type="button" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Select</button>
+    </div>
+  </form>
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_EDITOR" class="form-wrap">
+    <div class="wrap">
+      <span class="btn-close" (click)="close()">X</span>
+      <div class="person-title">Person</div>
+      <input class="person-fn person-input" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
+      <input class="person-ln person-input" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" autocomplete="off">
+      <input class="person-mn person-input" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" autocomplete="off">
+      <input class="person-age person-input" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="person.age" name="age" min="1" autocomplete="off">
+      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5">
+        <ng-container *ngFor="let sex of PersonSex">
+          <option [value]="sex">{{sex}}</option>
+        </ng-container>
+      </select>
+      <div class="person-valid" *ngIf="!sex.valid && sex.touched">This field is required.</div>
+      <div class="actions-wrap">
+        <button class="person-create-btn" type="button" *ngIf="createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="addPerson()">Save</button>
+        <button class="person-create-btn" type="button" *ngIf="!createNewPerson" [disabled]='!firstName.valid || !age.valid || !sex.valid' (click)="editPerson()">Save</button>
+      </div>
+    </div>
+  </form>
+
+
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_VIEW" class="form-wrap">
+    <div class="wrap">
+      <span class="btn-close" routerLink="/Home">X</span>
+      <div class="title-wrap">
+        <div class="person-title">Person</div>
+        <button class="person-edit-btn" type="button" (click)="toggleEdit()">Edit</button>
+      </div>
+      <input class="person-fn person-input-view" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" disabled>
+      <input class="person-ln person-input-view" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" autocomplete="off" disabled>
+      <input class="person-mn person-input-view" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" autocomplete="off" disabled>
+      <input class="person-age person-input-view" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="person.age" name="age" min="1" autocomplete="off" disabled>
+      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5" disabled>
+        <ng-container *ngFor="let sex of PersonSex">
+          <option [value]="sex">{{sex}}</option>
+        </ng-container>
+      </select>
+
+      <ng-container *ngFor = "let lifeEvent of person.lifeEvents; let index = index">
+        <p class="person-title-events" *ngIf="index === 0">Events</p>
+        <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL" [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
+      </ng-container>
+      <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="deleteLifeEvent($event)"></confirm-dialog>
+    </div>
+    <life-event-form *ngIf = "lifeEventFormDialogVisiable"
+                     [templateVersion]="lifeEventFormTemplateVersion.EXIST_EVENT"
+                     [lifeEvent]="lifeEventClone"
+                     [personFullName]="getPersonFullName()"
+                     (addedLifeEvent)="lifeEventFormHandler($event)"></life-event-form>
+  </form>
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_EDIT" class="form-wrap">
+    <div class="wrap">
+      <span class="btn-close" (click)="exit()">X</span>
+      <div class="person-title">Person</div>
+      <input class="person-fn person-input-edit" #firstName="ngModel" type="text" [(ngModel)]="personClone.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
+      <input class="person-ln person-input-edit" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="personClone.lastName" name="lastName" autocomplete="off">
+      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="personClone.middleName" name="middleName" autocomplete="off">
+      <input class="person-age person-input-edit" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="personClone.age" name="age" min="1" autocomplete="off">
+      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="personClone.sex" tabindex="5">
+        <ng-container *ngFor="let sex of PersonSex">
+          <option [value]="sex">{{sex}}</option>
+        </ng-container>
+      </select>
+      <div class="actions-wrap">
+        <button class="person-create-btn" type="button" (click)="savePerson()">Save</button>
+      </div>
+    </div>
+  </form>
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_NEW" class="form-wrap">
+    <div class="wrap">
+      <span class="btn-close" routerLink="/Home">X</span>
+      <div class="person-title">Person</div>
+      <input class="person-fn person-input-edit" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
+      <input class="person-ln person-input-edit" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" autocomplete="off">
+      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" autocomplete="off">
+      <input class="person-age person-input-edit" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="person.age" name="age" min="1" autocomplete="off">
+      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5">
+        <ng-container *ngFor="let sex of PersonSex">
+          <option [value]="sex">{{sex}}</option>
+        </ng-container>
+      </select>
+      <div class="actions-wrap">
+        <button class="person-create-btn" type="button" (click)="savePerson()">Save</button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+

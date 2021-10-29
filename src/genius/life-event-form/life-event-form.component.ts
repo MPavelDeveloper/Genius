@@ -13,7 +13,7 @@ export enum LifeEventFormTemplateAction {
   CANCEL = 'cancel',
 }
 
-export interface LifeEventActionDescriptor {
+export interface LifeEventFormActionDescriptor {
   action: LifeEventFormTemplateAction,
   lifeEvent: LifeEvent,
 }
@@ -27,7 +27,7 @@ export class LifeEventFormComponent {
   @Input() templateVersion: LifeEventFormType;
   @Input() lifeEvent: LifeEvent;
   @Input() personFullName: string;
-  @Output() addedLifeEvent = new EventEmitter<LifeEventActionDescriptor>();
+  @Output() addedLifeEvent = new EventEmitter<LifeEventFormActionDescriptor>();
   public eventTypes: Array<string>;
   public lifeEventPrefix: Array<string>;
   public lifeEventFormType;
@@ -41,10 +41,10 @@ export class LifeEventFormComponent {
     this.lifeEventFormAction = LifeEventFormTemplateAction;
   }
 
-  public returnLifeEvent(lifeEventFormAction: LifeEventFormTemplateAction) {
-    (lifeEventFormAction === LifeEventFormTemplateAction.CANCEL) ? this.addedLifeEvent.emit(null) :
+  public returnLifeEvent(lifeEventFormTemplateAction: LifeEventFormTemplateAction) {
+    (lifeEventFormTemplateAction === LifeEventFormTemplateAction.CANCEL) ? this.addedLifeEvent.emit(null) :
       this.addedLifeEvent.emit({
-        action: lifeEventFormAction,
+        action: lifeEventFormTemplateAction,
         lifeEvent: this.lifeEvent,
       });
   }

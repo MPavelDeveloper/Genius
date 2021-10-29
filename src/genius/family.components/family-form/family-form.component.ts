@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
-import {Family} from '../../model/family';
-import {Person, Sex} from '../../model/person';
-import {PersonFormTemplateVersion} from '../person-form/person-form.component';
-import {DataProvider} from '../services/data-provider';
+import {Family} from '../../../model/family';
+import {Person, Sex} from '../../../model/person';
+import {PersonFormTemplateVersion} from '../../person.components/person-form/person-form.component';
+import {DataProvider} from '../../services/data-provider';
 
 export enum FormType {
   FATHER = 'father',

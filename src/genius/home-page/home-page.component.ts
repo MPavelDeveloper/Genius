@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Person, Sex} from '../../model/person';
 import {DataProvider} from '../services/data-provider';
-import {PersonsListTemplateType} from '../person-list/person-list.component';
-import {PersonTemplateType} from '../person/person.component';
+import {PersonsListTemplateType} from '../person.components/person-list/person-list.component';
+import {PersonTemplateType} from '../person.components/person/person.component';
 
 @Component({
   selector: 'home-page',
@@ -34,8 +34,6 @@ export class HomePageComponent implements OnInit {
       })
   }
 
-  showPersonView(personIndex: number): void {
-  }
 
   showConfirm(personIndex: number): void {
     this.currentPersonIndex = personIndex;
