@@ -1,20 +1,25 @@
-.family {
-  margin-bottom: 12px;
-  border-radius: 3px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  max-width: 300px;
-  font-size: 18px;
-  color: black;
-  background-color: #80800059;
-  box-shadow: 0 2px 6px lightgrey;
-  cursor: pointer;
-  transition: 300ms;
+//.family {
+//  margin-bottom: 12px;
+//  border-radius: 3px;
+//  padding: 12px;
+//  display: flex;
+//  align-items: center;
+//  max-width: 300px;
+//  font-size: 18px;
+//  color: black;
+//  background-color: #80800059;
+//  box-shadow: 0 2px 6px lightgrey;
+//  cursor: pointer;
+//  transition: 300ms;
+//
+//  &:hover {
+//    background-color: #c4c1c1;
+//  }
+//}
 
-  &:hover {
-    background-color: #c4c1c1;
-  }
+.family {
+  height: 100%;
+  width: 100%;
 
   .parents {
     margin-right: 21px;

@@ -1,0 +1,13 @@
+<div class="table-families">
+  <button class="button-add-new" type="button" routerLink = "/createFamily">+</button>
+  <ng-container *ngFor="let family of families">
+    <div class="row">
+      <family [family]="family"></family>
+      <div class="row-actions">
+        <button class="button-add" type="button" [routerLink] = "['/viewFamily', family.id]">add</button>
+        <button class="button-delete" type="button" (click)="showConfirm(family.id)">delete</button>
+      </div>
+    </div>
+  </ng-container>
+  <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="deleteFamily($event)"></confirm-dialog>
+</div>

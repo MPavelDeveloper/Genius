@@ -57,12 +57,12 @@
   padding: var(--padding);
   height: 100%;
   width: 100%;
-
 }
+
 .person-short-fulldata {
   display: flex;
-  justify-content: space-between;
-  padding: var(--padding);
+  justify-content: center;
+  padding: var(--padding, 12px);
   height: 100%;
   width: 100%;
   cursor: pointer;

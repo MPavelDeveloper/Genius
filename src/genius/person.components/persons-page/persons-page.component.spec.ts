@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PersonEditorComponent } from './person-editor.component';
+import { PersonsPageComponent } from './persons-page.component';
 import {DataProvider} from "../../services/data-provider";
 import {LocalStorageDataProvider} from "../../services/local-storage/local-storage-data-provider.service";
 
-describe('PersonEditorComponent', () => {
-  let component: PersonEditorComponent;
-  let fixture: ComponentFixture<PersonEditorComponent>;
+describe('HomePageComponent', () => {
+  let component: PersonsPageComponent;
+  let fixture: ComponentFixture<PersonsPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PersonEditorComponent ],
+      declarations: [PersonsPageComponent],
       providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonEditorComponent);
+    fixture = TestBed.createComponent(PersonsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../model/life-event';
+import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
 
 export enum LifeEventFormType {
   NEW_EVENT = 'newEvent',

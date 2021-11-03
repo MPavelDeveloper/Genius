@@ -64,9 +64,8 @@ export class HttpDataProvider extends DataProvider {
 
       this.http.get<FamilyDTO>(`${environment.url}/families/${familyId}`, this.httpOptionsGet)
         .subscribe(dto => {
-          const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId))
-
-          zip(personCalls).subscribe(persons => {
+          const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId));
+          zip(...personCalls).subscribe(persons => {
             const family = new Family();
             family.id = dto.id;
             family.note = dto.note;
@@ -82,6 +81,7 @@ export class HttpDataProvider extends DataProvider {
             if (persons.length > 0) {
               family.children.push(...persons);
             }
+
             subscriber.next(family);
           });
         });
@@ -91,8 +91,9 @@ export class HttpDataProvider extends DataProvider {
   public findPerson(personId: number): Observable<Person> {
     return this.http.get<PersonDTO>(`${environment.url}/persons/${personId}`, this.httpOptionsGet)
       .pipe(
-        map(httpResponse => this.mapDtoToPerson(httpResponse))
-      )
+        map((httpResponse) => {
+          return this.mapDtoToPerson(httpResponse);
+        }));
   }
 
   public getFamilies(): Observable<Array<Family>> {

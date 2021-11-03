@@ -4,7 +4,7 @@ import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
   LifeEventTemplateVersion
-} from '../../life-event/life-event.component';
+} from '../../event.components/life-event/life-event.component';
 import {LifeEvent} from '../../../model/life-event';
 
 export enum PersonTemplateType {

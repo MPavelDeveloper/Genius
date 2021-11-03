@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {LifeEvent} from '../../model/life-event';
+import {LifeEvent} from '../../../model/life-event';
 
 export enum LifeEventTemplateVersion {
   SHORTEST = 'shortest',

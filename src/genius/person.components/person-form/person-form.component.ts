@@ -1,25 +1,32 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Person, Sex} from '../../../model/person';
-import {FormType} from '../../family.components/family-form/family-form.component';
+import {PersonType} from '../../family.components/family-form/family-form.component';
 import {DataProvider} from '../../services/data-provider';
 import {ActivatedRoute} from '@angular/router';
 import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
   LifeEventTemplateVersion
-} from '../../life-event/life-event.component';
-import {LifeEvent} from '../../../model/life-event';
+} from '../../event.components/life-event/life-event.component';
+import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
 import {
   LifeEventFormActionDescriptor,
-  LifeEventFormTemplateAction, LifeEventFormType
-} from '../../life-event-form/life-event-form.component';
+  LifeEventFormTemplateAction,
+  LifeEventFormType
+} from '../../event.components/life-event-form/life-event-form.component';
+import {PersonTemplateType} from '../person/person.component';
+import {ComponentDescriptor, SelectPersonTransferService} from '../../services/select-person-transfer/select-person-transfer.service';
 
 export enum PersonFormTemplateVersion {
-  FAMILY_FORM = 'familyForm',
-  PERSON_EDITOR = 'personEditor',
   PERSON_VIEW = 'view',
   PERSON_EDIT = 'edit',
-  PERSON_NEW = 'new',
+  PERSON_CREATE = 'create',
+  PERSON_SELECT = 'select',
+}
+
+export enum PersonFormPath {
+  EDIT = 'viewPerson/:id',
+  SELECT = 'selectPerson',
 }
 
 @Component({
@@ -28,85 +35,68 @@ export enum PersonFormTemplateVersion {
   styleUrls: ['./person-form.component.scss']
 })
 export class PersonFormComponent implements OnInit {
-
   @Input() templateVersion: string;
   @Input() person: Person;
-  @Input() personType: FormType;
-  @Input() createNewPerson: Boolean;
+  @Input() personType: PersonType;
 
-  @Output() addedPerson = new EventEmitter<Person>();
-  @Output() editedPerson = new EventEmitter<Person>();
-  @Output() deletedPerson = new EventEmitter<Person>();
-
+  public familyId: number;
+  public persons: Array<Person>;
   public personClone: Person;
   public lifeEvent: LifeEvent
   public lifeEventClone: LifeEvent;
-  public persons: Array<Person>;
-  public personFormTemplateVersion;
-  public selectPersonId: string;
   public PersonSex: Array<string>;
+  public confirmDialogVisiable: Boolean;
+  public lifeEventFormType: LifeEventFormType;
+  public lifeEventFormDialogVisiable: Boolean;
+  public personFormTemplateVersion;
   public lifeEventTemplateVersion;
   public lifeEventFormTemplateVersion;
-  public confirmDialogVisiable: Boolean;
-  public lifeEventFormDialogVisiable: Boolean;
+  public personTemplateType;
+  public personSex;
 
-  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute) {
+  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute, private familyPerson: SelectPersonTransferService) {
     this.person = new Person();
-    this.templateVersion = PersonFormTemplateVersion.PERSON_NEW;
-    this.selectPersonId = null;
+    this.templateVersion = PersonFormTemplateVersion.PERSON_CREATE;
     this.PersonSex = Object.values(Sex);
     this.personFormTemplateVersion = PersonFormTemplateVersion;
     this.lifeEventTemplateVersion = LifeEventTemplateVersion;
     this.lifeEventFormTemplateVersion = LifeEventFormType;
+    this.personTemplateType = PersonTemplateType;
+    this.personSex = Sex;
   }
 
   ngOnInit(): void {
-    if (this.activateRoute.snapshot.params.id) {
-      this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
-          this.person = person
-          this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
-        },
-        (errorResponse) => {
-          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-        });
+    if (this.activateRoute.snapshot && this.activateRoute.snapshot.routeConfig) {
+      let path = this.activateRoute.snapshot.routeConfig.path;
+      if (path === PersonFormPath.EDIT) {
+        this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
+            this.person = person
+            this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
+          },
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+          });
+      } else if (path === PersonFormPath.SELECT) {
+        this.person = this.familyPerson.person;
+        this.familyId = this.familyPerson.familyClone.id;
+        this.personType = this.familyPerson.personType;
+        this.templateVersion = this.familyPerson.personFormTemplateVersion;
+        this.loadPersons();
+      }
+
+    } else {
+      this.loadPersons()
     }
-  }
-
-  public close(): void {
-    this.addedPerson.emit(null);
-  }
-
-  public addPerson(): void {
-    this.addedPerson.emit(this.person);
-  }
-
-  public editPerson(): void {
-    this.editedPerson.emit(this.person);
-  }
-
-  public deletePerson(): void {
-    this.deletedPerson.emit(this.person);
   }
 
   public loadPersons(): void {
     this.dataProvider.getPersons().subscribe(persons => {
-        if (this.personType === FormType.FATHER) {
+        if (this.personType === PersonType.HUSBAND) {
           this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.MALE))
-        } else if (this.personType === FormType.MOTHER) {
+        } else if (this.personType === PersonType.WIFE) {
           this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.FEMALE))
-        } else if (this.personType === FormType.CHILD) {
+        } else if (this.personType === PersonType.CHILD) {
           this.persons = persons;
-        }
-
-        if (this.selectPersonId) {
-          this.dataProvider.findPerson(Number(this.selectPersonId)).subscribe(person => {
-              this.person = person;
-            },
-            (errorResponse) => {
-              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-            })
-        } else {
-          this.person = new Person();
         }
       },
       (errorResponse) => {
@@ -122,26 +112,33 @@ export class PersonFormComponent implements OnInit {
     return undefined;
   }
 
-  // new functions
-  public toggleEdit(): void {
-    this.templateVersion = PersonFormTemplateVersion.PERSON_EDIT;
+  public toggleViewEditPerson(): void {
     this.personClone = this.personDeepClone(this.person);
+    this.templateVersion = PersonFormTemplateVersion.PERSON_EDIT;
   }
 
   public savePerson(): void {
-    if (this.person.id) {
-      this.dataProvider.changePerson(this.personClone).subscribe(() => {
-          this.reloadPerson()
-        },
-        (errorResponse) => {
-          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-        });
-    } else {
-      this.dataProvider.addNewPerson(this.person).subscribe(null,
-        (errorResponse) => {
-          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-        });
-    }
+    this.dataProvider.addNewPerson(this.person).subscribe(response => {
+        console.log(response)
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
+    this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
+  }
+
+  public selectPerson(): void {
+    this.familyPerson.componentDescriptor = ComponentDescriptor.PERSON_FORM;
+    this.familyPerson.person = this.person;
+  }
+
+  public changePerson(): void {
+    this.dataProvider.changePerson(this.personClone).subscribe(() => {
+        this.reloadPerson()
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
     this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
   }
 
@@ -151,10 +148,45 @@ export class PersonFormComponent implements OnInit {
       this.lifeEvent = lifeEventActionDescriptor.lifeEvent;
       this.lifeEventClone = this.lifeEventSimpleClone(lifeEventActionDescriptor.lifeEvent);
     } else if (lifeEventActionDescriptor.action === LifeEventTemplateAction.GET) {
+      this.lifeEventFormType = LifeEventFormType.EXIST_EVENT;
       this.lifeEventFormDialogVisiable = true;
       this.lifeEvent = lifeEventActionDescriptor.lifeEvent;
       this.lifeEventClone = this.lifeEventSimpleClone(lifeEventActionDescriptor.lifeEvent);
     }
+  }
+
+  public lifeEventFormHandler(lifeEventFormActionDescriptor: LifeEventFormActionDescriptor): void {
+    this.lifeEventFormDialogVisiable = false;
+    if (lifeEventFormActionDescriptor) {
+      if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
+        this.changeLifeEvent(this.person.id, lifeEventFormActionDescriptor.lifeEvent);
+      } else if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.SAVE) {
+        this.saveLifeEvent(this.person.id, lifeEventFormActionDescriptor.lifeEvent);
+      }
+    }
+  }
+
+  public changeLifeEvent(personId: number, lifeEvent: LifeEvent): void {
+    this.dataProvider.deletePersonEvent(personId, lifeEvent).subscribe(() => {
+        this.dataProvider.addNewPersonEvent(personId, lifeEvent).subscribe(() => {
+            this.reloadPerson()
+          },
+          (errorResponse) => {
+            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+          });
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
+  }
+
+  public saveLifeEvent(personId: number, lifeEvent: LifeEvent): void {
+    this.dataProvider.addNewPersonEvent(personId, lifeEvent).subscribe(() => {
+        this.reloadPerson()
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
   }
 
   public deleteLifeEvent(deleteLifeEventFlag: boolean): void {
@@ -162,7 +194,7 @@ export class PersonFormComponent implements OnInit {
     if (deleteLifeEventFlag) {
       this.dataProvider.deletePersonEvent(this.person.id, this.lifeEventClone)
         .subscribe(() => {
-          this.reloadPerson();
+            this.reloadPerson();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -170,8 +202,12 @@ export class PersonFormComponent implements OnInit {
     }
   }
 
-  public exit(): void {
-    this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
+  public createLifeEvent() {
+    this.lifeEventFormType = LifeEventFormType.NEW_EVENT;
+    this.lifeEventClone = new LifeEvent();
+    this.lifeEventClone.type = LifeEventType.DEFAULT;
+    this.lifeEventClone.prefix = LifeEventPrefix.NONE;
+    this.lifeEventFormDialogVisiable = true;
   }
 
   public personDeepClone(person: Person): Person {
@@ -184,37 +220,30 @@ export class PersonFormComponent implements OnInit {
     return lifeEventClone;
   }
 
-  getPersonFullName() {
+  public exit(): void {
+    this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
+  }
+
+  public getPersonFullName() {
     return `${(this.person.firstName) ? this.person.firstName : ''}` +
       ` ${(this.person.middleName) ? this.person.middleName : ''}` +
       ` ${(this.person.lastName) ? this.person.lastName : ''}`;
   }
 
-  public lifeEventFormHandler(lifeEventFormActionDescriptor: LifeEventFormActionDescriptor): void {
-    this.lifeEventFormDialogVisiable = false;
-    if (lifeEventFormActionDescriptor) {
-      if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
-        this.dataProvider.deletePersonEvent(this.person.id, lifeEventFormActionDescriptor.lifeEvent).subscribe(() => {
-            this.dataProvider.addNewPersonEvent(this.person.id, lifeEventFormActionDescriptor.lifeEvent).subscribe(() => {
-                this.reloadPerson()
-              },
-              (errorResponse) => {
-                console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-              });
-          },
-          (errorResponse) => {
-            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-          });
-      }
-    }
-  }
-
-  reloadPerson() {
+  private reloadPerson() {
     this.dataProvider.findPerson(this.person.id).subscribe(person => {
         this.person = person;
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       });
+  }
+
+  public setChangePerson(person: Person) {
+    this.person = person;
+  }
+
+  public closePersonSelect() {
+    this.familyPerson.componentDescriptor = ComponentDescriptor.PERSON_FORM;
   }
 }

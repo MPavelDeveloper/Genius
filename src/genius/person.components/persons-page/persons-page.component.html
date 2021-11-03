@@ -8,7 +8,7 @@
                 [templateVersion]="personTemplateType.FULL"></person>
       </div>
       <div class="row-actions">
-        <button class="button-add" type="button" [routerLink] = "['/editPerson', person.id]">add</button>
+        <button class="button-add" type="button" [routerLink] = "['/viewPerson', person.id]">add</button>
         <button class="button-delete" type="button" (click)="showConfirm(personIndex)">delete</button>
       </div>
     </div>

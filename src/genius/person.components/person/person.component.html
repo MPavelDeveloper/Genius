@@ -9,7 +9,7 @@
     {{(person && person.sex) ? person.sex : '' }}
   </div>
 
-  <div class="person" *ngSwitchCase = "personsTemplateType.FULL" class="person-short-fulldata" (click)="returnPerson(personTemplateAction.GET)">
+  <div *ngSwitchCase = "personsTemplateType.FULL" class="person-short-fulldata" (click)="returnPerson(personTemplateAction.GET)">
     <p class="person-description">
       {{ (person && person.firstName) ? person.firstName : ''   }}
       {{ (person && person.lastName) ? person.lastName : ''  }}

@@ -10,27 +10,26 @@ import {RouterModule, Routes} from '@angular/router';
 import {PersonFormComponent} from './person.components/person-form/person-form.component';
 import {FamilyFormComponent} from './family.components/family-form/family-form.component';
 import {FamilyComponent} from './family.components/family/family.component';
-import {HomePageComponent} from './home-page/home-page.component';
-import {PersonEditorComponent} from './person.components/person-editor/person-editor.component';
-import {PersonListComponent} from './person.components/person-list/person-list.component';
+import {PersonsPageComponent} from './person.components/persons-page/persons-page.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DataProvider} from './services/data-provider';
 import {LocalStorageDataProvider} from "./services/local-storage/local-storage-data-provider.service";
-import {LifeEventFormComponent} from "./life-event-form/life-event-form.component";
-import { LifeEventComponent } from './life-event/life-event.component';
-import {PersonEventEditorComponent} from './person.components/person-event-editor/person-event-editor.component';
+import {LifeEventFormComponent} from "./event.components/life-event-form/life-event-form.component";
+import { LifeEventComponent } from './event.components/life-event/life-event.component';
 import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-
-
+import { FamiliesPageComponent } from './family.components/families-page/families-page.component';
 
 const GeniusRoutes: Routes = [
-  {path: 'Home', component: HomePageComponent,},
-  {path: 'createPerson', component: PersonFormComponent,},
-  {path: 'createPersonEvent', component: PersonEventEditorComponent,},
-  {path: 'createFamily', component: FamilyFormComponent,},
-  {path: 'editPerson/:id', component: PersonFormComponent,},
-  {path: '**', redirectTo: 'Home',},
+  {path: 'Persons', component: PersonsPageComponent,},
+  {path: 'Families', component: FamiliesPageComponent,},
+  {path: 'viewPerson/:id', component: PersonFormComponent,},
+  {path: 'createPerson', component: PersonFormComponent},
+  {path: 'selectPerson', component: PersonFormComponent,},
+  {path: 'viewFamily/:id', component: FamilyFormComponent},
+  {path: 'createFamily', component: FamilyFormComponent},
+  {path: 'editFamily/:id', component: FamilyFormComponent},
+  {path: '**', redirectTo: 'Persons',},
 ]
 
 @NgModule({
@@ -40,13 +39,11 @@ const GeniusRoutes: Routes = [
     PersonFormComponent,
     FamilyFormComponent,
     FamilyComponent,
-    HomePageComponent,
-    PersonEditorComponent,
-    PersonListComponent,
+    PersonsPageComponent,
     LifeEventComponent,
     LifeEventFormComponent,
-    PersonEventEditorComponent,
     ConfirmDialogComponent,
+    FamiliesPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,204 +1,312 @@
 
-
 .form-wrap {
   display: flex;
 
   .wrap {
-    margin: auto auto;
     align-self: flex-start;
-    //margin-right: 12px;
+    margin: auto auto;
     border-radius: 6px;
     padding: 12px;
     display: flex;
+    //flex-flow: row wrap;
     flex-flow: column nowrap;
-    align-items: center;
+    width: 450px;
+    justify-content: space-between;
     box-shadow: 0 2px 6px gray;
+  }
 
-    .btn-close {
-      align-self: flex-end;
-      font-weight: 900;
-      color: crimson;
-      cursor: pointer;
+  .wrap-select {
+    align-self: flex-start;
+    margin: auto auto;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-flow: row wrap;
+    //flex-flow: column nowrap;
+    //width: 450px;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px gray;
+  }
+}
+
+.description-wrap {
+  flex-basis: 39%;
+  margin-right: 21px;
+  display: flex;
+  flex-flow: column nowrap;
+  min-width: 210px;
+}
+.wrap-btn-close {
+  flex-basis: 100%;
+  margin-bottom: 21px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-close {
+  align-self: flex-end;
+  border: 0px;
+  font-weight: 900;
+  background: none;
+  color: crimson;
+  cursor: pointer;
+}
+
+.person-title {
+  margin-bottom: 12px;
+  padding: 12px;
+  align-self: flex-start;
+  font-size: 21px;
+}
+
+.person-description {
+  align-self: stretch;
+  margin-bottom: 30px;
+  display: flex;
+  flex-flow: column nowrap;
+
+  input {
+    width: 100%;
+  }
+}
+
+.title-wrap {
+  display: flex;
+  justify-content: center;
+
+  .person-title {
+    margin-bottom: 12px;
+    padding: 12px;
+    align-self: flex-start;
+    font-size: 21px;
+  }
+
+  .person-edit-btn {
+    align-self: flex-end;
+    margin-bottom: 21px;
+    border-radius: 12px;
+    border: 1px solid #80d8804f;
+    padding: 12px 18px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 210ms;
+    background: #90ee908f;
+    box-shadow: 0px 2px 4px lightgrey;
+
+    &:hover {
+      transform: translateY(-6px);
     }
-    .person-title {
-      margin-bottom: 12px;
-      padding: 12px;
-      align-self: flex-start;
-      font-size: 21px;
-    }
+  }
 
-    .title-wrap{
-      display: flex;
-      .person-title {
-        margin-bottom: 12px;
-        padding: 12px;
-        align-self: flex-start;
-        font-size: 21px;
-      }
+}
 
-      .person-edit-btn {
-        align-self: flex-end;
-        margin-bottom: 21px;
-        border-radius: 12px;
-        border: 1px solid #80d8804f;
-        padding: 12px 18px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 210ms;
-        background: #90ee908f;
-        box-shadow: 0px 2px 4px lightgrey;
-        &:hover {
-          transform: translateY(-6px);
-        }
-    }
+.person-title-events {
+  margin-bottom: 12px;
+  padding: 12px;
+  align-self: flex-start;
+  font-size: 18px;
+  color: navy;
+}
 
-    }
+.event-add-wrap {
+  align-self: flex-end;
+  display: flex;
 
-    .person-title-events{
-      margin-bottom: 12px;
-      padding: 12px;
-      align-self: flex-start;
-      font-size: 18px;
-      color:navy;
-    }
+  .event-add-title {
+    align-self: center;
+    margin-right: 6px;
+    font-size: 18px;
+    color: black;
+    cursor: pointer;
+  }
 
-    .person-input {
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: 0px;
-      border-bottom: 1px solid black;
-      padding: 12px;
-      padding-bottom: 3px;
-      width: 450px;
-      font-size: 18px;
-      outline: none;
-    }
+  .btn-add-event {
+    align-self: flex-end;
+    border-radius: 6px;
+    border: 3px solid lightgrey;
+    padding: 1px 8px;
+    font-size: 27px;
+    color: lightgrey;
+    background: none;
+    cursor: pointer;
+    transition: 300ms;
 
-    .person-input-view {
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: 0px;
-      padding: 12px;
-      width: 450px;
-      font-size: 18px;
+    &:hover {
       color: black;
-      background-color: #d3d3d35e;
-      box-shadow: 0 2px 4px #8080807a;
-      outline: none;
-    }
-
-    .person-input-edit {
-      margin-bottom: 12px;
-      border-radius: 3px;
-      border: 0px;
-      border-bottom: 1px solid black;
-      padding: 12px 9px;
-      width: 450px;
-      font-size: 18px;
-      outline: none;
-    }
-
-    .person-familyList, .person-sexlist {
-      margin-bottom: 45px;
-      border-radius: 6px;
-      border-bottom: 3px solid gray;
-      padding: 6px;
-
-      font-size: 18px;
-      outline: none;
-      cursor: pointer;
-    }
-
-
-
-    life-event {
-      margin-bottom: 15px;
-      border-radius: 6px;
-      width: 100%;
-      font-size: 16px;
-      text-align: left;
-      box-shadow: 0 2px 6px grey;
-      background-color: #79a4dc26;
-      transition: 300ms;
-      &:hover {
-       background-color: rgba(34, 107, 202, 0.15);
-      }
-    }
-
-    .person-familyList {
-      color: coral;
-
-      .familyList-option {
-        color: #f54200;
-
-        .option-title {
-          color: lightseagreen;
-        }
-      }
-    }
-
-
-    .person-event {
-      margin-bottom: 12px;
-      padding: 12px;
-      width: 23vw;
-      max-width: 23vw;
-      font-size: 18px;
-      outline: none;
-    }
-
-    .person-valid {
-      margin-bottom: 6px;
-      font-family: system-ui;
-    }
-
-    .person__add-event-btn {
-      margin-bottom: 12px;
-      border-radius: 12px;
-      border: 0;
-      padding: 12px;
-      background-color: lightgoldenrodyellow;
-      font-size: 18px;
-      transition: 300ms;
-      cursor: pointer;
-      box-shadow: 0 2px 6px gray;
-
-      &:hover {
-        background-color: snow;
-      }
-    }
-    .actions-wrap {
-      display: flex;
-
-      .person-create-btn {
-        border-radius: 3px;
-        padding: 6px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 2px 6px lightgray;
-      }
-
-      .person-create-btn:first-child {
-        margin-right: 6px;
-        padding: 6px 12px;
-      }
-    }
-
-    .person-create-btn {
-      border-radius: 3px;
-      padding: 6px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 2px 6px lightgray;
-
+      background-color: snow;
+      transform: translateY(-6px);
     }
   }
+}
 
-  .ng-invalid {
-    background-color: #f5f0f0;
+.person-input {
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 0px;
+  border-bottom: 1px solid black;
+  padding: 12px;
+  padding-bottom: 3px;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+}
+
+.person-input-view {
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 0px;
+  padding: 12px;
+  width: 100%;
+  font-size: 18px;
+  color: black;
+  background-color: #d3d3d35e;
+  box-shadow: 0 2px 4px #8080807a;
+  outline: none;
+}
+
+.person-sex {
+  margin-bottom: 90px;
+}
+
+.person-input-edit {
+  margin-bottom: 12px;
+  border-radius: 3px;
+  border: 0px;
+  border-bottom: 1px solid black;
+  padding: 12px 9px;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+}
+.person-input-edit:disabled {
+  background-color: #d3d3d35e;
+}
+
+.person-familyList, .person-sexlist {
+  margin-bottom: 45px;
+  border-radius: 6px;
+  border-bottom: 3px solid gray;
+  padding: 6px;
+
+  font-size: 18px;
+  outline: none;
+  cursor: pointer;
+}
+
+life-event {
+  margin-bottom: 15px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 16px;
+  text-align: left;
+  box-shadow: 0 2px 6px grey;
+  background-color: #79a4dc26;
+  transition: 300ms;
+
+  &:hover {
+    background-color: rgba(34, 107, 202, 0.15);
+  }
+}
+
+.person-familyList {
+  color: coral;
+
+  .familyList-option {
+    color: #f54200;
+
+    .option-title {
+      color: lightseagreen;
+    }
+  }
+}
+
+.person-event {
+  margin-bottom: 12px;
+  padding: 12px;
+  width: 23vw;
+  max-width: 23vw;
+  font-size: 18px;
+  outline: none;
+}
+
+.person-valid {
+  margin-bottom: 6px;
+  font-family: system-ui;
+}
+
+.person__add-event-btn {
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 0;
+  padding: 12px;
+  background-color: lightgoldenrodyellow;
+  font-size: 18px;
+  transition: 300ms;
+  cursor: pointer;
+  box-shadow: 0 2px 6px gray;
+
+  &:hover {
+    background-color: snow;
+  }
+}
+
+.actions-wrap {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: center;
+
+  .person-create-btn {
+    border-radius: 3px;
+    padding: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px lightgray;
   }
 
-  .ng-invalid.ng-touched {
-    background-color: lightcoral;
+  .person-create-btn:first-child {
+    margin-right: 6px;
+    padding: 6px 12px;
   }
+}
+
+.person-create-btn {
+  border-radius: 3px;
+  padding: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px lightgray;
+
+}
+
+.persons-list {
+  flex-basis: 57%;
+  padding: 3px;
+  overflow-y: scroll;
+  margin-bottom: 21px;
+  max-height: 500px;
+
+  .person-item-men {
+    margin: 12px 12px;
+    border-radius: 3px;
+    font-size: 18px;
+    background-color: #a0abb7;
+    color: snow;
+  }
+
+  .person-item-women {
+    margin: 12px 12px;
+    border-radius: 3px;
+    font-size: 18px;
+    background-color: pink;
+    color: snow;
+  }
+}
+
+
+.ng-invalid {
+  background-color: #f5f0f0;
+}
+
+.ng-invalid.ng-touched {
+  background-color: lightcoral;
 }
