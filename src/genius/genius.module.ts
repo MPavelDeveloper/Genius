@@ -13,22 +13,23 @@ import {FamilyComponent} from './family.components/family/family.component';
 import {PersonsPageComponent} from './person.components/persons-page/persons-page.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DataProvider} from './services/data-provider';
-import {LocalStorageDataProvider} from "./services/local-storage/local-storage-data-provider.service";
-import {LifeEventFormComponent} from "./event.components/life-event-form/life-event-form.component";
-import { LifeEventComponent } from './event.components/life-event/life-event.component';
+import {LocalStorageDataProvider} from './services/local-storage/local-storage-data-provider.service';
+import {LifeEventFormComponent} from './event.components/life-event-form/life-event-form.component';
+import {LifeEventComponent} from './event.components/life-event/life-event.component';
 import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-import { FamiliesPageComponent } from './family.components/families-page/families-page.component';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
+import {FamiliesPageComponent} from './family.components/families-page/families-page.component';
 
 const GeniusRoutes: Routes = [
   {path: 'Persons', component: PersonsPageComponent,},
   {path: 'Families', component: FamiliesPageComponent,},
   {path: 'viewPerson/:id', component: PersonFormComponent,},
-  {path: 'createPerson', component: PersonFormComponent},
+  {path: 'createPerson', component: PersonFormComponent,},
   {path: 'selectPerson', component: PersonFormComponent,},
-  {path: 'viewFamily/:id', component: FamilyFormComponent},
-  {path: 'createFamily', component: FamilyFormComponent},
-  {path: 'editFamily/:id', component: FamilyFormComponent},
+  {path: 'addPersonInNewFamily', component: PersonFormComponent,},
+  {path: 'viewFamily/:id', component: FamilyFormComponent,},
+  {path: 'createFamily', component: FamilyFormComponent,},
+  {path: 'editFamily/:id', component: FamilyFormComponent,},
   {path: '**', redirectTo: 'Persons',},
 ]
 

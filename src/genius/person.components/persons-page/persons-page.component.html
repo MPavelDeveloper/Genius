@@ -3,7 +3,7 @@
   <ng-container *ngFor="let person of persons; let personIndex = index">
     <div class="row">
       <div [ngClass]="{'person-wrap-man': person.sex === gender.MALE, 'person-wrap-woman':person.sex === gender.FEMALE}"
-           [routerLink] = "['/editPerson', person.id]">
+           [routerLink] = "['/viewPerson', person.id]">
         <person [person]="person"
                 [templateVersion]="personTemplateType.FULL"></person>
       </div>

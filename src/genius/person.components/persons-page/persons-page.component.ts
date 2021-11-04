@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Person, Sex} from '../../../model/person';
 import {DataProvider} from '../../services/data-provider';
 import {PersonTemplateType} from '../person/person.component';
+import {DataLoadService} from '../../services/data-load/data-load.service';
 
 @Component({
   selector: 'persons-page',
@@ -16,27 +17,23 @@ export class PersonsPageComponent implements OnInit {
   public personTemplateType;
   public gender;
 
-  constructor(private dataProvider: DataProvider) {
+  constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService) {
     this.persons = [];
     this.personTemplateType = PersonTemplateType;
     this.gender = Sex;
   }
 
   ngOnInit() {
-    this.dataProvider.getPersons().subscribe(persons => {
-        this.persons = persons;
-      },
-      errorResponse => {
-        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-      })
+    this.dataLoad.persons$.subscribe(() => this.loadPersons());
+    this.loadPersons();
   }
 
-  showConfirm(personIndex: number): void {
+  public showConfirm(personIndex: number): void {
     this.currentPersonIndex = personIndex;
     this.showConfirmDialog = true;
   }
 
-  deletePerson(deletePersonFlag: boolean): void {
+  public deletePerson(deletePersonFlag: boolean): void {
     if(deletePersonFlag) {
       this.dataProvider.deletePerson(this.getPersonId(this.currentPersonIndex))
         .subscribe(() => {
@@ -55,7 +52,17 @@ export class PersonsPageComponent implements OnInit {
     this.showConfirmDialog = false;
   }
 
-  getPersonId(personIndex: number): number {
+  public getPersonId(personIndex: number): number {
     return this.persons[personIndex].id;
   }
+
+  public loadPersons(): void {
+    this.dataProvider.getPersons().subscribe(persons => {
+        this.persons = persons;
+      },
+      errorResponse => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      })
+  }
 }
+

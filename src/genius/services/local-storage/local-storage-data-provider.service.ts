@@ -49,9 +49,9 @@ export class LocalStorageDataProvider extends DataProvider {
 
   protected mapPersonEvents(obj: any): Array<LifeEvent> {
     return obj.lifeEvents.map((lifeEvent: any) => {
-      if(!lifeEvent.type) lifeEvent.type = LifeEventType.DEFAULT;
-      if(!lifeEvent.prefix) lifeEvent.prefix = LifeEventPrefix.NONE;
-      lifeEvent.date  = moment(lifeEvent.date).format('YYYY-MM-DD');
+      if (!lifeEvent.type) lifeEvent.type = LifeEventType.DEFAULT;
+      if (!lifeEvent.prefix) lifeEvent.prefix = LifeEventPrefix.NONE;
+      lifeEvent.date = moment(lifeEvent.date).format('YYYY-MM-DD');
       return lifeEvent;
     })
   }
@@ -83,6 +83,11 @@ export class LocalStorageDataProvider extends DataProvider {
       subscriber.next('an existing family was modified in local storage')
     });
     this.setPersonsId(family);
+    let familyIndex = this.families.findIndex(currentFamily => currentFamily.id === family.id);
+    console.log(101010)
+    if (familyIndex > -1) {
+      this.families[familyIndex] = family;
+    }
     this.putData();
     this.reloadData();
     return observableChangeFamily;
@@ -108,6 +113,10 @@ export class LocalStorageDataProvider extends DataProvider {
         }
 
       })
+    }
+    let personIndex = this.persons.findIndex(currentPerson => currentPerson.id === person.id)
+    if (personIndex > -1) {
+      this.persons[personIndex] = person
     }
 
     this.putData();
@@ -150,7 +159,7 @@ export class LocalStorageDataProvider extends DataProvider {
   public findFamily(familyId: number): Observable<Family> {
     if (familyId) {
       return new Observable<Family>(subscriber => {
-        subscriber.next(this.families.find((family: Family) => family.id === familyId));
+        subscriber.next(this.families.find((family: Family) => family.id === familyId))
       });
     }
     return undefined;
@@ -315,5 +324,20 @@ export class LocalStorageDataProvider extends DataProvider {
         })
       }
     });
+  }
+
+
+
+  addNewFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object> {
+    return undefined;
+  }
+
+  changeFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object> {
+    return undefined;
+  }
+
+  deleteFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object> {
+
+    return undefined
   }
 }

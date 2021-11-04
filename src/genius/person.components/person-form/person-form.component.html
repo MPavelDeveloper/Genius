@@ -12,10 +12,10 @@
       <input class="person-mn person-input-view" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" autocomplete="off" disabled>
       <input class="person-age person-input-view" placeholder="Age" type="number"  #age="ngModel"  [(ngModel)]="person.age" name="age" disabled>
       <input class="person-sex person-input-view" placeholder="Gender" #sex="ngModel"  [(ngModel)]="person.sex" name="gender" disabled>
-        <ng-container *ngFor = "let lifeEvent of person.lifeEvents; let index = index">
-          <p class="person-title-events" *ngIf="index === 0">Events</p>
-          <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL" [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
-        </ng-container>
+      <ng-container *ngFor = "let lifeEvent of person.lifeEvents; let index = index">
+        <p class="person-title-events" *ngIf="index === 0">Events</p>
+        <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL" [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
+      </ng-container>
       <div class="event-add-wrap">
         <p class="event-add-title">new event</p>
         <button class="btn-add-event" type="button" (click)="createLifeEvent()">+</button>
@@ -63,7 +63,7 @@
         </ng-container>
       </select>
       <div class="actions-wrap">
-        <button class="person-create-btn" type="button" (click)="savePerson()">Save</button>
+        <button class="person-create-btn" type="button" (click)="savePerson()" routerLink="/Persons">Save</button>
       </div>
     </div>
   </form>
@@ -71,7 +71,8 @@
   <form *ngSwitchCase="personFormTemplateVersion.PERSON_SELECT" class="form-wrap">
     <div class="wrap-select">
       <div class="wrap-btn-close">
-        <button class="btn-close" (click)="closePersonSelect()" [routerLink] = "['/editFamily', familyId]">X</button>
+        <button class="btn-close" (click)="closePersonSelect()" [routerLink] = "['/editFamily', familyId]" *ngIf="currentPersonFormPath === personFormPath.ADD_IN_EXIST_FAMILY">X</button>
+        <button class="btn-close" (click)="closePersonSelect()" routerLink="/createFamily" *ngIf="currentPersonFormPath === personFormPath.ADD_IN_NEW_FAMILY">X</button>
       </div>
       <div class="description-wrap">
         <div class="person-title">{{personType.toUpperCase()}}</div>
@@ -88,7 +89,8 @@
         </div>
       </div>
       <div class="actions-wrap">
-        <button class="person-create-btn" type="button" (click)="selectPerson()"  [routerLink]="['/editFamily', familyId]" >Select</button>
+        <button class="person-create-btn" type="button" (click)="selectPerson()"  [routerLink]="['/editFamily', familyId]" *ngIf="currentPersonFormPath === personFormPath.ADD_IN_EXIST_FAMILY">Select</button>
+        <button class="person-create-btn" type="button" (click)="selectPerson()"  routerLink="/createFamily" *ngIf="currentPersonFormPath === personFormPath.ADD_IN_NEW_FAMILY">Select</button>
       </div>
     </div>
   </form>

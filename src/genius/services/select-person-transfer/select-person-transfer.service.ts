@@ -16,8 +16,9 @@ export class SelectPersonTransferService {
 
   public componentDescriptor: ComponentDescriptor;
   public person: Person;
-  public familyClone: Family;
   public personType: PersonType;
+  public familyId: number;
+  public family: Family;
   public currentChildIndex: number;
   public personFormTemplateVersion: PersonFormTemplateVersion;
   public familyFormTemplateVersion: FamilyFormTemplateVersion;

@@ -1,5 +1,5 @@
 <ng-container [ngSwitch] = [templateVersion]>
-  <div class="wrap"*ngSwitchCase = "familyFormTemplateVersion.FAMILY_VIEW">
+  <div class="wrap" *ngSwitchCase = "familyFormTemplateVersion.FAMILY_VIEW">
     <div class="create-family">
       <div class="create-family-wrap">
         <div class="wrap-family">
@@ -25,15 +25,37 @@
               <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORTEST"></person>
             </div>
           </div>
+
+          <div class="family-events">
+            <ng-container *ngFor = "let event of family.events; let index = index">
+              <p class="family-title-events" *ngIf="index === 0">Events</p>
+              <life-event  [lifeEvent]="event"
+                           [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL"
+                           (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
+            </ng-container>
+            <div class="event-add-wrap">
+              <p class="event-add-title">new event</p>
+
+              <button class="btn-add-event" type="button" (click)="createLifeEvent()">+</button>
+            </div>
+          </div>
         </div>
       </div>
+      <life-event-form *ngIf = "lifeEventFormDialogVisiable"
+                       [templateVersion]="lifeEventFormType"
+                       [lifeEvent]="lifeEventClone"
+                       (addedLifeEvent)="lifeEventFormHandler($event)">
+      </life-event-form>
     </div>
+
   </div>
+
   <div class="wrap" *ngSwitchCase="familyFormTemplateVersion.FAMILY_EDITOR">
     <div class="create-family">
       <div class="create-family-wrap">
         <div class="wrap-family">
-          <button class="btn-close" (click)="exitFamilyEditor()" [routerLink]="['/viewFamily', family.id]">X</button>
+          <button class="btn-close" (click)="exitFamilyEditor()" [routerLink]="['/viewFamily', family.id]" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">X</button>
+          <button class="btn-close" routerLink="/Families" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">X</button>
           <div class="family-title-wrap">
             <p class="family-title">Family</p>
           </div>
@@ -43,7 +65,8 @@
               <person class="create-person" [person]="familyClone.husband" [templateVersion]="personTemplateVersion.SHORTEST"></person>
             </div>
             <div class="actions-wrap">
-              <button class="action-btn" (click)="selectPerson(personType.HUSBAND, null)" routerLink="/selectPerson">select</button>
+              <button class="action-btn" (click)="selectPerson(personType.HUSBAND, null)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
+              <button class="action-btn" (click)="selectPerson(personType.HUSBAND, null)" routerLink="/addPersonInNewFamily" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">select</button>
               <button class="action-btn delete" (click)="deletePerson(personType.HUSBAND, null)" *ngIf="familyClone.husband">X</button>
             </div>
           </div>
@@ -53,7 +76,8 @@
               <person class="create-person" [person]="familyClone.wife" [templateVersion]="personTemplateVersion.SHORTEST"></person>
             </div>
             <div class="actions-wrap">
-              <button class="action-btn" (click)="selectPerson(personType.WIFE, null)" routerLink="/selectPerson">select</button>
+              <button class="action-btn" (click)="selectPerson(personType.WIFE, null)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
+              <button class="action-btn" (click)="selectPerson(personType.WIFE, null)" routerLink="/addPersonInNewFamily" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">select</button>
               <button class="action-btn delete" (click)="deletePerson(personType.WIFE, null)" *ngIf="familyClone.wife">X</button>
             </div>
           </div>
@@ -67,13 +91,13 @@
                 <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORTEST"></person>
               </div>
               <div class="actions-wrap">
-                <button class="action-btn" (click)="selectPerson(personType.CHILD, childIndex)" routerLink="/selectPerson">select</button>
+                <button class="action-btn" (click)="selectPerson(personType.CHILD, childIndex)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
+                <button class="action-btn" (click)="selectPerson(personType.CHILD, childIndex)" routerLink="/addPersonInNewFamily" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">select</button>
                 <button class="action-btn delete" (click)="deletePerson(personType.CHILD, childIndex)" *ngIf="checkChild(childIndex)">del</button>
               </div>
             </div>
           </div>
           <div class="family-actions">
-<!--            -->
             <button class="btn-add-family" (click)="saveFamily()" routerLink="/Families">save</button>
             <button class="btn-cancel" (click)="cancelChanges()">cancel</button>
           </div>

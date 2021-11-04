@@ -30,4 +30,11 @@ export abstract class DataProvider {
 
   abstract changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object>;
 
+
+  abstract addNewFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
+
+  abstract deleteFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
+
+  abstract changeFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
+
 }

@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Person} from '../../../model/person';
-import {Family} from '../../../model/family';
 import {Subject} from 'rxjs';
 
 @Injectable({

@@ -16,6 +16,7 @@ import {
 } from '../../event.components/life-event-form/life-event-form.component';
 import {PersonTemplateType} from '../person/person.component';
 import {ComponentDescriptor, SelectPersonTransferService} from '../../services/select-person-transfer/select-person-transfer.service';
+import {DataLoadService} from '../../services/data-load/data-load.service';
 
 export enum PersonFormTemplateVersion {
   PERSON_VIEW = 'view',
@@ -26,7 +27,8 @@ export enum PersonFormTemplateVersion {
 
 export enum PersonFormPath {
   EDIT = 'viewPerson/:id',
-  SELECT = 'selectPerson',
+  ADD_IN_EXIST_FAMILY = 'selectPerson',
+  ADD_IN_NEW_FAMILY = 'addPersonInNewFamily'
 }
 
 @Component({
@@ -45,29 +47,33 @@ export class PersonFormComponent implements OnInit {
   public lifeEvent: LifeEvent
   public lifeEventClone: LifeEvent;
   public PersonSex: Array<string>;
+  public currentPersonFormPath: PersonFormPath;
   public confirmDialogVisiable: Boolean;
   public lifeEventFormType: LifeEventFormType;
   public lifeEventFormDialogVisiable: Boolean;
+  public personFormPath;
   public personFormTemplateVersion;
   public lifeEventTemplateVersion;
   public lifeEventFormTemplateVersion;
   public personTemplateType;
   public personSex;
 
-  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute, private familyPerson: SelectPersonTransferService) {
+  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute, private selectPersonTransferService: SelectPersonTransferService, private dataLoad: DataLoadService) {
     this.person = new Person();
     this.templateVersion = PersonFormTemplateVersion.PERSON_CREATE;
     this.PersonSex = Object.values(Sex);
     this.personFormTemplateVersion = PersonFormTemplateVersion;
     this.lifeEventTemplateVersion = LifeEventTemplateVersion;
     this.lifeEventFormTemplateVersion = LifeEventFormType;
+    this.personFormPath = PersonFormPath;
     this.personTemplateType = PersonTemplateType;
     this.personSex = Sex;
   }
 
   ngOnInit(): void {
     if (this.activateRoute.snapshot && this.activateRoute.snapshot.routeConfig) {
-      let path = this.activateRoute.snapshot.routeConfig.path;
+      let path = <PersonFormPath>this.activateRoute.snapshot.routeConfig.path;
+      this.currentPersonFormPath = path;
       if (path === PersonFormPath.EDIT) {
         this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
             this.person = person
@@ -76,14 +82,18 @@ export class PersonFormComponent implements OnInit {
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
           });
-      } else if (path === PersonFormPath.SELECT) {
-        this.person = this.familyPerson.person;
-        this.familyId = this.familyPerson.familyClone.id;
-        this.personType = this.familyPerson.personType;
-        this.templateVersion = this.familyPerson.personFormTemplateVersion;
+      } else if (path === PersonFormPath.ADD_IN_EXIST_FAMILY) {
+        this.person = this.selectPersonTransferService.person;
+        this.familyId = this.selectPersonTransferService.family.id;
+        this.personType = this.selectPersonTransferService.personType;
+        this.templateVersion = this.selectPersonTransferService.personFormTemplateVersion;
+        this.loadPersons();
+      } else if (path === PersonFormPath.ADD_IN_NEW_FAMILY) {
+        this.person = this.selectPersonTransferService.person;
+        this.personType = this.selectPersonTransferService.personType;
+        this.templateVersion = this.selectPersonTransferService.personFormTemplateVersion;
         this.loadPersons();
       }
-
     } else {
       this.loadPersons()
     }
@@ -119,7 +129,7 @@ export class PersonFormComponent implements OnInit {
 
   public savePerson(): void {
     this.dataProvider.addNewPerson(this.person).subscribe(response => {
-        console.log(response)
+        this.dataLoad.reloadPersons(true)
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -128,13 +138,14 @@ export class PersonFormComponent implements OnInit {
   }
 
   public selectPerson(): void {
-    this.familyPerson.componentDescriptor = ComponentDescriptor.PERSON_FORM;
-    this.familyPerson.person = this.person;
+    this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.PERSON_FORM;
+    this.selectPersonTransferService.person = this.person;
   }
 
   public changePerson(): void {
     this.dataProvider.changePerson(this.personClone).subscribe(() => {
         this.reloadPerson()
+        this.dataLoad.reloadPersons(true)
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -244,6 +255,6 @@ export class PersonFormComponent implements OnInit {
   }
 
   public closePersonSelect() {
-    this.familyPerson.componentDescriptor = ComponentDescriptor.PERSON_FORM;
+    this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.PERSON_FORM;
   }
 }
