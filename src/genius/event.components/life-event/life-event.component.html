@@ -1,26 +1,8 @@
-<ng-container [ngSwitch]="templateVersion">
-  <div *ngSwitchCase="lifeEventTemplateVersion.SHORTEST" class="life-event-shortest" (click)="returnLifeEvent(lifeEventTemplateAction.GET)">
+<div class="life-event-shortest-delete">
+  <div class="life-event-description" (click)="returnLifeEvent(lifeEventTemplateAction.GET)">
     {{(lifeEvent) ? lifeEvent.type : ''}}
     {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
   </div>
-  <ng-container *ngSwitchCase="lifeEventTemplateVersion.SHORTEST_DEL">
-    <div class="life-event-shortest-delete">
-      <div class="life-event-description" (click)="returnLifeEvent(lifeEventTemplateAction.GET)">
-        {{(lifeEvent) ? lifeEvent.type : ''}}
-        {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
-      </div>
-      <button type="button" (click)="returnLifeEvent(lifeEventTemplateAction.DELETE)">delete</button>
-    </div>
-  </ng-container>
-  <div *ngSwitchCase="lifeEventTemplateVersion.SHORT" class="life-event-short">
-    {{(lifeEvent) ? lifeEvent.type : ''}}
-    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
-    {{(lifeEvent && lifeEvent.place) ? lifeEvent.place : ''}}
-  </div>
-  <div *ngSwitchCase="lifeEventTemplateVersion.FULL" class="life-event-full">
-    {{(lifeEvent) ? lifeEvent.type : ''}}
-    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
-    {{(lifeEvent && lifeEvent.place) ? lifeEvent.place : ''}}
-    {{(lifeEvent && lifeEvent.note) ? lifeEvent.note : ''}}
-  </div>
-</ng-container>
+  <button type="button" (click)="returnLifeEvent(lifeEventTemplateAction.DELETE)">delete</button>
+</div>
+

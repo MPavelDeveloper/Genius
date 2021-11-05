@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
+import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
 
 export enum LifeEventFormType {
   NEW_EVENT = 'newEvent',
@@ -27,7 +27,7 @@ export class LifeEventFormComponent {
   @Input() templateVersion: LifeEventFormType;
   @Input() lifeEvent: LifeEvent;
   @Input() personFullName: string;
-  @Output() addedLifeEvent = new EventEmitter<LifeEventFormActionDescriptor>();
+  @Output() formEvents = new EventEmitter<LifeEventFormActionDescriptor>();
   public eventTypes: Array<string>;
   public lifeEventPrefix: Array<string>;
   public lifeEventFormType;
@@ -36,16 +36,32 @@ export class LifeEventFormComponent {
   constructor() {
     this.lifeEvent = new LifeEvent();
     this.eventTypes = Object.values(LifeEventType);
-    this.lifeEventPrefix = Object.values(LifeEventPrefix);
+    this.lifeEventPrefix = Object.values(EventPrefix);
     this.lifeEventFormType = LifeEventFormType;
     this.lifeEventFormAction = LifeEventFormTemplateAction;
   }
 
-  public returnLifeEvent(lifeEventFormTemplateAction: LifeEventFormTemplateAction) {
-    (lifeEventFormTemplateAction === LifeEventFormTemplateAction.CANCEL) ? this.addedLifeEvent.emit(null) :
-      this.addedLifeEvent.emit({
-        action: lifeEventFormTemplateAction,
-        lifeEvent: this.lifeEvent,
-      });
+  public close(): void {
+    this.formEvents.emit({
+      action: this.lifeEventFormAction.CANCEL,
+      lifeEvent: this.lifeEvent,
+    });
+  }
+
+  public save(): void {
+    switch(this.templateVersion) {
+      case LifeEventFormType.NEW_EVENT:
+        this.formEvents.emit({
+          action: this.lifeEventFormAction.SAVE,
+          lifeEvent: this.lifeEvent,
+        });
+        break;
+      case LifeEventFormType.EXIST_EVENT:
+        this.formEvents.emit({
+          action: this.lifeEventFormAction.CHANGE,
+          lifeEvent: this.lifeEvent,
+        });
+        break;
+    }
   }
 }

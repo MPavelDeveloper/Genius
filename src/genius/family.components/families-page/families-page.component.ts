@@ -25,12 +25,7 @@ export class FamiliesPageComponent implements OnInit {
   public deleteFamily(deleteFamilyFlag: boolean): void {
     if (deleteFamilyFlag) {
       this.dataProvider.deleteFamily(this.familyId).subscribe(() => {
-          this.dataProvider.getFamilies().subscribe(families => {
-              this.families = families
-            },
-            (errorResponse) => {
-              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-            })
+        this.loadFamilies()
         },
         (errorResponse) => {
           console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);

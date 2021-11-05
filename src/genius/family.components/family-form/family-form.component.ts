@@ -14,14 +14,13 @@ import {DataLoadService} from '../../services/data-load/data-load.service';
 import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
-  LifeEventTemplateVersion
 } from '../../event.components/life-event/life-event.component';
 import {
   LifeEventFormActionDescriptor,
   LifeEventFormTemplateAction,
   LifeEventFormType
 } from '../../event.components/life-event-form/life-event-form.component';
-import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
+import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
 import {deepClone} from '../../utils/utils';
 
 export enum FamilyFormTemplateVersion {
@@ -61,7 +60,6 @@ export class FamilyFormComponent implements OnInit {
   public personTemplateVersion;
   public personType;
   public familyFormPath;
-  public lifeEventTemplateVersion;
 
 
   constructor(private dataProvider: DataProvider,
@@ -75,48 +73,50 @@ export class FamilyFormComponent implements OnInit {
     this.personTemplateVersion = PersonTemplateType;
     this.personType = PersonType;
     this.familyFormPath = FamilyFormPath;
-    this.lifeEventTemplateVersion = LifeEventTemplateVersion;
   }
 
   public ngOnInit() {
-    if (this.activateRoute.snapshot && this.activateRoute.snapshot.routeConfig) {
+    if (this.activateRoute.snapshot) {
       let path = <FamilyFormPath>this.activateRoute.snapshot.routeConfig.path;
       this.currentFamilyFormPath = path;
-      if (path === FamilyFormPath.CREATE) {
-        if (this.selectPersonTransferService.person) {
+
+      if (path === FamilyFormPath.VIEW) {
+        this.findFamily(Number(this.activateRoute.snapshot.params.id))
+        this.templateVersion = FamilyFormTemplateVersion.FAMILY_VIEW;
+      } else if (path === FamilyFormPath.CREATE) {
+        if (this.selectPersonTransferService.componentDescriptor === ComponentDescriptor.PERSON_FORM) {
           this.familyClone = this.selectPersonTransferService.family;
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
           this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
           this.addSelectPersonInFamily(this.selectPersonTransferService.personType, this.selectPersonTransferService.person, this.selectPersonTransferService.currentChildIndex);
         } else {
-          this.family = new Family();
           this.familyClone = this.family;
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
         }
-      } else if (path === FamilyFormPath.VIEW) {
-        this.findFamily(Number(this.activateRoute.snapshot.params.id))
-        this.templateVersion = FamilyFormTemplateVersion.FAMILY_VIEW;
-      } else if (path === FamilyFormPath.EDIT && this.selectPersonTransferService.componentDescriptor === ComponentDescriptor.PERSON_FORM) {
-        this.findFamily(this.selectPersonTransferService.familyId)
-        this.familyClone = this.selectPersonTransferService.family
-        this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
-        this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
-        this.addSelectPersonInFamily(this.selectPersonTransferService.personType, this.selectPersonTransferService.person, this.selectPersonTransferService.currentChildIndex);
       } else if (path === FamilyFormPath.EDIT) {
-        this.dataProvider.findFamily(Number(this.activateRoute.snapshot.params.id)).subscribe(family => {
-            this.family = family;
-            this.familyClone = deepClone(family);
-            this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
-          },
-          (errorResponse) => {
-            console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-          })
+        if (this.selectPersonTransferService.componentDescriptor === ComponentDescriptor.PERSON_FORM) {
+          this.findFamily(this.selectPersonTransferService.familyId)
+          this.familyClone = this.selectPersonTransferService.family
+          this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
+          this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
+          this.addSelectPersonInFamily(this.selectPersonTransferService.personType, this.selectPersonTransferService.person, this.selectPersonTransferService.currentChildIndex);
+        } else {
+          this.dataProvider.findFamily(Number(this.activateRoute.snapshot.params.id)).subscribe(family => {
+              this.family = family;
+              this.familyClone = deepClone(family);
+              this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+            })
+        }
       }
     }
   }
 
   public saveFamily(): void {
     if (this.familyValid(this.familyClone)) {
+      console.log(this.familyClone)
       let saveTasks: Array<Observable<Object>> = this.getFamilyPersons(this.familyClone)
         .map(person => {
           if (person.id) {
@@ -126,8 +126,8 @@ export class FamilyFormComponent implements OnInit {
           }
         })
 
-
-      forkJoin(saveTasks).subscribe(() => {
+      forkJoin(saveTasks[0]).subscribe(() => {
+        console.log("forkJoin")
         if (this.familyClone.id) {
           this.dataProvider.changeFamily(this.familyClone).subscribe(() => {
               this.dataLoadService.reloadFamilies(true)
@@ -172,17 +172,17 @@ export class FamilyFormComponent implements OnInit {
     if (personType === PersonType.HUSBAND) {
       if (this.familyClone.husband) {
         this.person = this.familyClone.husband;
-      }else{
+      } else {
         this.person = new Person();
       }
     } else if (personType === PersonType.WIFE) {
-      if (this.familyClone.wife){
+      if (this.familyClone.wife) {
         this.person = this.familyClone.wife;
       } else {
         this.person = new Person();
       }
     } else if (personType === PersonType.CHILD) {
-      if(this.familyClone.children[childIndex]) {
+      if (this.familyClone.children[childIndex]) {
         this.person = this.familyClone.children[childIndex]
       } else {
         this.person = new Person();
@@ -231,38 +231,48 @@ export class FamilyFormComponent implements OnInit {
       });
   }
 
+  public deleteLifeEvent(familyId: number, lifeEvent: LifeEvent): void {
+    this.dataProvider.deleteFamilyEvent(familyId, lifeEvent).subscribe(() => {
+        this.reloadFamily(this.family.id)
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
+  }
+
   public createLifeEvent(): void {
     this.lifeEventFormType = LifeEventFormType.NEW_EVENT;
     this.lifeEventClone = new LifeEvent()
     this.lifeEventClone.type = LifeEventType.DEFAULT;
-    this.lifeEventClone.prefix = LifeEventPrefix.NONE;
+    this.lifeEventClone.prefix = EventPrefix.NONE;
     this.lifeEventFormDialogVisiable = true;
   }
 
-  public lifeEventHandler(lifeEventActionDescriptor: LifeEventActionDescriptor): void {
-    if (lifeEventActionDescriptor.action === LifeEventTemplateAction.DELETE) {
-      this.dataProvider.deleteFamilyEvent(this.family.id, lifeEventActionDescriptor.lifeEvent).subscribe(() => {
-          this.reloadFamily(this.family.id)
-        },
-        (errorResponse) => {
-          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-        });
-    } else if (lifeEventActionDescriptor.action === LifeEventTemplateAction.GET) {
-      this.lifeEventClone = deepClone(lifeEventActionDescriptor.lifeEvent);
-      this.lifeEventFormDialogVisiable = true;
-      this.lifeEventFormType = LifeEventFormType.EXIST_EVENT;
+  public lifeEventHandler(event: LifeEventActionDescriptor): void {
+    switch (event.action) {
+      case LifeEventTemplateAction.DELETE:
+        this.deleteLifeEvent(this.family.id, event.lifeEvent);
+        break;
+      case LifeEventTemplateAction.GET:
+        this.lifeEventClone = deepClone(event.lifeEvent);
+        this.lifeEventFormDialogVisiable = true;
+        this.lifeEventFormType = LifeEventFormType.EXIST_EVENT;
+        break;
     }
   }
 
-  public lifeEventFormHandler(lifeEventFormActionDescriptor: LifeEventFormActionDescriptor): void {
-    this.lifeEventFormDialogVisiable = false;
-    if (lifeEventFormActionDescriptor) {
-      if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
-        this.changeLifeEvent(this.family.id, lifeEventFormActionDescriptor.lifeEvent)
-      } else if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.SAVE) {
-        this.addNewLifeEvent(this.family.id, lifeEventFormActionDescriptor.lifeEvent)
-      }
+  public lifeEventFormHandler(event: LifeEventFormActionDescriptor): void {
+    switch (event.action) {
+      case LifeEventFormTemplateAction.CANCEL:
+        break;
+      case LifeEventFormTemplateAction.CHANGE:
+        this.changeLifeEvent(this.family.id, event.lifeEvent);
+        break;
+      case LifeEventFormTemplateAction.SAVE:
+        this.addNewLifeEvent(this.family.id, event.lifeEvent)
+        break;
     }
+    this.lifeEventFormDialogVisiable = false;
   }
 
   public cancelChanges(): void {
@@ -316,7 +326,12 @@ export class FamilyFormComponent implements OnInit {
 
   public exitFamilyEditor(): void {
     this.selectPersonTransferService.componentDescriptor = null;
-    this.selectPersonTransferService = null;
+    this.selectPersonTransferService.person = null;
+    this.selectPersonTransferService.personType = null;
+    this.selectPersonTransferService.familyId = null;
+    this.selectPersonTransferService.family = null;
+    this.selectPersonTransferService.currentChildIndex = null;
+    this.selectPersonTransferService.personFormTemplateVersion = null;
   }
 
   private reloadFamily(familyId: number): void {

@@ -1,4 +1,5 @@
 export enum FamilyEventType {
+  DEFAULT = 'Other',
   BIRTH = 'Birth',
   DEATH = 'Death',
   ENGAGEMENT = 'Engagement',
@@ -33,7 +34,7 @@ export enum LifeEventType {
   IMMIGRATION = 'Immigration',
 }
 
-export enum LifeEventPrefix {
+export enum EventPrefix {
   NONE = 'None',
   BEFORE = 'Before',
   ABOUT = 'About',
@@ -43,7 +44,7 @@ export enum LifeEventPrefix {
 export class LifeEvent {
   public id?: number;
   public type?: LifeEventType | FamilyEventType;
-  public prefix?: LifeEventPrefix;
+  public prefix?: EventPrefix;
   public date?: Date;
   public place?: string;
   public note?: string;

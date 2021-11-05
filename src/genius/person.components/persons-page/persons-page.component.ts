@@ -18,14 +18,13 @@ export class PersonsPageComponent implements OnInit {
   public gender;
 
   constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService) {
-    this.persons = [];
+    this.loadPersons();
     this.personTemplateType = PersonTemplateType;
     this.gender = Sex;
   }
 
   ngOnInit() {
     this.dataLoad.persons$.subscribe(() => this.loadPersons());
-    this.loadPersons();
   }
 
   public showConfirm(personIndex: number): void {
@@ -37,13 +36,7 @@ export class PersonsPageComponent implements OnInit {
     if(deletePersonFlag) {
       this.dataProvider.deletePerson(this.getPersonId(this.currentPersonIndex))
         .subscribe(() => {
-            this.dataProvider.getPersons()
-              .subscribe(persons => {
-                  this.persons = persons;
-                },
-                (errorResponse) => {
-                  console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-                });
+          this.loadPersons()
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);

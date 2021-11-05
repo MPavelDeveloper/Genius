@@ -1,15 +1,9 @@
 <ng-container [ngSwitch] = "templateVersion">
-  <div *ngSwitchCase = "personsTemplateType.SHORTEST" class="person-shortest" (click)="returnPerson(personTemplateAction.GET)">
+  <div *ngSwitchCase = "personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
     {{ (person && person.firstName) ? person.firstName : '' }}
     {{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}
   </div>
-  <div *ngSwitchCase = "personsTemplateType.SHORT" class="person-short" (click)="returnPerson(personTemplateAction.GET)">
-    {{ (person && person.firstName) ? person.firstName : ''  }}
-    {{ (person && person.age) ? ' ' + person?.age + ' ' : '' }}
-    {{(person && person.sex) ? person.sex : '' }}
-  </div>
-
-  <div *ngSwitchCase = "personsTemplateType.FULL" class="person-short-fulldata" (click)="returnPerson(personTemplateAction.GET)">
+  <div *ngSwitchCase = "personsTemplateType.FULL" class="person-fulldata" (click)="returnPerson()">
     <p class="person-description">
       {{ (person && person.firstName) ? person.firstName : ''   }}
       {{ (person && person.lastName) ? person.lastName : ''  }}
@@ -17,29 +11,6 @@
       {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
       {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
     </p>
-  </div>
-
-  <div *ngSwitchCase = "personsTemplateType.FULL_DATA" class="person-short-fulldata" (click)="returnPerson(personTemplateAction.GET)">
-    <div class="person-description">
-      {{ (person && person.firstName) ? person.firstName : ''   }}
-      {{ (person && person.lastName) ? person.lastName : ''  }}
-      {{ (person && person.middleName) ? person.middleName : ''  }}
-      {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
-      {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
-    </div>
-    <button type="button" (click)="returnPerson(personTemplateAction.DELETE)">delete</button>
-  </div>
-
-  <div *ngSwitchCase = "personsTemplateType.EVENTS" class="person-short-event">
-    <div class="person-description">
-      {{ (person && person.firstName) ? person.firstName : ''   }}
-      {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
-      {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
-    </div>
-    <ng-container *ngFor = "let lifeEvent of person.lifeEvents">
-      <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL" [lifeEvent]="lifeEvent" (returnedLifeEvent)="returnExistLifeEvent($event)"></life-event>
-    </ng-container>
-    <button class="btn-add-event" type="button" (click)="createNewLifeEvent()">+</button>
   </div>
 </ng-container>
 

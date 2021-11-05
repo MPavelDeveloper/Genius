@@ -1,4 +1,4 @@
-import {FamilyEventType, LifeEvent, LifeEventPrefix} from '../../../model/life-event';
+import {FamilyEventType, LifeEvent, EventPrefix} from '../../../model/life-event';
 
 export interface FamilyDTO {
   id?: number;
@@ -31,7 +31,7 @@ export interface PersonDTO {
 export interface EventDTO {
   id?: number;
   type?: FamilyEventType;
-  prefix?: LifeEventPrefix;
+  prefix?: EventPrefix;
   date: Date;
   place?: string;
   note?: string;

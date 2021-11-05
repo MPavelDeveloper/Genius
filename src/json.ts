@@ -1,4 +1,4 @@
-import {LifeEventPrefix, LifeEventType} from './model/life-event';
+import {FamilyEventType, EventPrefix, LifeEventType} from './model/life-event';
 import {LineAge} from "./model/line-age";
 import {Person, Sex} from "./model/person";
 
@@ -87,6 +87,12 @@ export const data: LineAge = {
       ],
       familyId: 1,
     }],
+    events: [{
+      id: 10,
+      type:FamilyEventType.BIRTH,
+      prefix: EventPrefix.NONE,
+      date: new Date('2021-11-03'),
+    }],
   }, {
     id: 2,
     note: undefined,
@@ -155,6 +161,12 @@ export const data: LineAge = {
       lifeEvents: [],
       familyId: 2,
     }],
+    events: [{
+      id: 11,
+      type:FamilyEventType.BIRTH,
+      prefix: EventPrefix.NONE,
+      date: new Date('2021-11-03'),
+    }],
   }, {
     id: 3,
     note: undefined,
@@ -204,6 +216,12 @@ export const data: LineAge = {
       lifeEvents: [],
       familyId: 3,
     }],
+    events: [{
+      id: 12,
+      type:FamilyEventType.BIRTH,
+      prefix: EventPrefix.NONE,
+      date: new Date('2021-11-03'),
+    }],
   },],
   personList: [{
     // first family
@@ -221,7 +239,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:1,
-        prefix: LifeEventPrefix.NONE,
+        prefix: EventPrefix.NONE,
         date: new Date('1989-03-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -243,7 +261,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:2,
-        prefix: LifeEventPrefix.NONE,
+        prefix: EventPrefix.NONE,
         date: new Date('1989-03-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -265,7 +283,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:3,
-        prefix: LifeEventPrefix.NONE,
+        prefix: EventPrefix.NONE,
         date: new Date('1998-05-12'),
         type: LifeEventType.MARRIED,
         note: 'Married',
@@ -287,7 +305,7 @@ export const data: LineAge = {
     lifeEvents: [
       {
         id:4,
-        prefix: LifeEventPrefix.NONE,
+        prefix: EventPrefix.NONE,
         date: new Date('1992-03-09'),
         type: LifeEventType.MARRIED,
         note: 'Married',

@@ -14,7 +14,7 @@
       <input class="person-sex person-input-view" placeholder="Gender" #sex="ngModel"  [(ngModel)]="person.sex" name="gender" disabled>
       <ng-container *ngFor = "let lifeEvent of person.lifeEvents; let index = index">
         <p class="person-title-events" *ngIf="index === 0">Events</p>
-        <life-event [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL" [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
+        <life-event  [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
       </ng-container>
       <div class="event-add-wrap">
         <p class="event-add-title">new event</p>
@@ -25,7 +25,7 @@
                      [templateVersion]="lifeEventFormType"
                      [lifeEvent]="lifeEventClone"
                      [personFullName]="getPersonFullName()"
-                     (addedLifeEvent)="lifeEventFormHandler($event)">
+                     (formEvents)="lifeEventFormHandler($event)">
     </life-event-form>
     <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="deleteLifeEvent($event)"></confirm-dialog>
   </form>

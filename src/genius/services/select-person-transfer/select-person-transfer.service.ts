@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Person} from '../../../model/person';
-import {FamilyFormTemplateVersion, PersonType} from '../../family.components/family-form/family-form.component';
+import {PersonType} from '../../family.components/family-form/family-form.component';
 import {PersonFormTemplateVersion} from '../../person.components/person-form/person-form.component';
 import {Family} from '../../../model/family';
 
@@ -21,7 +21,6 @@ export class SelectPersonTransferService {
   public family: Family;
   public currentChildIndex: number;
   public personFormTemplateVersion: PersonFormTemplateVersion;
-  public familyFormTemplateVersion: FamilyFormTemplateVersion;
 
   constructor() { }
 }

@@ -11,18 +11,18 @@
           <div class="person-screen father">
             <div class="description" *ngIf="!family.husband">Husband</div>
             <div class="description" *ngIf="family.husband">
-              <person class="create-person" [person]="family.husband" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+              <person class="create-person" [person]="family.husband" [templateVersion]="personTemplateVersion.SHORT"></person>
             </div>
           </div>
           <div class="person-screen mother">
             <div class="description" *ngIf="!family.wife">Wife</div>
             <div class="description" *ngIf="family.wife">
-              <person class="create-person" [person]="family.wife" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+              <person class="create-person" [person]="family.wife" [templateVersion]="personTemplateVersion.SHORT"></person>
             </div>
           </div>
           <div class="person-screen children">
             <div class="description" *ngFor="let child of family.children">
-              <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+              <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORT"></person>
             </div>
           </div>
 
@@ -30,7 +30,6 @@
             <ng-container *ngFor = "let event of family.events; let index = index">
               <p class="family-title-events" *ngIf="index === 0">Events</p>
               <life-event  [lifeEvent]="event"
-                           [templateVersion]="lifeEventTemplateVersion.SHORTEST_DEL"
                            (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
             </ng-container>
             <div class="event-add-wrap">
@@ -44,25 +43,24 @@
       <life-event-form *ngIf = "lifeEventFormDialogVisiable"
                        [templateVersion]="lifeEventFormType"
                        [lifeEvent]="lifeEventClone"
-                       (addedLifeEvent)="lifeEventFormHandler($event)">
+                       (formEvents)="lifeEventFormHandler($event)">
       </life-event-form>
     </div>
 
   </div>
-
   <div class="wrap" *ngSwitchCase="familyFormTemplateVersion.FAMILY_EDITOR">
     <div class="create-family">
       <div class="create-family-wrap">
         <div class="wrap-family">
           <button class="btn-close" (click)="exitFamilyEditor()" [routerLink]="['/viewFamily', family.id]" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">X</button>
-          <button class="btn-close" routerLink="/Families" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">X</button>
+          <button class="btn-close" (click)="exitFamilyEditor()" routerLink="/Families" *ngIf="currentFamilyFormPath === familyFormPath.CREATE">X</button>
           <div class="family-title-wrap">
             <p class="family-title">Family</p>
           </div>
           <div class="person-screen father">
             <div class="description" *ngIf="!familyClone.husband">Husband</div>
             <div class="description" *ngIf="familyClone.husband">
-              <person class="create-person" [person]="familyClone.husband" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+              <person class="create-person" [person]="familyClone.husband" [templateVersion]="personTemplateVersion.SHORT"></person>
             </div>
             <div class="actions-wrap">
               <button class="action-btn" (click)="selectPerson(personType.HUSBAND, null)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
@@ -73,7 +71,7 @@
           <div class="person-screen mother">
             <div class="description" *ngIf="!familyClone.wife">Wife</div>
             <div class="description" *ngIf="familyClone.wife">
-              <person class="create-person" [person]="familyClone.wife" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+              <person class="create-person" [person]="familyClone.wife" [templateVersion]="personTemplateVersion.SHORT"></person>
             </div>
             <div class="actions-wrap">
               <button class="action-btn" (click)="selectPerson(personType.WIFE, null)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
@@ -88,7 +86,7 @@
             <div class="child-container" *ngFor='let child of familyClone.children; let childIndex = index;'>
               <div class="description" *ngIf="!checkChild(childIndex)">Child</div>
               <div class="description" *ngIf="checkChild(childIndex)">
-                <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORTEST"></person>
+                <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORT"></person>
               </div>
               <div class="actions-wrap">
                 <button class="action-btn" (click)="selectPerson(personType.CHILD, childIndex)" routerLink="/selectPerson" *ngIf="currentFamilyFormPath === familyFormPath.EDIT">select</button>
@@ -98,7 +96,8 @@
             </div>
           </div>
           <div class="family-actions">
-            <button class="btn-add-family" (click)="saveFamily()" routerLink="/Families">save</button>
+
+            <button class="btn-add-family" (click)="saveFamily()" routerLink="/Families" >save</button>
             <button class="btn-cancel" (click)="cancelChanges()">cancel</button>
           </div>
         </div>

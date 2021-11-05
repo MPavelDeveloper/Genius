@@ -6,9 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
-  LifeEventTemplateVersion
 } from '../../event.components/life-event/life-event.component';
-import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
+import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
 import {
   LifeEventFormActionDescriptor,
   LifeEventFormTemplateAction,
@@ -53,7 +52,6 @@ export class PersonFormComponent implements OnInit {
   public lifeEventFormDialogVisiable: Boolean;
   public personFormPath;
   public personFormTemplateVersion;
-  public lifeEventTemplateVersion;
   public lifeEventFormTemplateVersion;
   public personTemplateType;
   public personSex;
@@ -63,7 +61,6 @@ export class PersonFormComponent implements OnInit {
     this.templateVersion = PersonFormTemplateVersion.PERSON_CREATE;
     this.PersonSex = Object.values(Sex);
     this.personFormTemplateVersion = PersonFormTemplateVersion;
-    this.lifeEventTemplateVersion = LifeEventTemplateVersion;
     this.lifeEventFormTemplateVersion = LifeEventFormType;
     this.personFormPath = PersonFormPath;
     this.personTemplateType = PersonTemplateType;
@@ -128,7 +125,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   public savePerson(): void {
-    this.dataProvider.addNewPerson(this.person).subscribe(response => {
+    this.dataProvider.addNewPerson(this.person).subscribe(() => {
         this.dataLoad.reloadPersons(true)
       },
       (errorResponse) => {
@@ -217,7 +214,7 @@ export class PersonFormComponent implements OnInit {
     this.lifeEventFormType = LifeEventFormType.NEW_EVENT;
     this.lifeEventClone = new LifeEvent();
     this.lifeEventClone.type = LifeEventType.DEFAULT;
-    this.lifeEventClone.prefix = LifeEventPrefix.NONE;
+    this.lifeEventClone.prefix = EventPrefix.NONE;
     this.lifeEventFormDialogVisiable = true;
   }
 
