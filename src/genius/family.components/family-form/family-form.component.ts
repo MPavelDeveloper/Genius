@@ -22,6 +22,7 @@ import {
   LifeEventFormType
 } from '../../event.components/life-event-form/life-event-form.component';
 import {LifeEvent, LifeEventPrefix, LifeEventType} from '../../../model/life-event';
+import {deepClone} from '../../utils/utils';
 
 export enum FamilyFormTemplateVersion {
   FAMILY_VIEW = 'view',
@@ -82,10 +83,7 @@ export class FamilyFormComponent implements OnInit {
       let path = <FamilyFormPath>this.activateRoute.snapshot.routeConfig.path;
       this.currentFamilyFormPath = path;
       if (path === FamilyFormPath.CREATE) {
-        console.log(111)
         if (this.selectPersonTransferService.person) {
-          console.log(222)
-          console.log(this.selectPersonTransferService)
           this.familyClone = this.selectPersonTransferService.family;
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
           this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
@@ -107,7 +105,7 @@ export class FamilyFormComponent implements OnInit {
       } else if (path === FamilyFormPath.EDIT) {
         this.dataProvider.findFamily(Number(this.activateRoute.snapshot.params.id)).subscribe(family => {
             this.family = family;
-            this.familyClone = this.deepClone(family);
+            this.familyClone = deepClone(family);
             this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
           },
           (errorResponse) => {
@@ -172,11 +170,23 @@ export class FamilyFormComponent implements OnInit {
 
   public selectPerson(personType: PersonType, childIndex: number): void {
     if (personType === PersonType.HUSBAND) {
-      (this.familyClone.husband) ? this.person = this.familyClone.husband : this.person = new Person();
+      if (this.familyClone.husband) {
+        this.person = this.familyClone.husband;
+      }else{
+        this.person = new Person();
+      }
     } else if (personType === PersonType.WIFE) {
-      (this.familyClone.wife) ? this.person = this.familyClone.wife : this.person = new Person();
+      if (this.familyClone.wife){
+        this.person = this.familyClone.wife;
+      } else {
+        this.person = new Person();
+      }
     } else if (personType === PersonType.CHILD) {
-      (this.familyClone.children[childIndex]) ? this.person = this.familyClone.children[childIndex] : this.person = new Person();
+      if(this.familyClone.children[childIndex]) {
+        this.person = this.familyClone.children[childIndex]
+      } else {
+        this.person = new Person();
+      }
       this.currentChildIndex = childIndex;
       this.selectPersonTransferService.currentChildIndex = this.currentChildIndex;
     }
@@ -238,7 +248,7 @@ export class FamilyFormComponent implements OnInit {
           console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
         });
     } else if (lifeEventActionDescriptor.action === LifeEventTemplateAction.GET) {
-      this.lifeEventClone = this.deepClone(lifeEventActionDescriptor.lifeEvent);
+      this.lifeEventClone = deepClone(lifeEventActionDescriptor.lifeEvent);
       this.lifeEventFormDialogVisiable = true;
       this.lifeEventFormType = LifeEventFormType.EXIST_EVENT;
     }
@@ -256,7 +266,7 @@ export class FamilyFormComponent implements OnInit {
   }
 
   public cancelChanges(): void {
-    this.familyClone = this.deepClone(this.family);
+    this.familyClone = deepClone(this.family);
   }
 
   private getFamilyPersons(family: Family): Array<Person> {
@@ -317,11 +327,6 @@ export class FamilyFormComponent implements OnInit {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       })
   }
-
-  private deepClone(obj: any): any {
-    return JSON.parse(JSON.stringify(obj));
-  }
-
 
 }
 

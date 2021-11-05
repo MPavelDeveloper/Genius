@@ -1,7 +1,8 @@
-.event__form {
+.life-event__form {
   border-radius: 3px;
   padding: 12px;
   box-shadow: 0 2px 6px grey;
+  width: 540px;
 
   .form-wrap {
     display: flex;
@@ -10,7 +11,7 @@
 
     p{
       text-align: right;
-      .event__btn-close {
+      .life-event__btn-close {
         margin-bottom: 12px;
         border: 0px;
         padding: 3px;
@@ -24,7 +25,7 @@
       }
     }
 
-    .event-person {
+    .life-event-person {
       font-size: 21px;
       text-align: left;
     }
@@ -35,7 +36,7 @@
       text-align: right;
     }
 
-    .event__select {
+    .life-event__select {
       margin-bottom: 12px;
       border-radius: 6px;
       border-bottom: 3px solid gray;
@@ -56,12 +57,11 @@
       border-bottom: 1px solid black;
       padding: 12px;
       padding-bottom: 3px;
-      width: 21vw;
       font-size: 18px;
       outline: none;
     }
 
-    .event__calendare {
+    .life-event__calendare {
       margin-bottom: 12px;
       border-radius: 6px;
       border: 1px solid gray;
@@ -72,19 +72,19 @@
       cursor: pointer;
     }
 
-    .event__place {
+    .life-event__place {
       margin-bottom: 12px;
     }
 
-    .event__note {
+    .life-event__note {
       margin-bottom: 12px;
     }
 
-    .event-actions {
+    .life-event-actions {
       display: flex;
       justify-content: space-around;
 
-      .event__save-btn, .event__cancel-btn {
+      .life-event__save-btn, .life-event__cancel-btn {
         margin-bottom: 12px;
         border-radius: 12px;
         border: 0;

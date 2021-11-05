@@ -15,10 +15,10 @@ export class FamiliesPageComponent implements OnInit {
   public confirmDialogVisiable: boolean;
 
   constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService) {
+    this.loadFamilies()
   }
 
   ngOnInit(): void {
-    this.loadFamilies()
     this.dataLoad.families$.subscribe(() => this.loadFamilies())
   }
 
