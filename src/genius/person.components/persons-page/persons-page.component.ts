@@ -3,6 +3,7 @@ import {Person, Sex} from '../../../model/person';
 import {DataProvider} from '../../services/data-provider';
 import {PersonTemplateType} from '../person/person.component';
 import {DataLoadService} from '../../services/data-load/data-load.service';
+import {ConfirmAction} from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'persons-page',
@@ -11,8 +12,8 @@ import {DataLoadService} from '../../services/data-load/data-load.service';
   styleUrls: ['./persons-page.component.scss']
 })
 export class PersonsPageComponent implements OnInit {
+  public person: Person;
   public persons: Array<Person>;
-  public currentPersonIndex: number;
   public showConfirmDialog: boolean;
   public personTemplateType;
   public gender;
@@ -27,14 +28,14 @@ export class PersonsPageComponent implements OnInit {
     this.dataLoad.persons$.subscribe(() => this.loadPersons());
   }
 
-  public showConfirm(personIndex: number): void {
-    this.currentPersonIndex = personIndex;
+  public showConfirm(person: Person): void {
+    this.person = person;
     this.showConfirmDialog = true;
   }
 
-  public deletePerson(deletePersonFlag: boolean): void {
-    if(deletePersonFlag) {
-      this.dataProvider.deletePerson(this.getPersonId(this.currentPersonIndex))
+  public confirmActionHandler(confirmAction: ConfirmAction): void {
+    if(confirmAction === ConfirmAction.OK) {
+      this.dataProvider.deletePerson(this.person.id)
         .subscribe(() => {
           this.loadPersons()
           },
@@ -43,10 +44,6 @@ export class PersonsPageComponent implements OnInit {
           });
     }
     this.showConfirmDialog = false;
-  }
-
-  public getPersonId(personIndex: number): number {
-    return this.persons[personIndex].id;
   }
 
   public loadPersons(): void {

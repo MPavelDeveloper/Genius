@@ -1,15 +1,15 @@
-<ng-container [ngSwitch] = "templateVersion">
-  <div *ngSwitchCase = "personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
-    {{ (person && person.firstName) ? person.firstName : '' }}
-    {{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}
+<ng-container [ngSwitch]="templateVersion">
+  <div *ngSwitchCase="personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
+    <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' '  : '' }}</span>
+    <span>{{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}</span>
   </div>
-  <div *ngSwitchCase = "personsTemplateType.FULL" class="person-fulldata" (click)="returnPerson()">
+  <div *ngSwitchCase="personsTemplateType.FULL" class="person-fulldata" (click)="returnPerson()">
     <p class="person-description">
-      {{ (person && person.firstName) ? person.firstName : ''   }}
-      {{ (person && person.lastName) ? person.lastName : ''  }}
-      {{ (person && person.middleName) ? person.middleName : ''  }}
-      {{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}
-      {{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}
+      <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' ' : ''   }}</span>
+      <span>{{ (person && person.lastName) ?  ' ' + person.lastName + ' ' : ''  }}</span>
+      <span>{{ (person && person.middleName) ?  ' ' + person.middleName + ' ' : ''  }}</span>
+      <span>{{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}</span>
+      <span>{{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}</span>
     </p>
   </div>
 </ng-container>

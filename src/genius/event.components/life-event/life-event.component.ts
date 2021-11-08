@@ -17,18 +17,19 @@ export interface LifeEventActionDescriptor {
   styleUrls: ['./life-event.component.scss']
 })
 export class LifeEventComponent {
-
   @Input() lifeEvent: LifeEvent;
   @Output() returnedLifeEvent = new EventEmitter<LifeEventActionDescriptor>();
-  lifeEventTemplateAction;
 
-  constructor() {
-    this.lifeEventTemplateAction = LifeEventTemplateAction
+  public deleteLifeEvent() {
+    return this.returnedLifeEvent.emit({
+      action: LifeEventTemplateAction.DELETE,
+      lifeEvent: this.lifeEvent,
+    })
   }
 
-  returnLifeEvent(lifeEventTemplateAction: LifeEventTemplateAction) {
+  public loadLifeEvent() {
     return this.returnedLifeEvent.emit({
-      action: lifeEventTemplateAction,
+      action: LifeEventTemplateAction.GET,
       lifeEvent: this.lifeEvent,
     })
   }

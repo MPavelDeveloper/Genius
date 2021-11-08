@@ -1,8 +1,8 @@
 <div class="life-event-shortest-delete">
-  <div class="life-event-description" (click)="returnLifeEvent(lifeEventTemplateAction.GET)">
-    {{(lifeEvent) ? lifeEvent.type : ''}}
-    {{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}
+  <div class="life-event-description" (click)="loadLifeEvent()">
+    <span>{{(lifeEvent) ? lifeEvent.type : ''}}</span>
+    <span>{{(lifeEvent && lifeEvent.date) ? lifeEvent.date : ''}}</span>
   </div>
-  <button type="button" (click)="returnLifeEvent(lifeEventTemplateAction.DELETE)">delete</button>
+  <button (click)="deleteLifeEvent()">delete</button>
 </div>
 

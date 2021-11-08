@@ -4,19 +4,19 @@
 
     <button class="life-event__btn-close" (click)="close()">X</button>
 
-    <p class="title__select">event type</p>
+    <p class="title__select"><span>event type</span></p>
     <select class="life-event__select" [(ngModel)] = "lifeEvent.type">
       <ng-container *ngFor="let lifeEventType of eventTypes">
         <option class="select-option" value="{{lifeEventType}}">{{lifeEventType}}</option>
       </ng-container>
     </select>
-    <p class="title__select">prefix </p>
+    <p class="title__select"><span>prefix</span></p>
     <select class="life-event__select" [(ngModel)] = "lifeEvent.prefix">
       <ng-container *ngFor="let eventPrefix of lifeEventPrefix; let i = index">
         <option class="select-option" value="{{eventPrefix}}">{{eventPrefix}}</option>
       </ng-container>
     </select>
-    <p class="title__select">date</p>
+    <p class="title__select"><span>date</span></p>
     <input type="date" class="life-event__calendare" [(ngModel)] = "lifeEvent.date" >
     <input type="text" class="life-event__place text-input" placeholder="enter place" [(ngModel)] = "lifeEvent.place">
     <input type="text" class="life-event__note text-input" placeholder="enter note" [(ngModel)] = "lifeEvent.note">

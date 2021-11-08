@@ -1,15 +1,15 @@
 <div class="family" (click)="close()">
   <div class="parents">
     <div class="family-father">
-      <person [person]="family?.husband" [templateVersion]="'shortestTemplate'"></person>
+      <person [person]="family?.husband" [templateVersion]="personTemplateType.SHORT"></person>
     </div>
     <div class="family-mother">
-      <person [person]="family?.wife" [templateVersion]="'shortestTemplate'"></person>
+      <person [person]="family?.wife" [templateVersion]="personTemplateType.SHORT"></person>
     </div>
   </div>
   <div class="family-children">
     <ng-container *ngFor="let child of family?.children">
-      <person [person]="child" [templateVersion]="'shortestTemplate'"></person>
+      <person [person]="child" [templateVersion]="personTemplateType.SHORT"></person>
     </ng-container>
   </div>
 </div>

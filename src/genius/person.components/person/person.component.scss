@@ -4,12 +4,17 @@
   padding: var(--padding, 12px);
   height: 100%;
   width: 100%;
+  white-space: pre;
   cursor: pointer;
   .person-description {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+}
+
+.person-short {
+  white-space: pre;
 }
 
 

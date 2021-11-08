@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angula
 import {Person} from '../../../model/person';
 
 export enum PersonTemplateType {
-  SHORT = 'shortestTemplate',
+  SHORT = 'shortTemplate',
   FULL = 'fullTemplate',
 }
 

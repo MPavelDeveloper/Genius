@@ -1,5 +1,10 @@
 import {Component, OnInit, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 
+export enum ConfirmAction {
+  OK = 'ok',
+  CANCEL = 'cancel',
+}
+
 @Component({
   selector: 'confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
@@ -7,9 +12,14 @@ import {Component, OnInit, Output, EventEmitter, ViewEncapsulation} from '@angul
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent {
-  @Output() confirmAction = new EventEmitter<boolean>();
+  @Output() confirmAction = new EventEmitter<ConfirmAction>();
+  confirmActionType;
 
-  returnConfirmAction(action: boolean) {
-    return this.confirmAction.emit(action);
+  constructor() {
+    this.confirmActionType = ConfirmAction;
+  }
+
+  returnConfirmAction(confirmAction: ConfirmAction) {
+    return this.confirmAction.emit(confirmAction);
   }
 }

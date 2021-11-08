@@ -7,15 +7,19 @@ import {
   LifeEventActionDescriptor,
   LifeEventTemplateAction,
 } from '../../event.components/life-event/life-event.component';
-import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
+import {EventPrefix, LifeEvent, LifeEventType} from '../../../model/life-event';
 import {
   LifeEventFormActionDescriptor,
   LifeEventFormTemplateAction,
   LifeEventFormType
 } from '../../event.components/life-event-form/life-event-form.component';
 import {PersonTemplateType} from '../person/person.component';
-import {ComponentDescriptor, SelectPersonTransferService} from '../../services/select-person-transfer/select-person-transfer.service';
+import {
+  ComponentDescriptor,
+  SelectPersonTransferService
+} from '../../services/select-person-transfer/select-person-transfer.service';
 import {DataLoadService} from '../../services/data-load/data-load.service';
+import {ConfirmAction} from '../../confirm-dialog/confirm-dialog.component';
 
 export enum PersonFormTemplateVersion {
   PERSON_VIEW = 'view',
@@ -197,9 +201,9 @@ export class PersonFormComponent implements OnInit {
       });
   }
 
-  public deleteLifeEvent(deleteLifeEventFlag: boolean): void {
+  public confirmActionHandler(confirmAction: ConfirmAction): void {
     this.confirmDialogVisiable = false;
-    if (deleteLifeEventFlag) {
+    if (confirmAction === ConfirmAction.OK) {
       this.dataProvider.deletePersonEvent(this.person.id, this.lifeEventClone)
         .subscribe(() => {
             this.reloadPerson();
@@ -253,5 +257,19 @@ export class PersonFormComponent implements OnInit {
 
   public closePersonSelect() {
     this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.PERSON_FORM;
+  }
+
+  public getRouterLink(): [string, number | string] {
+    if (this.currentPersonFormPath === PersonFormPath.ADD_IN_EXIST_FAMILY){
+      return ['/editFamily', this.familyId];
+    } else if (this.currentPersonFormPath = PersonFormPath.ADD_IN_NEW_FAMILY) {
+      return ['/createFamily', ''];
+    }
+
+    return undefined
+  }
+
+  testFn () {
+    return ['/editFamily', '']
   }
 }

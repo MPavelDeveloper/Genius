@@ -36,7 +36,7 @@ export enum PersonType {
 
 export enum FamilyFormPath {
   VIEW = 'viewFamily/:id',
-  CREATE = 'createFamily',
+  CREATE = 'createFamily/:id',
   EDIT = 'editFamily/:id',
 }
 
@@ -341,6 +341,26 @@ export class FamilyFormComponent implements OnInit {
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
       })
+  }
+
+  public getRouterLink(): string {
+    if(this.currentFamilyFormPath === FamilyFormPath.CREATE) {
+      return '/addPersonInNewFamily';
+    }
+    else if(this.currentFamilyFormPath === FamilyFormPath.EDIT) {
+      return '/selectPerson';
+    }
+    return undefined
+  }
+
+  public getRouterLinkCloseBtn(): [string, number | string] {
+    if(this.currentFamilyFormPath === FamilyFormPath.EDIT) {
+      return ['/viewFamily', this.family.id]
+    } else if(this.currentFamilyFormPath === FamilyFormPath.CREATE){
+      return ['/Families','']
+
+    }
+    return undefined
   }
 
 }

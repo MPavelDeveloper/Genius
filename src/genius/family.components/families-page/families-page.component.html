@@ -1,5 +1,5 @@
 <div class="table-families">
-  <button class="button-add-new" type="button" routerLink = "/createFamily">+</button>
+  <button class="button-add-new" [routerLink] = "['/createFamily', '']">+</button>
   <ng-container *ngFor="let family of families">
     <div class="row">
       <family [family]="family" [routerLink] = "['/viewFamily', family.id]"></family>
@@ -9,5 +9,5 @@
       </div>
     </div>
   </ng-container>
-  <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="deleteFamily($event)"></confirm-dialog>
+  <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
 </div>

@@ -22,13 +22,15 @@ import {FamiliesPageComponent} from './family.components/families-page/families-
 
 const GeniusRoutes: Routes = [
   {path: 'Persons', component: PersonsPageComponent,},
-  {path: 'Families', component: FamiliesPageComponent,},
+  {path: 'Families/:id', component: FamiliesPageComponent,},
   {path: 'viewPerson/:id', component: PersonFormComponent,},
   {path: 'createPerson', component: PersonFormComponent,},
   {path: 'selectPerson', component: PersonFormComponent,},
   {path: 'addPersonInNewFamily', component: PersonFormComponent,},
   {path: 'viewFamily/:id', component: FamilyFormComponent,},
-  {path: 'createFamily', component: FamilyFormComponent,},
+
+
+  {path: 'createFamily/:id', component: FamilyFormComponent,},
   {path: 'editFamily/:id', component: FamilyFormComponent,},
   {path: '**', redirectTo: 'Persons',},
 ]
