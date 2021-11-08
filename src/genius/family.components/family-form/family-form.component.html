@@ -1,0 +1,104 @@
+<ng-container [ngSwitch] = [templateVersion]>
+  <div class="wrap" *ngSwitchCase = "familyFormTemplateVersion.FAMILY_VIEW">
+    <div class="create-family">
+      <div class="create-family-wrap">
+        <div class="wrap-family">
+          <button class="btn-close" [routerLink]="['/Families','']">X</button>
+          <div class="family-title-wrap">
+            <p class="family-title"><span>Family</span></p>
+            <button class="family-edit-btn" [routerLink]="['/editFamily', family.id]">Edit</button>
+          </div>
+          <div class="person-screen father">
+            <div class="description" *ngIf="!family.husband"><span>Husband</span></div>
+            <div class="description" *ngIf="family.husband">
+              <person class="create-person" [person]="family.husband" [templateVersion]="personTemplateVersion.SHORT"></person>
+            </div>
+          </div>
+          <div class="person-screen mother">
+            <div class="description" *ngIf="!family.wife"><span>Wife</span></div>
+            <div class="description" *ngIf="family.wife">
+              <person class="create-person" [person]="family.wife" [templateVersion]="personTemplateVersion.SHORT"></person>
+            </div>
+          </div>
+          <div class="person-screen children">
+            <div class="description" *ngFor="let child of family.children">
+              <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORT"></person>
+            </div>
+          </div>
+
+          <div class="family-events">
+            <ng-container *ngFor = "let event of family.events; let index = index">
+              <p class="family-title-events" *ngIf="index === 0"><span>Events</span></p>
+              <life-event  [lifeEvent]="event"
+                           (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
+            </ng-container>
+            <div class="event-add-wrap">
+              <p class="event-add-title"><span>new event</span></p>
+
+              <button class="btn-add-event" (click)="createLifeEvent()">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <life-event-form *ngIf = "lifeEventFormDialogVisiable"
+                       [templateVersion]="lifeEventFormType"
+                       [lifeEvent]="lifeEventClone"
+                       (formEvents)="lifeEventFormHandler($event)">
+      </life-event-form>
+    </div>
+  </div>
+
+  <div class="wrap" *ngSwitchCase="familyFormTemplateVersion.FAMILY_EDITOR">
+    <div class="create-family">
+      <div class="create-family-wrap">
+        <div class="wrap-family">
+          <button class="btn-close" (click)="exitFamilyEditor()" [routerLink]="getRouterLinkCloseBtn()">X</button>
+          <div class="family-title-wrap">
+            <p class="family-title"><span>Family</span></p>
+          </div>
+          <div class="person-screen father">
+            <div class="description" *ngIf="!familyClone.husband"><span>Husband</span></div>
+            <div class="description" *ngIf="familyClone.husband">
+              <person class="create-person" [person]="familyClone.husband" [templateVersion]="personTemplateVersion.SHORT"></person>
+            </div>
+            <div class="actions-wrap">
+              <button class="action-btn" (click)="selectPerson(personType.HUSBAND, null)" routerLink="{{getRouterLink()}}" >select</button>
+              <button class="action-btn delete" (click)="deletePerson(personType.HUSBAND, null)" *ngIf="familyClone.husband">X</button>
+            </div>
+          </div>
+          <div class="person-screen mother">
+            <div class="description" *ngIf="!familyClone.wife"><span>Wife</span></div>
+            <div class="description" *ngIf="familyClone.wife">
+              <person class="create-person" [person]="familyClone.wife" [templateVersion]="personTemplateVersion.SHORT"></person>
+            </div>
+            <div class="actions-wrap">
+              <button class="action-btn" (click)="selectPerson(personType.WIFE, null)" routerLink="{{getRouterLink()}}">select</button>
+              <button class="action-btn delete" (click)="deletePerson(personType.WIFE, null)" *ngIf="familyClone.wife">X</button>
+            </div>
+          </div>
+          <div class="person-screen children">
+            <div class="children-plus">
+              <button class="btn-plus" (click)="addChildTemplate()" [disabled]="isBtnAddChildTemplateDisabled()">+</button>
+            </div>
+            <div class="child-container" *ngFor='let child of familyClone.children; let childIndex = index;'>
+              <div class="description" *ngIf="!checkChild(childIndex)"><span>Child</span></div>
+              <div class="description" *ngIf="checkChild(childIndex)">
+                <person class="create-person" [person]="child" [templateVersion]="personTemplateVersion.SHORT"></person>
+              </div>
+              <div class="actions-wrap">
+                <button class="action-btn" (click)="selectPerson(personType.CHILD, childIndex)" routerLink="{{getRouterLink()}}">select</button>
+                <button class="action-btn delete" (click)="deletePerson(personType.CHILD, childIndex)" *ngIf="checkChild(childIndex)">del</button>
+              </div>
+            </div>
+          </div>
+          <div class="family-actions">
+            <button class="btn-add-family" (click)="saveFamily()" [routerLink]="['/Families', '']" >save</button>
+            <button class="btn-cancel" (click)="cancelChanges()">cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+

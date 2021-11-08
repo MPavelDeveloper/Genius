@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="templateVersion">
+  <div *ngSwitchCase="personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
+    <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' '  : '' }}</span>
+    <span>{{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}</span>
+  </div>
+  <div *ngSwitchCase="personsTemplateType.FULL" class="person-fulldata" (click)="returnPerson()">
+    <p class="person-description">
+      <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' ' : ''   }}</span>
+      <span>{{ (person && person.lastName) ?  ' ' + person.lastName + ' ' : ''  }}</span>
+      <span>{{ (person && person.middleName) ?  ' ' + person.middleName + ' ' : ''  }}</span>
+      <span>{{ (person && person.age) ? ' ' + person?.age + ' years' : '' }}</span>
+      <span>{{ (person && person.sex) ? ' ' + person?.sex + ' ' : '' }}</span>
+    </p>
+  </div>
+</ng-container>
+
+

@@ -1,0 +1,246 @@
+.wrap {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .create-family-wrap {
+    margin-right: 12px;
+  }
+
+  .create-family {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+
+    .wrap-family {
+      align-self: flex-start;
+      margin-bottom: 21px;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      width: 540px;
+      flex-flow: column nowrap;
+      align-items: center;
+      box-shadow: 0 2px 6px gray;
+
+      .btn-close {
+        align-self: flex-end;
+        border: 0px;
+        font-weight: 900;
+        background: none;
+        color: crimson;
+        cursor: pointer;
+      }
+
+      .family-title-wrap {
+        margin-bottom: 36px;
+        display: flex;
+        align-items: center;
+
+        .family-title {
+          padding: 12px;
+          align-self: flex-start;
+          font-size: 24px;
+        }
+
+        .family-edit-btn {
+          align-self: flex-end;
+          border-radius: 12px;
+          border: 1px solid #80d8804f;
+          padding: 12px 18px;
+          font-size: 18px;
+          cursor: pointer;
+          transition: 210ms;
+          background: #90ee908f;
+          box-shadow: 0px 2px 4px lightgrey;
+
+          &:hover {
+            transform: translateY(-6px);
+          }
+        }
+      }
+
+      .person-screen {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.mother {
+          margin-bottom: 42px;
+        }
+
+        &.children {
+          display: flex;
+          flex-flow: column nowrap;
+          width: 100%;
+
+          .children-plus {
+            align-self: flex-end;
+            margin-bottom: 21px;
+            font-size: 21px;
+            font-weight: bold;
+            text-align: right;
+
+            .btn-plus {
+              border-radius: 50%;
+              border: 3px solid lightsteelblue;
+              padding: 12px 18px;
+              font-size: 21px;
+              cursor: pointer;
+              transition: 300ms;
+              background-color: snow;
+              box-shadow: none;
+
+              &:hover {
+                background-color: #fcfbfb;
+              }
+
+              &:active {
+                background-color: lightsteelblue;
+              }
+            }
+          }
+        }
+
+        .description {
+          margin-right: 12px;
+          border-radius: 12px;
+          border: 3px solid lightgray;
+          padding: 12px;
+          width: 180px;
+          font-size: 21px;
+          text-align: center;
+        }
+
+        .action-btn {
+          margin-right: 12px;
+          border-radius: 12px;
+          border: 0;
+          padding: 12px;
+          font-size: 19.2px;
+          background-color: lightblue;
+          box-shadow: 0 2px 6px gray;
+          transition: 300ms;
+          cursor: pointer;
+
+          &.delete {
+            border-radius: 9px;
+            background-color: lightcoral;
+          }
+
+          &:hover {
+            transform: translateY(-6px);
+          }
+
+          &:active {
+            background-color: #aabbbf;
+          }
+        }
+
+        .selectHint {
+          background-color: snow;
+          font-size: 24px;
+        }
+
+
+        .child-container {
+          margin-bottom: 12px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .family-events {
+        align-self: stretch;
+        display: flex;
+        flex-flow: column nowrap;
+        .family-title-events {
+          align-self: flex-start;
+          margin-bottom: 12px;
+          padding: 12px;
+          font-size: 18px;
+          color: navy;
+        }
+        life-event {
+          align-items: center;
+          margin-bottom: 15px;
+          border-radius: 6px;
+          width: 100%;
+          font-size: 16px;
+          text-align: left;
+          box-shadow: 0 2px 6px grey;
+          background-color: #79a4dc26;
+          transition: 300ms;
+
+          &:hover {
+            background-color: rgba(34, 107, 202, 0.15);
+          }
+        }
+
+        .event-add-wrap {
+          align-self: flex-end;
+          display: flex;
+
+          .event-add-title {
+            align-self: center;
+            margin-right: 6px;
+            font-size: 18px;
+            color: black;
+            cursor: pointer;
+          }
+
+          .btn-add-event {
+            align-self: flex-end;
+            border-radius: 6px;
+            border: 3px solid lightgrey;
+            padding: 1px 8px;
+            font-size: 27px;
+            color: lightgrey;
+            background: none;
+            cursor: pointer;
+            transition: 300ms;
+
+            &:hover {
+              color: black;
+              background-color: snow;
+              transform: translateY(-6px);
+            }
+          }
+        }
+
+      }
+
+      .family-actions {
+        display: flex;
+
+        .btn-add-family {
+          margin-right: 6px;
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
+
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
+
+        .btn-cancel {
+          border-radius: 6px;
+          padding: 9px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px lightgray;
+          background-color: white;
+
+          &:active {
+            background-color: #eeeaea;
+          }
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,109 @@
+.life-event__form {
+  border-radius: 3px;
+  padding: 12px;
+  box-shadow: 0 2px 6px grey;
+  width: 540px;
+
+  .form-wrap {
+    display: flex;
+    flex-direction: column;
+
+
+    p{
+      text-align: right;
+      .life-event__btn-close {
+        margin-bottom: 12px;
+        border: 0;
+        padding: 3px;
+        font-size: 16px;
+        font-weight: 900;
+        text-align: right;
+        color: red;
+        background: none;
+        transition: 600ms;
+        cursor: pointer;
+      }
+    }
+
+    .life-event-person {
+      font-size: 21px;
+      text-align: left;
+    }
+
+    .title__select {
+      margin-bottom: 3px;
+      font-family: system-ui;
+      text-align: right;
+    }
+
+    .life-event__select {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border-bottom: 3px solid gray;
+      padding: 6px;
+      font-size: 18px;
+      outline: none;
+      cursor: pointer;
+
+      .select-option {
+
+      }
+    }
+
+    .text-input {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 0;
+      border-bottom: 1px solid black;
+      padding: 12px;
+      padding-bottom: 3px;
+      font-size: 18px;
+      outline: none;
+    }
+
+    .life-event__calendare {
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid gray;
+      border-bottom: 3px solid gray;
+      padding: 6px;
+      font-size: 18px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .life-event__place {
+      margin-bottom: 12px;
+    }
+
+    .life-event__note {
+      margin-bottom: 12px;
+    }
+
+
+
+
+    .life-event-actions {
+      display: flex;
+      justify-content: space-around;
+
+      .life-event__save-btn, .life-event__cancel-btn {
+        margin-bottom: 12px;
+        border-radius: 12px;
+        border: 0;
+        padding: 12px;
+        background-color: lightblue;
+        font-size: 18px;
+        transition: 300ms;
+        cursor: pointer;
+        box-shadow: 0 2px 6px gray;
+
+        &:hover {
+          background-color: snow;
+        }
+
+      }
+    }
+  }
+
+}

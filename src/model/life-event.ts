@@ -1,20 +1,51 @@
-export enum EventType {
-  birthDay = 'birthday',
-  deathDay = 'date of death',
-  wedding = 'wedding',
-  rewarding = 'rewarding',
-  moving = 'moving',
-  graduation = 'graduation',
+export enum FamilyEventType {
+  DEFAULT = 'Other',
+  BIRTH = 'Birth',
+  DEATH = 'Death',
+  ENGAGEMENT = 'Engagement',
+  MARRIED = 'Married',
+  DIVORCE = 'Divorce',
+  ADOPTION = 'Adoption',
+  CHRISTENING = 'Christening',
+  RELOCATION = 'Relocation',
+  EDUCATION = 'Education',
+  EMIGRATION = 'Emigration',
+  GET_JOB = 'GetJob',
+  GRADUATION = 'Graduation',
+  RETIREMENT = 'Retirement',
+  IMMIGRATION = 'Immigration',
+}
+
+export enum LifeEventType {
+  DEFAULT = 'Other',
+  BIRTH = 'Birth',
+  DEATH = 'Death',
+  ENGAGEMENT = 'Engagement',
+  MARRIED = 'Marriage',
+  DIVORCE = 'Divorce',
+  ADOPTION = 'Adoption',
+  CHRISTENING = 'Christening',
+  RELOCATION = 'Relocation',
+  EDUCATION = 'Education',
+  EMIGRATION = 'Emigration',
+  GET_JOB = 'GetJob',
+  GRADUATION = 'Graduation',
+  RETIREMENT = 'Retirement',
+  IMMIGRATION = 'Immigration',
+}
+
+export enum EventPrefix {
+  NONE = 'None',
+  BEFORE = 'Before',
+  ABOUT = 'About',
+  AFTER = 'After',
 }
 
 export class LifeEvent {
-  public date: Date;
-  public type: EventType;
-  public description: string;
-
-  constructor(date: Date, type: EventType, description: string) {
-    this.date = date;
-    this.type = type;
-    this.description = description;
-  }
+  public id?: number;
+  public type?: LifeEventType | FamilyEventType;
+  public prefix?: EventPrefix;
+  public date?: Date;
+  public place?: string;
+  public note?: string;
 }

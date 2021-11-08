@@ -1,0 +1,18 @@
+<div class="table-persons">
+  <button class="button-add-new" routerLink = '/createPerson'>+</button>
+  <ng-container *ngFor="let person of persons; let personIndex = index">
+    <div class="row">
+      <div [ngClass]="{'person-wrap-man': person.sex === gender.MALE, 'person-wrap-woman':person.sex === gender.FEMALE}"
+           [routerLink] = "['/viewPerson', person.id]">
+        <person [person]="person"
+                [templateVersion]="personTemplateType.FULL"></person>
+      </div>
+      <div class="row-actions">
+        <button class="button-add" [routerLink] = "['/viewPerson', person.id]">add</button>
+        <button class="button-delete" (click)="showConfirm(person)">delete</button>
+      </div>
+    </div>
+  </ng-container>
+  <confirm-dialog *ngIf = "showConfirmDialog" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
+</div>
+

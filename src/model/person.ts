@@ -13,7 +13,7 @@ export class Person {
   public maidenName?: string;
   public age?: number;
   public sex: Sex;
-  public lifeEvent?: Array<LifeEvent>;
+  public lifeEvents?: Array<LifeEvent>;
   public familyId?: number;
   public place?: string;
   public note?: string;

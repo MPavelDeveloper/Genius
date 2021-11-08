@@ -2,13 +2,12 @@
   <div class="header">
     <div class="header-logo">
       <div class="logo-wrap">
-        <img class="logo-header" src="../assets/icon__tree_of_life.png" alt="logo" routerLink = "/Home">
+        <img class="logo-header" src="../assets/icon__tree_of_life.png" alt="logo" routerLink="/Home">
       </div>
     </div>
     <div class="header-links">
-      <a class="link-item" routerLink = "/Home" routerLinkActive="is-active" type="button">Home</a>
-      <a class="link-item" routerLink = "/createPerson" routerLinkActive="is-active" type="button">Create Person</a>
-      <a class="link-item" routerLink = "/createFamily" routerLinkActive="is-active" type="button">Create Family</a>
+      <a class="link-item" routerLink="/Persons" routerLinkActive="is-active" >Persons</a>
+      <a class="link-item" [routerLink]="['/Families','']" routerLinkActive="is-active" >Families</a>
     </div>
   </div>
 </header>
