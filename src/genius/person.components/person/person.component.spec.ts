@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {PersonComponent} from "./person.component";
-import {Sex} from "../../../model/person";
+import {PersonComponent, PersonTemplateType} from './person.component';
+import {Sex} from '../../../model/person';
 
 
 describe('PersonComponent', () => {
@@ -19,6 +19,7 @@ describe('PersonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonComponent);
     component = fixture.componentInstance;
+    component.templateVersion = PersonTemplateType.SHORT;
     component.person = {
       id: 4,
       firstName: 'Nick',
@@ -37,25 +38,18 @@ describe('PersonComponent', () => {
   });
 
   it('HTML and Instance; should be the same;', () => {
-    let personName = fixture.nativeElement.querySelector('.person-name');
-    let personAge = fixture.nativeElement.querySelector('.person-age');
+    let personHTML = fixture.nativeElement.querySelector('.person-short')
 
-    expect(personName.textContent).toContain(`${component.person.firstName} ${component.person.lastName} ${component.person.middleName}`);
-    expect(personAge.textContent).toContain(`${component.person.age} years`);
+    expect(personHTML.textContent).toContain(`${component.person.firstName}  ${component.person.age}`);
   });
 
   it('HTML and Instance; should be the same; Dynamic changes', () => {
-    let personName = fixture.nativeElement.querySelector('.person-name');
-    let personAge = fixture.nativeElement.querySelector('.person-age');
-
+    let personHTML = fixture.nativeElement.querySelector('.person-short')
     component.person.firstName = 'First Name';
-    component.person.lastName = 'Last Name';
-    component.person.middleName = 'Middle Name';
     component.person.age = 300;
     fixture.detectChanges();
 
-    expect(personName.textContent).toContain(`${component.person.firstName} ${component.person.lastName} ${component.person.middleName}`);
-    expect(personAge.textContent).toContain(`${component.person.age} years`);
+    expect(personHTML.textContent).toContain(`${component.person.firstName}  ${component.person.age}`);
   })
 
 
