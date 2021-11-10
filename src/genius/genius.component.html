@@ -6,8 +6,13 @@
       </div>
     </div>
     <div class="header-links">
-      <a class="link-item" routerLink="/Persons" routerLinkActive="is-active" >Persons</a>
-      <a class="link-item" [routerLink]="['/Families','']" routerLinkActive="is-active" >Families</a>
+      <nav>
+        <a class="link-item" routerLink="/Persons" routerLinkActive="is-active" >Persons</a>
+        <a class="link-item" [routerLink]="['/Families','']" routerLinkActive="is-active" >Families</a>
+      </nav>
+      <div class="login-link">
+        <a class="link-item" routerLink="/login" routerLinkActive="is-active" >Login</a>
+      </div>
     </div>
   </div>
 </header>

@@ -11,7 +11,7 @@ import {PersonFormComponent} from './person.components/person-form/person-form.c
 import {FamilyFormComponent} from './family.components/family-form/family-form.component';
 import {FamilyComponent} from './family.components/family/family.component';
 import {PersonsPageComponent} from './person.components/persons-page/persons-page.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DataProvider} from './services/data-provider';
 import {LocalStorageDataProvider} from './services/local-storage/local-storage-data-provider.service';
 import {LifeEventFormComponent} from './event.components/life-event-form/life-event-form.component';
@@ -19,19 +19,22 @@ import {LifeEventComponent} from './event.components/life-event/life-event.compo
 import {HttpDataProvider} from './services/http-provider/http-data-provider.service';
 import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 import {FamiliesPageComponent} from './family.components/families-page/families-page.component';
+import {UserLoginComponent} from './user-login/user-login.component';
+import {TokenInterceptorService} from './services/interceptor/token-interceptor.service';
+import {AppGuard} from './genius-guard.service';
+
 
 const GeniusRoutes: Routes = [
-  {path: 'Persons', component: PersonsPageComponent,},
-  {path: 'Families/:id', component: FamiliesPageComponent,},
+  {path: 'Persons', component: PersonsPageComponent,canActivate:[AppGuard]},
+  {path: 'Families/:id', component: FamiliesPageComponent,canActivate:[AppGuard]},
   {path: 'viewPerson/:id', component: PersonFormComponent,},
   {path: 'createPerson', component: PersonFormComponent,},
   {path: 'selectPerson', component: PersonFormComponent,},
   {path: 'addPersonInNewFamily', component: PersonFormComponent,},
   {path: 'viewFamily/:id', component: FamilyFormComponent,},
-
-
   {path: 'createFamily/:id', component: FamilyFormComponent,},
   {path: 'editFamily/:id', component: FamilyFormComponent,},
+  {path: 'login', component: UserLoginComponent, },
   {path: '**', redirectTo: 'Persons',},
 ]
 
@@ -47,6 +50,7 @@ const GeniusRoutes: Routes = [
     LifeEventFormComponent,
     ConfirmDialogComponent,
     FamiliesPageComponent,
+    UserLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,8 +64,13 @@ const GeniusRoutes: Routes = [
 
   ],
   // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  providers: [{provide: DataProvider, useClass: HttpDataProvider}],
+  providers: [{provide: DataProvider, useClass: HttpDataProvider},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    AppGuard,
+  ],
   bootstrap: [GeniusComponent]
 })
+
 export class GeniusModule {
+
 }

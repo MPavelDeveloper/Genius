@@ -7,6 +7,8 @@ import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
 import * as moment from 'moment'
 import {FamilyEventType, LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
+import {UserLoginData, UserRegistryData} from '../../user-login/user-login.component';
+import {HttpResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -398,5 +400,20 @@ export class LocalStorageDataProvider extends DataProvider {
     return new Observable(subscriber => {
       subscriber.next('family event deleted');
     })
+  }
+
+  getToken(): string {
+    return '';
+  }
+
+  loginUser(data: UserLoginData): Observable<HttpResponse<object>> {
+    return undefined;
+  }
+
+  registerUser(data: UserRegistryData): Observable<HttpResponse<object>> {
+    return undefined;
+  }
+
+  setToken(value: string): void {
   }
 }

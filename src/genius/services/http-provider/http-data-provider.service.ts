@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, zip} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -8,6 +8,7 @@ import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
 import {EventDTO, FamilyDTO, PersonDTO} from '../dto/dtOs';
 import {LifeEvent} from '../../../model/life-event';
+import {UserLoginData, UserRegistryData} from '../../user-login/user-login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,9 @@ export class HttpDataProvider extends DataProvider {
 
   private readonly httpOptionsSend = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
+      'Content-Type': 'application/json',
+      'accept': ' */*',
+    }),
   };
 
   private readonly httpOptionsGet = {
@@ -25,6 +27,8 @@ export class HttpDataProvider extends DataProvider {
       'Accept': 'application/json'
     })
   };
+
+  private token: string;
 
   constructor(private http: HttpClient) {
     super();
@@ -68,7 +72,7 @@ export class HttpDataProvider extends DataProvider {
         .subscribe(dto => {
           const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId));
           zip(...personCalls).subscribe(persons => {
-            this.getFamilyEvents(familyId).subscribe( events => {
+            this.getFamilyEvents(familyId).subscribe(events => {
               const family = new Family();
               family.id = dto.id;
               family.note = dto.note;
@@ -258,7 +262,30 @@ export class HttpDataProvider extends DataProvider {
     }
   }
 
+  public loginUser(data: UserLoginData): Observable<HttpResponse<object>> {
+    return this.http.post(`${environment.login}/user/login`, data, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response',
+    });
+  }
 
+  public registerUser(data: UserRegistryData): Observable<HttpResponse<object>> {
+    return this.http.post(`${environment.registry}/user/registration`, data, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response',
+    });
+  }
 
+  public setToken(token: string) {
+    this.token = token;
+  }
+
+  public getToken(): string {
+    return this.token
+  }
 
 }

@@ -1,0 +1,31 @@
+<div class="wrap">
+  <form class="login-form" *ngIf="currentUserFormType === userFormType.LOGIN">
+    <ng-container *ngIf = "unregistered; else logOut">
+      <div class="form-wrap" >
+        <input class="login-input" placeholder="login" tabindex="1" autofocus [(ngModel)] = "login" name="login">
+        <input class="login-input" type="password" placeholder="password" tabindex="2" [(ngModel)] = "password" name="password">
+        <button class="login-btn" tabindex="3" (click) = "loginUser()">Log in</button>
+      </div>
+      <div class="link-wrap">
+        <a class="link-item" (click)="formToggle()">Registration</a>
+      </div>
+    </ng-container>
+
+    <ng-template #logOut>
+      <div class="form-wrap">
+        <button class="login-btn" tabindex="3" (click) = "exit()" >Exit</button>
+      </div>
+    </ng-template>
+  </form>
+
+  <form class="reg-form" *ngIf="currentUserFormType === userFormType.REGISTRY">
+    <input class="reg-input" placeholder="name" tabindex="1" [(ngModel)] = "nameRegistry" autofocus name="nameRegistry">
+    <input class="reg-input" placeholder="surname" tabindex="2" [(ngModel)] = "surnameRegistry" name="surnameRegistry">
+    <input class="reg-input" placeholder="email" tabindex="3" type="email" [(ngModel)] = "emailRegistry" required name="emailRegistry">
+    <input class="reg-input" placeholder="password" tabindex="4" type="password" [(ngModel)] = "passwordRegistry" required name="passwordRegistry">
+    <button class="reg-btn" tabindex="3" (click) = "registerUser()">Register</button>
+    <div class="link-wrap">
+      <a class="link-item" (click)="formToggle()">Entrance</a>
+    </div>
+  </form>
+</div>

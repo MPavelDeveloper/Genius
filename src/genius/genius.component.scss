@@ -4,6 +4,9 @@
   display: flex;
   align-items: center;
   .header-links {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
     .link-item {
       margin-right: 9px;
       border: 0;
@@ -12,13 +15,12 @@
       display: inline-block;
       font-size: 18px;
       color:black;
-      //background-color: #cacfd4cc;
       cursor: pointer;
       transition: 300ms;
-      //box-shadow: 0 2px 2px grey;
       &:active {
         background-color: snow;
       }
+
   }
     .is-active {
       background-color: lightslategray;

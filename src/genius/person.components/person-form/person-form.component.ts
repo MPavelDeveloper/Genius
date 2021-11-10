@@ -262,14 +262,11 @@ export class PersonFormComponent implements OnInit {
   public getRouterLink(): [string, number | string] {
     if (this.currentPersonFormPath === PersonFormPath.ADD_IN_EXIST_FAMILY){
       return ['/editFamily', this.familyId];
-    } else if (this.currentPersonFormPath = PersonFormPath.ADD_IN_NEW_FAMILY) {
+    } else if (this.currentPersonFormPath === PersonFormPath.ADD_IN_NEW_FAMILY) {
       return ['/createFamily', ''];
     }
 
     return undefined
   }
 
-  testFn () {
-    return ['/editFamily', '']
-  }
 }
