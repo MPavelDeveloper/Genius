@@ -2,6 +2,7 @@ import {Observable} from 'rxjs';
 import {Person} from '../../model/person';
 import {Family} from '../../model/family';
 import {LifeEvent} from '../../model/life-event';
+import {UserLoginData, UserRegistryData} from '../user-login/user-login.component';
 
 export abstract class DataProvider {
   abstract getPersons(): Observable<Array<Person>>;
@@ -30,11 +31,17 @@ export abstract class DataProvider {
 
   abstract changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object>;
 
-
   abstract addNewFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
 
   abstract deleteFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
 
   abstract changeFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object>;
 
+  abstract getToken(): string;
+
+  abstract setToken(value: string): void;
+
+  abstract registerUser(data: UserRegistryData): Observable<string>;
+
+  abstract loginUser(data: UserLoginData): Observable<string>;
 }

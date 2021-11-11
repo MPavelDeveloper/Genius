@@ -77,7 +77,7 @@ export class PersonFormComponent implements OnInit {
       this.currentPersonFormPath = path;
       if (path === PersonFormPath.EDIT) {
         this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
-            this.person = person
+            this.person = person;
             this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
           },
           (errorResponse) => {
@@ -96,16 +96,16 @@ export class PersonFormComponent implements OnInit {
         this.loadPersons();
       }
     } else {
-      this.loadPersons()
+      this.loadPersons();
     }
   }
 
   public loadPersons(): void {
     this.dataProvider.getPersons().subscribe(persons => {
         if (this.personType === PersonType.HUSBAND) {
-          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.MALE))
+          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.MALE));
         } else if (this.personType === PersonType.WIFE) {
-          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.FEMALE))
+          this.persons = this.searchPersonsByCondition(persons, ((person: Person) => person.sex === Sex.FEMALE));
         } else if (this.personType === PersonType.CHILD) {
           this.persons = persons;
         }
@@ -130,7 +130,7 @@ export class PersonFormComponent implements OnInit {
 
   public savePerson(): void {
     this.dataProvider.addNewPerson(this.person).subscribe(() => {
-        this.dataLoad.reloadPersons(true)
+        this.dataLoad.reloadPersons(true);
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -145,8 +145,8 @@ export class PersonFormComponent implements OnInit {
 
   public changePerson(): void {
     this.dataProvider.changePerson(this.personClone).subscribe(() => {
-        this.reloadPerson()
-        this.dataLoad.reloadPersons(true)
+        this.reloadPerson();
+        this.dataLoad.reloadPersons(true);
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -181,7 +181,7 @@ export class PersonFormComponent implements OnInit {
   public changeLifeEvent(personId: number, lifeEvent: LifeEvent): void {
     this.dataProvider.deletePersonEvent(personId, lifeEvent).subscribe(() => {
         this.dataProvider.addNewPersonEvent(personId, lifeEvent).subscribe(() => {
-            this.reloadPerson()
+            this.reloadPerson();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -194,7 +194,7 @@ export class PersonFormComponent implements OnInit {
 
   public saveLifeEvent(personId: number, lifeEvent: LifeEvent): void {
     this.dataProvider.addNewPersonEvent(personId, lifeEvent).subscribe(() => {
-        this.reloadPerson()
+        this.reloadPerson();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -223,7 +223,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   public personDeepClone(person: Person): Person {
-    return JSON.parse(JSON.stringify(person))
+    return JSON.parse(JSON.stringify(person));
   }
 
   public lifeEventSimpleClone(lifeEvent: LifeEvent): LifeEvent {
@@ -262,14 +262,11 @@ export class PersonFormComponent implements OnInit {
   public getRouterLink(): [string, number | string] {
     if (this.currentPersonFormPath === PersonFormPath.ADD_IN_EXIST_FAMILY){
       return ['/editFamily', this.familyId];
-    } else if (this.currentPersonFormPath = PersonFormPath.ADD_IN_NEW_FAMILY) {
+    } else if (this.currentPersonFormPath === PersonFormPath.ADD_IN_NEW_FAMILY) {
       return ['/createFamily', ''];
     }
 
-    return undefined
+    return undefined;
   }
 
-  testFn () {
-    return ['/editFamily', '']
-  }
 }

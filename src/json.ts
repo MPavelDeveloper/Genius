@@ -1,8 +1,15 @@
 import {FamilyEventType, EventPrefix, LifeEventType} from './model/life-event';
 import {LineAge} from "./model/line-age";
-import {Person, Sex} from "./model/person";
+import {Sex} from "./model/person";
+import {generateTokenForLocalStorage} from './genius/utils/utils';
 
-export const data: LineAge = {
+export interface UserDataLocalStorage {
+  login: string;
+  password: string;
+  token: string;
+}
+
+export const LINE_AGE_DEFAULT: LineAge = {
   familyList: [{
     id: 1,
     note: '',
@@ -387,6 +394,22 @@ export const data: LineAge = {
   },],
 }
 
+export const GENEALOGY_STORAGE_KEY = 'Genealogy/LineAge';
+
+export const JSON_DEFAULT_GENEALOGY_STORAGE = JSON.stringify(LINE_AGE_DEFAULT);
+
+export const USER_REGISTRY_DEFAULT: Array<UserDataLocalStorage> = [
+  {
+    login: 'test@mail.ru',
+    password: '1111',
+    token: generateTokenForLocalStorage(),
+  }
+]
+
+export const JSON_USER_REGISTRY_DEFAULT = JSON.stringify(USER_REGISTRY_DEFAULT);
+
+export const GENEALOGY_USER_REGISTRY_KEY = 'Genealogy/UserRegistry'
+
 export const testData: LineAge = {
   familyList: [{
     id: 1,
@@ -510,34 +533,5 @@ export const testData: LineAge = {
   }],
 }
 
-export const testPerson: Person = {
-  id: 1,
-  firstName: 'John',
-  lastName: 'James',
-  middleName: 'Nickson',
-  maidenName: undefined,
-  age: 54,
-  sex: Sex.MALE,
-  place: undefined,
-  note: undefined,
-  occupation: undefined,
-  lifeEvents: [
-    {
-      id:1,
-      date: new Date('1989-03-12'),
-      type: LifeEventType.MARRIED,
-      note: 'Married',
-    },
-  ],
-  familyId: 2,
-}
 
-export const testFamily = {
-  father: 6,
-  mother: 5,
-}
-
-export const GENEALOGY_STORAGE_KEY = 'Genealogy/LineAge';
-
-export const json = JSON.stringify(data)
 

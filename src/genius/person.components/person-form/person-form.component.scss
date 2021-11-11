@@ -23,7 +23,7 @@
     display: flex;
     flex-flow: row wrap;
     //flex-flow: column nowrap;
-    //width: 450px;
+    width: 720px;
     justify-content: space-between;
     box-shadow: 0 2px 6px gray;
   }
@@ -45,7 +45,7 @@
 
 .btn-close {
   align-self: flex-end;
-  border: 0px;
+  border: 0;
   font-weight: 900;
   background: none;
   color: crimson;
@@ -91,7 +91,7 @@
     cursor: pointer;
     transition: 210ms;
     background: #90ee908f;
-    box-shadow: 0px 2px 4px lightgrey;
+    box-shadow: 0 2px 4px lightgrey;
 
     &:hover {
       transform: translateY(-6px);
@@ -142,7 +142,7 @@
 .person-input {
   margin-bottom: 12px;
   border-radius: 6px;
-  border: 0px;
+  border: 0;
   border-bottom: 1px solid black;
   padding: 12px;
   padding-bottom: 3px;
@@ -154,7 +154,7 @@
 .person-input-view {
   margin-bottom: 12px;
   border-radius: 6px;
-  border: 0px;
+  border: 0;
   padding: 12px;
   width: 100%;
   font-size: 18px;
@@ -171,7 +171,7 @@
 .person-input-edit {
   margin-bottom: 12px;
   border-radius: 3px;
-  border: 0px;
+  border: 0;
   border-bottom: 1px solid black;
   padding: 12px 9px;
   width: 100%;
@@ -283,6 +283,7 @@ life-event {
   padding: 3px;
   overflow-y: scroll;
   margin-bottom: 21px;
+  min-height: 300px;
   max-height: 500px;
 
   .person-item-men {

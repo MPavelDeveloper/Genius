@@ -5,7 +5,7 @@
       <family [family]="family" [routerLink] = "['/viewFamily', family.id]"></family>
       <div class="row-actions">
         <button class="button-add" [routerLink] = "['/viewFamily', family.id]">add</button>
-        <button class="button-delete" (click)="showConfirm(family.id)">delete</button>
+        <button class="button-delete" (click)="showConfirm(family)">delete</button>
       </div>
     </div>
   </ng-container>

@@ -8,6 +8,7 @@ import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
 import {EventDTO, FamilyDTO, PersonDTO} from '../dto/dtOs';
 import {LifeEvent} from '../../../model/life-event';
+import {UserLoginData, UserRegistryData} from '../../user-login/user-login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class HttpDataProvider extends DataProvider {
 
   private readonly httpOptionsSend = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
+      'Content-Type': 'application/json',
+    }),
   };
 
   private readonly httpOptionsGet = {
@@ -25,6 +26,8 @@ export class HttpDataProvider extends DataProvider {
       'Accept': 'application/json'
     })
   };
+
+  private token: string;
 
   constructor(private http: HttpClient) {
     super();
@@ -49,16 +52,16 @@ export class HttpDataProvider extends DataProvider {
 
   public addNewFamily(family: Family): Observable<Object> {
     const dto: FamilyDTO = this.mapFamilyToDto(family);
-    return this.http.post(`${environment.url}/families`, dto, this.httpOptionsSend)
+    return this.http.post(`${environment.url}/families`, dto, this.httpOptionsSend);
   }
 
   public changeFamily(family: Family): Observable<Object> {
     const dto = this.mapFamilyToDto(family);
-    return this.http.put(`${environment.url}/families/${family.id}`, dto, this.httpOptionsSend)
+    return this.http.put(`${environment.url}/families/${family.id}`, dto, this.httpOptionsSend);
   }
 
   public deleteFamily(familyId: number): Observable<Object> {
-    return this.http.delete(`${environment.url}/families/${familyId}`)
+    return this.http.delete(`${environment.url}/families/${familyId}`);
   }
 
   public findFamily(familyId: number): Observable<Family> {
@@ -68,7 +71,7 @@ export class HttpDataProvider extends DataProvider {
         .subscribe(dto => {
           const personCalls = this.getFamilyPersonIds(dto).map(personId => this.findPerson(personId));
           zip(...personCalls).subscribe(persons => {
-            this.getFamilyEvents(familyId).subscribe( events => {
+            this.getFamilyEvents(familyId).subscribe(events => {
               const family = new Family();
               family.id = dto.id;
               family.note = dto.note;
@@ -102,16 +105,16 @@ export class HttpDataProvider extends DataProvider {
 
   public addNewPerson(person: Person): Observable<Object> {
     const dto = this.mapPersonToDto(person);
-    return this.http.post(`${environment.url}/persons`, dto, this.httpOptionsSend)
+    return this.http.post(`${environment.url}/persons`, dto, this.httpOptionsSend);
   }
 
   public changePerson(person: Person): Observable<Object> {
     let dto = this.mapPersonToDto(person);
-    return this.http.put(`${environment.url}/persons/${person.id}`, dto, this.httpOptionsSend)
+    return this.http.put(`${environment.url}/persons/${person.id}`, dto, this.httpOptionsSend);
   }
 
   public deletePerson(personId: number): Observable<Object> {
-    return this.http.delete(`${environment.url}/persons/${personId}`)
+    return this.http.delete(`${environment.url}/persons/${personId}`);
   }
 
   public findPerson(personId: number): Observable<Person> {
@@ -127,7 +130,7 @@ export class HttpDataProvider extends DataProvider {
   }
 
   public deletePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
-    return this.http.delete(`${environment.url}/persons/${personId}/events/${lifeEvent.id}`)
+    return this.http.delete(`${environment.url}/persons/${personId}/events/${lifeEvent.id}`);
   }
 
   public changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
@@ -193,8 +196,8 @@ export class HttpDataProvider extends DataProvider {
     family.id = dto.id;
     family.note = dto.note;
 
-    family.wife = persons.find(person => dto.wife === person.id)
-    family.husband = persons.find(person => dto.husband === person.id)
+    family.wife = persons.find(person => dto.wife === person.id);
+    family.husband = persons.find(person => dto.husband === person.id);
 
     if (dto.children && dto.children.length > 0) {
       dto.children
@@ -258,7 +261,44 @@ export class HttpDataProvider extends DataProvider {
     }
   }
 
+  public loginUser(data: UserLoginData): Observable<string> {
+    return new Observable(subscriber => {
+      this.http.post(`${environment.login}/user/login`, data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        observe: 'response',
+      }).subscribe(response => {
+          subscriber.next(response.headers.get('Authorization'));
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
+    })
+  }
 
+  public registerUser(data: UserRegistryData): Observable<string> {
+    return new Observable<string>(subscriber => {
+      this.http.post(`${environment.registry}/user/registration`, data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        observe: 'response',
+      }).subscribe(response => {
+          subscriber.next(String(response.status));
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
+    })
+  }
 
+  public setToken(token: string) {
+    this.token = token;
+  }
+
+  public getToken(): string {
+    return this.token;
+  }
 
 }

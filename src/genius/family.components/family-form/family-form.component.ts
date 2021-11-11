@@ -116,7 +116,6 @@ export class FamilyFormComponent implements OnInit {
 
   public saveFamily(): void {
     if (this.familyValid(this.familyClone)) {
-      console.log(this.familyClone)
       let saveTasks: Array<Observable<Object>> = this.getFamilyPersons(this.familyClone)
         .map(person => {
           if (person.id) {
@@ -127,10 +126,9 @@ export class FamilyFormComponent implements OnInit {
         })
 
       forkJoin(saveTasks[0]).subscribe(() => {
-        console.log("forkJoin")
         if (this.familyClone.id) {
           this.dataProvider.changeFamily(this.familyClone).subscribe(() => {
-              this.dataLoadService.reloadFamilies(true)
+              this.dataLoadService.reloadFamilies(true);
               this.selectPersonTransferService.person = null;
             },
             (errorResponse) => {
@@ -138,7 +136,7 @@ export class FamilyFormComponent implements OnInit {
             });
         } else {
           this.dataProvider.addNewFamily(this.familyClone).subscribe(() => {
-              this.dataLoadService.reloadFamilies(true)
+              this.dataLoadService.reloadFamilies(true);
               this.selectPersonTransferService.person = null;
             },
             (errorResponse) => {
@@ -164,7 +162,7 @@ export class FamilyFormComponent implements OnInit {
     } else if (personType === PersonType.WIFE) {
       this.familyClone.wife = person;
     } else if (personType === PersonType.CHILD) {
-      this.familyClone.children[childIndex] = person
+      this.familyClone.children[childIndex] = person;
     }
   }
 
@@ -210,7 +208,7 @@ export class FamilyFormComponent implements OnInit {
 
   public addNewLifeEvent(familyId: number, lifeEvent: LifeEvent): void {
     this.dataProvider.addNewFamilyEvent(familyId, lifeEvent).subscribe(() => {
-        this.reloadFamily(familyId)
+        this.reloadFamily(familyId);
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -220,7 +218,7 @@ export class FamilyFormComponent implements OnInit {
   public changeLifeEvent(familyId: number, lifeEvent: LifeEvent): void {
     this.dataProvider.deleteFamilyEvent(familyId, lifeEvent).subscribe(() => {
         this.dataProvider.addNewFamilyEvent(familyId, lifeEvent).subscribe(() => {
-            this.reloadFamily(familyId)
+            this.reloadFamily(familyId);
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -233,7 +231,7 @@ export class FamilyFormComponent implements OnInit {
 
   public deleteLifeEvent(familyId: number, lifeEvent: LifeEvent): void {
     this.dataProvider.deleteFamilyEvent(familyId, lifeEvent).subscribe(() => {
-        this.reloadFamily(this.family.id)
+        this.reloadFamily(this.family.id);
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -242,7 +240,7 @@ export class FamilyFormComponent implements OnInit {
 
   public createLifeEvent(): void {
     this.lifeEventFormType = LifeEventFormType.NEW_EVENT;
-    this.lifeEventClone = new LifeEvent()
+    this.lifeEventClone = new LifeEvent();
     this.lifeEventClone.type = LifeEventType.DEFAULT;
     this.lifeEventClone.prefix = EventPrefix.NONE;
     this.lifeEventFormDialogVisiable = true;
@@ -302,11 +300,11 @@ export class FamilyFormComponent implements OnInit {
 
   public addChildTemplate(): void {
     this.person = new Person();
-    this.familyClone.children.push(this.person)
+    this.familyClone.children.push(this.person);
   }
 
   public checkChild(index: number): Boolean {
-    return Object.keys(this.familyClone.children[index]).length > 0
+    return Object.keys(this.familyClone.children[index]).length > 0;
   }
 
   public getCompleteChildrenAmount(): number {
@@ -321,7 +319,7 @@ export class FamilyFormComponent implements OnInit {
   }
 
   public isBtnAddChildTemplateDisabled(): boolean {
-    return (this.familyClone.children) && (this.getCompleteChildrenAmount() < this.familyClone.children.length)
+    return (this.familyClone.children) && (this.getCompleteChildrenAmount() < this.familyClone.children.length);
   }
 
   public exitFamilyEditor(): void {
@@ -344,23 +342,22 @@ export class FamilyFormComponent implements OnInit {
   }
 
   public getRouterLink(): string {
-    if(this.currentFamilyFormPath === FamilyFormPath.CREATE) {
+    if (this.currentFamilyFormPath === FamilyFormPath.CREATE) {
       return '/addPersonInNewFamily';
-    }
-    else if(this.currentFamilyFormPath === FamilyFormPath.EDIT) {
+    } else if (this.currentFamilyFormPath === FamilyFormPath.EDIT) {
       return '/selectPerson';
     }
     return undefined
   }
 
   public getRouterLinkCloseBtn(): [string, number | string] {
-    if(this.currentFamilyFormPath === FamilyFormPath.EDIT) {
-      return ['/viewFamily', this.family.id]
-    } else if(this.currentFamilyFormPath === FamilyFormPath.CREATE){
-      return ['/Families','']
+    if (this.currentFamilyFormPath === FamilyFormPath.EDIT) {
+      return ['/viewFamily', this.family.id];
+    } else if (this.currentFamilyFormPath === FamilyFormPath.CREATE) {
+      return ['/Families', ''];
 
     }
-    return undefined
+    return undefined;
   }
 
 }

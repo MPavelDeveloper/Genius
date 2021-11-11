@@ -13,7 +13,6 @@ export enum ComponentDescriptor {
   providedIn: 'root'
 })
 export class SelectPersonTransferService {
-
   public componentDescriptor: ComponentDescriptor;
   public person: Person;
   public personType: PersonType;
@@ -21,6 +20,4 @@ export class SelectPersonTransferService {
   public family: Family;
   public currentChildIndex: number;
   public personFormTemplateVersion: PersonFormTemplateVersion;
-
-  constructor() { }
 }

@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {GENEALOGY_STORAGE_KEY} from '../../../json';
+import {GENEALOGY_STORAGE_KEY, GENEALOGY_USER_REGISTRY_KEY, UserDataLocalStorage} from '../../../json';
 import {Family} from '../../../model/family';
 import {LineAge} from '../../../model/line-age';
 import {Person} from '../../../model/person';
 import {DataProvider} from '../data-provider';
 import * as moment from 'moment'
 import {FamilyEventType, LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
+import {UserLoginData, UserRegistryData} from '../../user-login/user-login.component';
+import {generateTokenForLocalStorage} from '../../utils/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageDataProvider extends DataProvider {
+  private token: string;
   public persons: Array<Person>;
   public families: Array<Family>;
   public lifeEvents: Array<LifeEvent>;
@@ -73,10 +76,10 @@ export class LocalStorageDataProvider extends DataProvider {
 
   public addNewFamily(family: Family): Observable<Object> {
     let observableAddNewFamily: Observable<Object> = new Observable(subscriber => {
-      subscriber.next('new family added to Local Storage')
+      subscriber.next('new family added to Local Storage');
     });
     family.id = this.getNewFamilyID();
-    console.log(family)
+
     this.setPersonsId(family);
     this.families.push(family);
     this.putData();
@@ -86,7 +89,7 @@ export class LocalStorageDataProvider extends DataProvider {
 
   public addNewPerson(person: Person): Observable<Object> {
     let observableAddNewPerson: Observable<Object> = new Observable(subscriber => {
-      subscriber.next('new person added to Local Storage')
+      subscriber.next('new person added to Local Storage');
     });
     person.id = this.getNewPersonID();
     this.persons.push(person);
@@ -96,11 +99,10 @@ export class LocalStorageDataProvider extends DataProvider {
 
   public changeFamily(family: Family): Observable<Object> {
     let observableChangeFamily: Observable<Object> = new Observable(subscriber => {
-      subscriber.next('an existing family was modified in local storage')
+      subscriber.next('an existing family was modified in local storage');
     });
     this.setPersonsId(family);
     let familyIndex = this.families.findIndex(currentFamily => currentFamily.id === family.id);
-    console.log(101010)
     if (familyIndex > -1) {
       this.families[familyIndex] = family;
     }
@@ -115,7 +117,6 @@ export class LocalStorageDataProvider extends DataProvider {
       subscriber.complete();
     });
 
-    console.log(person)
     if (person.familyId) {
       this.findFamily(person.familyId).subscribe(family => {
         if (family.husband.id === person.id) {
@@ -145,7 +146,7 @@ export class LocalStorageDataProvider extends DataProvider {
     let observableDeleteFamily: Observable<Object> = new Observable(subscriber => {
       subscriber.next('an existing family has been removed from local storage');
     })
-    const delIndex = this.families.findIndex(family => family.id === familyId)
+    const delIndex = this.families.findIndex(family => family.id === familyId);
     if (delIndex != -1) {
       this.families.splice(delIndex, 1);
     }
@@ -237,8 +238,8 @@ export class LocalStorageDataProvider extends DataProvider {
 
   private getNewEventID(): number {
     const currentId = this.events.reduce((previousId: number, item: LifeEvent) => {
-      if (previousId < item.id) return item.id
-      return previousId
+      if (previousId < item.id) return item.id;
+      return previousId;
     }, 0)
 
     return currentId + 1;
@@ -305,7 +306,7 @@ export class LocalStorageDataProvider extends DataProvider {
   public addNewPersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
     this.findPerson(personId).subscribe(person => {
       lifeEvent.id = this.getNewLifeEventID();
-      person.lifeEvents.push(lifeEvent)
+      person.lifeEvents.push(lifeEvent);
       if (person.familyId) {
         this.replacePersonInFamily(person);
       }
@@ -334,7 +335,7 @@ export class LocalStorageDataProvider extends DataProvider {
   public changePersonEvent(personId: number, lifeEvent: LifeEvent): Observable<Object> {
     this.findPerson(personId).subscribe(person => {
       if (person.familyId) {
-        this.replacePersonInFamily(person)
+        this.replacePersonInFamily(person);
       }
       this.putData();
     })
@@ -366,7 +367,7 @@ export class LocalStorageDataProvider extends DataProvider {
     if (family.events) {
       family.events.push(lifeEvent);
     } else {
-      family.events = [lifeEvent]
+      family.events = [lifeEvent];
     }
     this.putData();
     this.reloadData();
@@ -398,5 +399,54 @@ export class LocalStorageDataProvider extends DataProvider {
     return new Observable(subscriber => {
       subscriber.next('family event deleted');
     })
+  }
+
+  public setToken(value: string): void {
+    this.token = value;
+  }
+
+  public getToken(): string {
+    return this.token;
+  }
+
+  public loginUser(data: UserLoginData): Observable<string> {
+    return new Observable<string>( subscriber => {
+      let userRigistry = this.getUserRegistry();
+      let targetUser = userRigistry.find( (user: UserDataLocalStorage) => {
+        if(user.login === data.username && user.password === user.password) {
+            return true;
+          }
+        return false;
+      })
+
+      if(targetUser) {
+        subscriber.next(targetUser.token);
+      } else {
+        subscriber.next('');
+      }
+    });
+  }
+
+  public registerUser(data: UserRegistryData): Observable<string> {
+    let userData: UserDataLocalStorage = {
+      login: data.email,
+      password: data.password,
+      token: generateTokenForLocalStorage(),
+    };
+    this.addUserInUserRegistry(userData);
+
+    return new Observable<string>( subscriber => {
+      subscriber.next('')
+    });
+  }
+
+  private getUserRegistry() {
+    return JSON.parse(localStorage.getItem(GENEALOGY_USER_REGISTRY_KEY))
+  }
+
+  private addUserInUserRegistry(user: UserDataLocalStorage) {
+    let userRegisry = this.getUserRegistry();
+    userRegisry.push(user);
+    localStorage.setItem(GENEALOGY_USER_REGISTRY_KEY, JSON.stringify(userRegisry));
   }
 }

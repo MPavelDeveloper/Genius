@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
+import {Component, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 
 export enum ConfirmAction {
   OK = 'ok',
