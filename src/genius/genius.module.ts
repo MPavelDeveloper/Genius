@@ -21,12 +21,12 @@ import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component'
 import {FamiliesPageComponent} from './family.components/families-page/families-page.component';
 import {UserLoginComponent} from './user-login/user-login.component';
 import {TokenInterceptorService} from './services/interceptor/token-interceptor.service';
-import {AppGuard} from './genius-guard.service';
+import {GeniusGuard} from './genius-guard.service';
 
 
 const GeniusRoutes: Routes = [
-  {path: 'Persons', component: PersonsPageComponent,canActivate:[AppGuard]},
-  {path: 'Families/:id', component: FamiliesPageComponent,canActivate:[AppGuard]},
+  {path: 'Persons', component: PersonsPageComponent, canActivate: [GeniusGuard]},
+  {path: 'Families/:id', component: FamiliesPageComponent, canActivate: [GeniusGuard]},
   {path: 'viewPerson/:id', component: PersonFormComponent,},
   {path: 'createPerson', component: PersonFormComponent,},
   {path: 'selectPerson', component: PersonFormComponent,},
@@ -34,9 +34,9 @@ const GeniusRoutes: Routes = [
   {path: 'viewFamily/:id', component: FamilyFormComponent,},
   {path: 'createFamily/:id', component: FamilyFormComponent,},
   {path: 'editFamily/:id', component: FamilyFormComponent,},
-  {path: 'login', component: UserLoginComponent, },
+  {path: 'login', component: UserLoginComponent,},
   {path: '**', redirectTo: 'Persons',},
-]
+];
 
 @NgModule({
   declarations: [
@@ -63,14 +63,11 @@ const GeniusRoutes: Routes = [
     HttpClientModule,
 
   ],
-  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}],
-  providers: [{provide: DataProvider, useClass: HttpDataProvider},
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
-    AppGuard,
-  ],
+  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}, GeniusGuard,],
+  // providers: [{provide: DataProvider, useClass: HttpDataProvider},
+  //   {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+  //   GeniusGuard,
+  // ],
   bootstrap: [GeniusComponent]
 })
-
-export class GeniusModule {
-
-}
+export class GeniusModule {}

@@ -13,10 +13,9 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let dataProvider = this.injector.get(DataProvider);
-    let Authorization = dataProvider.getToken();
-    console.log(Authorization)
-    if (Authorization) {
-      return next.handle(httpRequest.clone({setHeaders: {Authorization}}));
+    let authorization = dataProvider.getToken();
+    if (authorization) {
+      return next.handle(httpRequest.clone({setHeaders: {authorization}}));
     } else {
       return next.handle(httpRequest);
     }

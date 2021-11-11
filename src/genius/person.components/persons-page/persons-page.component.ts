@@ -42,7 +42,7 @@ export class PersonsPageComponent implements OnInit, OnDestroy {
     if(confirmAction === ConfirmAction.OK) {
       this.dataProvider.deletePerson(this.person.id)
         .subscribe(() => {
-          this.loadPersons()
+          this.loadPersons();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);

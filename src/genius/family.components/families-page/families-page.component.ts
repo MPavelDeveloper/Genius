@@ -18,7 +18,7 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
   public confirmDialogVisiable: boolean;
 
   constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService) {
-    this.loadFamilies()
+    this.loadFamilies();
   }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
     if (confirmAction === ConfirmAction.OK) {
       this.dataProvider.deleteFamily(this.familyId)
         .subscribe(() => {
-            this.loadFamilies()
+            this.loadFamilies();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -49,7 +49,6 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
 
   public loadFamilies(): void {
     this.dataProvider.getFamilies().subscribe(families => {
-      console.log(111111111111111111111111)
         this.families = families;
       },
       (errorResponse) => {

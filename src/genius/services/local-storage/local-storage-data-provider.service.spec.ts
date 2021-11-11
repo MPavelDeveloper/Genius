@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {GENEALOGY_STORAGE_KEY, json, testData} from "../../../json";
+import {GENEALOGY_STORAGE_KEY, JSON_DEFAULT_GENEALOGY_STORAGE, testData} from "../../../json";
 import {Family} from "../../../model/family";
 import {Person, Sex} from "../../../model/person";
 import {LocalStorageDataProvider} from './local-storage-data-provider.service';
@@ -17,7 +17,7 @@ describe('LocalStorageDataProvider', () => {
       providers: [LocalStorageDataProvider]
     });
     service = TestBed.inject(LocalStorageDataProvider);
-    localStorage.setItem(GENEALOGY_STORAGE_KEY, json);
+    localStorage.setItem(GENEALOGY_STORAGE_KEY, JSON_DEFAULT_GENEALOGY_STORAGE);
     service.reloadData()
   });
 

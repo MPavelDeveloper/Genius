@@ -23,6 +23,9 @@
       .login-input:focus {
         background-color: lightgoldenrodyellow;
       }
+      .login-input:invalid {
+        background-color: red;
+      }
 
       .login-input:nth-child(2){
         margin-bottom: 27px;

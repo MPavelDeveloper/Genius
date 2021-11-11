@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AppGuard } from './genius-guard.service';
+import { GeniusGuard } from './genius-guard.service';
 
 describe('AppGuardGuard', () => {
-  let guard: AppGuard;
+  let guard: GeniusGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(AppGuard);
+    guard = TestBed.inject(GeniusGuard);
   });
 
   it('should be created', () => {

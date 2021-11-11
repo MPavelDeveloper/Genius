@@ -23,6 +23,6 @@ export class PersonComponent {
   }
 
   returnPerson() {
-    this.returnedPerson.emit(this.person)
+    this.returnedPerson.emit(this.person);
   }
 }

@@ -1,7 +1,7 @@
 <div class="wrap">
   <form class="login-form" *ngIf="currentUserFormType === userFormType.LOGIN">
     <ng-container *ngIf = "unregistered; else logOut">
-      <div class="form-wrap" >
+      <div class="form-wrap" #none>
         <input class="login-input" placeholder="login" tabindex="1" autofocus [(ngModel)] = "login" name="login">
         <input class="login-input" type="password" placeholder="password" tabindex="2" [(ngModel)] = "password" name="password">
         <button class="login-btn" tabindex="3" (click) = "loginUser()">Log in</button>
@@ -13,7 +13,7 @@
 
     <ng-template #logOut>
       <div class="form-wrap">
-        <button class="login-btn" tabindex="3" (click) = "exit()" >Exit</button>
+        <button class="login-btn" tabindex="3" (click) = "logoutUser()" >Exit</button>
       </div>
     </ng-template>
   </form>

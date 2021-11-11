@@ -43,7 +43,7 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit() {
     this.currentUserFormType = UserFormType.LOGIN;
-    (this.dataProvider.getToken()) ? this.unregistered = false : this.unregistered = true;
+    this.unregistered = !this.dataProvider.getToken();
   }
 
   public formToggle(): void {
@@ -58,8 +58,8 @@ export class UserLoginComponent implements OnInit {
     this.dataProvider.loginUser(<UserLoginData>{
       username: this.login,
       password: this.password,
-    }).subscribe((response) => {
-        this.dataProvider.setToken(response.headers.get('Authorization'));
+    }).subscribe((token) => {
+        this.dataProvider.setToken(token);
         this.router.navigate(['Persons']);
       },
       (errorResponse) => {
@@ -83,7 +83,7 @@ export class UserLoginComponent implements OnInit {
       })
   }
 
-  public exit(): void {
+  public logoutUser(): void {
     this.dataProvider.setToken('');
     this.unregistered = true;
   }

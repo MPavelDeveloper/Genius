@@ -2,7 +2,6 @@ import {Observable} from 'rxjs';
 import {Person} from '../../model/person';
 import {Family} from '../../model/family';
 import {LifeEvent} from '../../model/life-event';
-import {HttpResponse} from '@angular/common/http';
 import {UserLoginData, UserRegistryData} from '../user-login/user-login.component';
 
 export abstract class DataProvider {
@@ -42,7 +41,7 @@ export abstract class DataProvider {
 
   abstract setToken(value: string): void;
 
-  abstract registerUser(data: UserRegistryData): Observable<HttpResponse<object>>;
+  abstract registerUser(data: UserRegistryData): Observable<string>;
 
-  abstract loginUser(data: UserLoginData): Observable<HttpResponse<object>>;
+  abstract loginUser(data: UserLoginData): Observable<string>;
 }
