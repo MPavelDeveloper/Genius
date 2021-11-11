@@ -63,11 +63,11 @@ const GeniusRoutes: Routes = [
     HttpClientModule,
 
   ],
-  providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}, GeniusGuard,],
-  // providers: [{provide: DataProvider, useClass: HttpDataProvider},
-  //   {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
-  //   GeniusGuard,
-  // ],
+  // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}, GeniusGuard,],
+  providers: [{provide: DataProvider, useClass: HttpDataProvider},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    GeniusGuard,
+  ],
   bootstrap: [GeniusComponent]
 })
 export class GeniusModule {}
