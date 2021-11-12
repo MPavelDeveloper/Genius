@@ -305,7 +305,11 @@ life-event {
 
 
 .ng-invalid {
-  background-color: #f5f0f0;
+  border-left: 3px solid #ffbaba;
+}
+
+.ng-valid {
+  border-left: 3px solid #11be11;
 }
 
 .ng-invalid.ng-touched {
