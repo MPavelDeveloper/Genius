@@ -7,11 +7,11 @@
         <div class="person-title"><span>Person</span></div>
         <button class="person-edit-btn" (click)="toggleViewEditPerson()">Edit</button>
       </div>
-      <input class="person-fn person-input-view" placeholder="First name" #firstName="ngModel" [(ngModel)]="person.firstName" name="firstName"  disabled>
-      <input class="person-ln person-input-view" placeholder="Last name" [(ngModel)]="person.lastName" name="lastName"disabled>
-      <input class="person-mn person-input-view" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" autocomplete="off" disabled>
-      <input class="person-age person-input-view" placeholder="Age" type="number"  #age="ngModel"  [(ngModel)]="person.age" name="age" disabled>
-      <input class="person-sex person-input-view" placeholder="Gender" #sex="ngModel"  [(ngModel)]="person.sex" name="gender" disabled>
+      <input class="person-fn person-input-view" placeholder="First name" [(ngModel)]="person.firstName" name="firstName"  disabled>
+      <input class="person-ln person-input-view" placeholder="Last name" [(ngModel)]="person.lastName" name="lastName" disabled>
+      <input class="person-mn person-input-view" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" disabled>
+      <input class="person-age person-input-view" placeholder="Age" type="number" [(ngModel)]="person.age" name="age" disabled>
+      <input class="person-sex person-input-view" placeholder="Gender" [(ngModel)]="person.sex" name="gender" disabled>
       <ng-container *ngFor = "let lifeEvent of person.lifeEvents; let index = index">
         <p class="person-title-events" *ngIf="index === 0"><span>Events</span></p>
         <life-event  [lifeEvent]="lifeEvent" (returnedLifeEvent)="lifeEventHandler($event)"></life-event>
@@ -30,40 +30,40 @@
     <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
   </form>
 
-  <form *ngSwitchCase="personFormTemplateVersion.PERSON_EDIT" class="form-wrap">
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_EDIT" class="form-wrap" #editForm="ngForm">
     <div class="wrap">
       <span class="btn-close" (click)="exit()">X</span>
       <div class="person-title"><span>Person</span></div>
-      <input class="person-fn person-input-edit" #firstName="ngModel" type="text" [(ngModel)]="personClone.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
-      <input class="person-ln person-input-edit" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="personClone.lastName" name="lastName" autocomplete="off">
-      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="personClone.middleName" name="middleName" autocomplete="off">
-      <input class="person-age person-input-edit" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="personClone.age" name="age" min="1" autocomplete="off">
-      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="personClone.sex" tabindex="5">
+      <input class="person-fn person-input-edit" type="text" placeholder="First name"  [(ngModel)]="personClone.firstName" name="firstName" tabindex="1" autocomplete="off" minlength="1" maxlength="25" nameValidatorDirective required>
+      <input class="person-ln person-input-edit" type="text" placeholder="Last name" [(ngModel)]="personClone.lastName" name="lastName" tabindex="2" autocomplete="off" maxlength="25">
+      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" [(ngModel)]="personClone.middleName" name="middleName" tabindex="3" autocomplete="off" maxlength="25">
+      <input class="person-age person-input-edit" type="number" placeholder="Age" [(ngModel)]="personClone.age" name="age" tabindex="4" autocomplete="off" min="1">
+      <select class="person-sexlist" [(ngModel)]="personClone.sex" name="sex" tabindex="5">
         <ng-container *ngFor="let sex of PersonSex">
           <option [value]="sex">{{sex}}</option>
         </ng-container>
       </select>
       <div class="actions-wrap">
-        <button class="person-create-btn" (click)="changePerson()">Save</button>
+        <button class="person-create-btn" (click)="changePerson()" [disabled]="editForm.invalid">Save</button>
       </div>
     </div>
   </form>
 
-  <form *ngSwitchCase="personFormTemplateVersion.PERSON_CREATE" class="form-wrap">
+  <form *ngSwitchCase="personFormTemplateVersion.PERSON_CREATE" class="form-wrap" #createForm="ngForm">
     <div class="wrap">
       <span class="btn-close" routerLink="/Persons">X</span>
       <div class="person-title"><span>Person</span></div>
-      <input class="person-fn person-input-edit" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" autocomplete="off" placeholder="First name" minlength="2" tabindex="1" autofocus>
-      <input class="person-ln person-input-edit" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" autocomplete="off">
-      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" autocomplete="off">
-      <input class="person-age person-input-edit" #age="ngModel" type="number" placeholder="Age" tabindex="4" [(ngModel)]="person.age" name="age" min="1" autocomplete="off">
-      <select class="person-sexlist" #sex="ngModel" name="sex" [(ngModel)]="person.sex" tabindex="5">
+      <input class="person-fn person-input-edit" type="text" placeholder="First name" [(ngModel)]="person.firstName" name="firstName" tabindex="1" autocomplete="off"  minlength="2" nameValidatorDirective required>
+      <input class="person-ln person-input-edit" type="text" placeholder="Last name" [(ngModel)]="person.lastName" name="lastName" tabindex="2" autocomplete="off" maxlength="25">
+      <input class="person-mn person-input-edit" type="text" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" tabindex="3" autocomplete="off" maxlength="25">
+      <input class="person-age person-input-edit" type="number" placeholder="Age" [(ngModel)]="person.age" name="age" tabindex="4" autocomplete="off" min="1">
+      <select class="person-sexlist" [(ngModel)]="person.sex" name="sex" tabindex="5">
         <ng-container *ngFor="let sex of PersonSex">
           <option [value]="sex">{{sex}}</option>
         </ng-container>
       </select>
       <div class="actions-wrap">
-        <button class="person-create-btn" (click)="savePerson()" routerLink="/Persons">Save</button>
+        <button class="person-create-btn" (click)="savePerson()" routerLink="/Persons" [disabled]="createForm.invalid">Save</button>
       </div>
     </div>
   </form>
@@ -76,19 +76,19 @@
       <div class="description-wrap">
         <div class="person-title"><span>{{personType.toUpperCase()}}</span></div>
         <div class="person-description">
-          <input class="person-fn person-input-edit" #firstName="ngModel" type="text" [(ngModel)]="person.firstName" name="firstName" placeholder="First name" disabled *ngIf="person.firstName">
-          <input class="person-ln person-input-edit" type="text" placeholder="Last name" tabindex="2" [(ngModel)]="person.lastName" name="lastName" disabled *ngIf="person.lastName">
-          <input class="person-mn person-input-edit" type="text" placeholder="Middle name" tabindex="3" [(ngModel)]="person.middleName" name="middleName" disabled *ngIf="person.middleName">
-          <input class="person-age person-input-edit" #age="ngModel" type="number" placeholder="Age" [(ngModel)]="person.age" name="age" disabled *ngIf="person.age">
+          <input class="person-fn person-input-edit" type="text" placeholder="First name" [(ngModel)]="person.firstName" name="firstName" disabled *ngIf="person.firstName">
+          <input class="person-ln person-input-edit" type="text" placeholder="Last name" [(ngModel)]="person.lastName" name="lastName" disabled *ngIf="person.lastName">
+          <input class="person-mn person-input-edit" type="text" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" disabled *ngIf="person.middleName">
+          <input class="person-age person-input-edit" type="number" placeholder="Age" [(ngModel)]="person.age" name="age" disabled *ngIf="person.age">
         </div>
       </div>
       <div class="persons-list">
-        <div  [ngClass]="{'person-item-men': person.sex === personSex.MALE,'person-item-women': person.sex === personSex.FEMALE }" *ngFor = "let person of persons">
+        <div  *ngFor ="let person of persons" [ngClass]="{'person-item-men': person.sex === personSex.MALE,'person-item-women': person.sex === personSex.FEMALE }">
           <person [person]="person" [templateVersion]="personTemplateType.FULL" (returnedPerson)="setChangePerson($event)"></person>
         </div>
       </div>
       <div class="actions-wrap">
-        <button class="person-create-btn" (click)="selectPerson()"  [routerLink]="getRouterLink()">Select</button>
+        <button class="person-create-btn" (click)="selectPerson()" [routerLink]="getRouterLink()" [disabled]="!person.id">Select</button>
       </div>
     </div>
   </form>

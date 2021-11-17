@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TokenInterceptorService} from '../services/interceptor/token-interceptor.service';
-import { Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {DataProvider} from '../services/data-provider';
 
 enum UserFormType {
@@ -26,6 +26,7 @@ export interface UserRegistryData {
   styleUrls: ['./user-login.component.scss']
 })
 export class UserLoginComponent implements OnInit {
+  @Input() pattern: string | RegExp;
 
   public login: string;
   public password: string;

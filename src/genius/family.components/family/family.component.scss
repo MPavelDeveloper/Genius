@@ -1,46 +1,46 @@
-//.family {
-//  margin-bottom: 12px;
-//  border-radius: 3px;
-//  padding: 12px;
-//  display: flex;
-//  align-items: center;
-//  max-width: 300px;
-//  font-size: 18px;
-//  color: black;
-//  background-color: #80800059;
-//  box-shadow: 0 2px 6px lightgrey;
-//  cursor: pointer;
-//  transition: 300ms;
-//
-//  &:hover {
-//    background-color: #c4c1c1;
-//  }
-//}
-
 .family {
   height: 100%;
   width: 100%;
-
-  .parents {
-    margin-right: 21px;
-
-    .family-father {
+  .family-parents {
+    margin-bottom: 30px;
+    .parents {
+      display: flex;
       margin-bottom: 3px;
-    }
-
-    .family-mother {
+      justify-content: space-around;
+      .family-husband {
+        margin-bottom: 3px;
+        display: flex;
+      }
+      .family-wife {
+        display: flex;
+      }
     }
   }
 
   .family-children {
     display: flex;
+    flex-direction: column;
+    .family-child {
+      display: flex;
+    }
+    .family-child {
+      margin-bottom: 6px;
+    }
+    .family-child:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-    person {
-      margin-right: 9px;
-    }
-    person:last-child {
-      margin-right: 0;
-    }
+  .person-title {
+    margin-bottom: 3px;
+    font-size: 18px;
+    font-weight: bolder;
+    color:white;
+  }
+
+  .horizont-line {
+    margin-bottom: 6px;
+    border: 1px solid #6d48484d;
   }
 }
 

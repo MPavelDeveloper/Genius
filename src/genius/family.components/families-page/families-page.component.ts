@@ -4,25 +4,31 @@ import {DataProvider} from '../../services/data-provider';
 import {DataLoadService} from '../../services/data-load/data-load.service';
 import {ConfirmAction} from '../../confirm-dialog/confirm-dialog.component';
 import {Subscription} from 'rxjs';
+import {FamilyTreeService} from '../../services/family-tree/family-tree.service';
+
 
 @Component({
-  selector: 'app-families-page',
+  selector: 'families-page',
   templateUrl: './families-page.component.html',
   styleUrls: ['./families-page.component.scss']
 })
-export class FamiliesPageComponent implements OnInit, OnDestroy{
+export class FamiliesPageComponent implements OnInit, OnDestroy {
 
   private dataLoadSubscription: Subscription;
   public families: Array<Family>;
   public familyId: number;
   public confirmDialogVisiable: boolean;
+  public familyGenius: Array<Array<Family>>;
 
-  constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService) {
-    this.loadFamilies();
+  constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService, private familyTree: FamilyTreeService) {
+    this.loadFamilyTree();
   }
 
   ngOnInit() {
-    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => this.loadFamilies());
+    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => {
+      this.familyGenius = [];
+      this.loadFamilyTree();
+    });
   }
 
   ngOnDestroy() {
@@ -38,7 +44,7 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
     if (confirmAction === ConfirmAction.OK) {
       this.dataProvider.deleteFamily(this.familyId)
         .subscribe(() => {
-            this.loadFamilies();
+            this.loadFamilyTree();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -47,13 +53,10 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
     this.confirmDialogVisiable = false;
   }
 
-  public loadFamilies(): void {
-    this.dataProvider.getFamilies().subscribe(families => {
-        this.families = families;
-      },
-      (errorResponse) => {
-        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-      });
+  public loadFamilyTree(): void {
+    this.familyTree.getFamilyTree().subscribe(familyTree => {
+      this.familyGenius = <Array<Array<Family>>>familyTree;
+    });
   }
 
 }

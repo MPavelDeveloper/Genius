@@ -14,7 +14,7 @@ export const LINE_AGE_DEFAULT: LineAge = {
     id: 1,
     note: '',
     husband: {
-      id: 2,
+      id: 1,
       firstName: 'Tom',
       lastName: 'James',
       middleName: 'Nickson',
@@ -31,7 +31,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
           note: 'Married',
         },
       ],
-      familyId: 2,
+      familyId: 1,
+      parentFamilyId: 2,
     },
     wife: {
       id: 2,
@@ -51,7 +52,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
           note: 'Married',
         },
       ],
-      familyId: null,
+      familyId: 1,
+      parentFamilyId:3,
     },
     children: [{
       // son first
@@ -72,7 +74,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
           note: 'Married',
         },
       ],
-      familyId: 1,
+      parentFamilyId: 1,
+      familyId: null,
     }, {
       // son second
       id: 4,
@@ -92,7 +95,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
           note: 'Married',
         },
       ],
-      familyId: 1,
+      parentFamilyId: 1,
+      familyId: null,
     }],
     events: [{
       id: 10,
@@ -115,7 +119,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
       note: undefined,
       occupation: undefined,
       lifeEvents: [],
-      familyId: null,
+      familyId: 2,
+      parentFamilyId: null,
     },
     wife: {
       // mother
@@ -130,7 +135,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
       note: undefined,
       occupation: undefined,
       lifeEvents: [],
-      familyId: 3,
+      familyId: 2,
+      parentFamilyId: null,
     },
     children: [{
       // first family
@@ -152,7 +158,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
           note: 'Married',
         },
       ],
-      familyId: 2,
+      familyId: 1,
+      parentFamilyId:2,
     }, {
       // + child
       id: 7,
@@ -191,7 +198,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
       note: undefined,
       occupation: undefined,
       lifeEvents: [],
-      familyId: null,
+      familyId: 3,
+      parentFamilyId: null,
     },
     wife: {
       // mother
@@ -206,12 +214,12 @@ export const LINE_AGE_DEFAULT: LineAge = {
       note: undefined,
       occupation: undefined,
       lifeEvents: [],
-      familyId: null,
+      familyId: 3,
+      parentFamilyId: null,
     },
     children: [{
-      // mother
-      id: 6,
-      firstName: 'Julia',
+      id: 2,
+      firstName: 'Lola',
       lastName: 'James',
       middleName: 'Han',
       maidenName: undefined,
@@ -221,7 +229,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
       note: undefined,
       occupation: undefined,
       lifeEvents: [],
-      familyId: 3,
+      familyId: 1,
+      parentFamilyId:3,
     }],
     events: [{
       id: 12,
@@ -252,9 +261,9 @@ export const LINE_AGE_DEFAULT: LineAge = {
         note: 'Married',
       },
     ],
-    familyId: 2,
+    familyId: 1,
+    parentFamilyId: 2,
   }, {
-    // mother
     id: 2,
     firstName: 'Lola',
     lastName: 'James',
@@ -274,7 +283,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
         note: 'Married',
       },
     ],
-    familyId: null,
+    familyId: 1,
+    parentFamilyId:3,
   }, {
     // son first
     id: 3,
@@ -296,7 +306,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
         note: 'Married',
       },
     ],
-    familyId: 1,
+    parentFamilyId: 1,
+    familyId: null,
   }, {
     // son second
     id: 4,
@@ -318,7 +329,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
         note: 'Married',
       },
     ],
-    familyId: 1,
+    parentFamilyId: 1,
+    familyId: null,
   }, {
     // second family
     // father
@@ -333,7 +345,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
     note: undefined,
     occupation: undefined,
     lifeEvents: [],
-    familyId: null,
+    familyId: 2,
+    parentFamilyId: null,
   }, {
     // mother
     id: 6,
@@ -376,7 +389,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
     note: undefined,
     occupation: undefined,
     lifeEvents: [],
-    familyId: null,
+    familyId: 3,
+    parentFamilyId: null,
   }, {
     // mother
     id: 9,
@@ -390,7 +404,8 @@ export const LINE_AGE_DEFAULT: LineAge = {
     occupation: undefined,
     sex: Sex.FEMALE,
     lifeEvents: [],
-    familyId: null,
+    familyId: 3,
+    parentFamilyId: null,
   },],
 }
 

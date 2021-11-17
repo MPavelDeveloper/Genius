@@ -14,8 +14,9 @@ export class Person {
   public age?: number;
   public sex: Sex;
   public lifeEvents?: Array<LifeEvent>;
-  public familyId?: number;
   public place?: string;
   public note?: string;
   public occupation?: string;
+  public familyId?: number;
+  public parentFamilyId?: number;
 }

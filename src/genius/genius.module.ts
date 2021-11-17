@@ -6,7 +6,7 @@ import {AppRoutingModule} from './genius-routing.module';
 import {GeniusComponent} from './genius.component';
 import {PersonComponent} from './person.components/person/person.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Router, RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes} from '@angular/router';
 import {PersonFormComponent} from './person.components/person-form/person-form.component';
 import {FamilyFormComponent} from './family.components/family-form/family-form.component';
 import {FamilyComponent} from './family.components/family/family.component';
@@ -22,6 +22,8 @@ import {FamiliesPageComponent} from './family.components/families-page/families-
 import {UserLoginComponent} from './user-login/user-login.component';
 import {TokenInterceptorService} from './services/interceptor/token-interceptor.service';
 import {GeniusGuard} from './genius-guard.service';
+import { EmailValidatorDirective } from './directives/email-validator/email-validator.directive';
+import { NameValidatorDirective } from './directives/name-validator/name-validator.directive';
 
 
 const GeniusRoutes: Routes = [
@@ -51,6 +53,8 @@ const GeniusRoutes: Routes = [
     ConfirmDialogComponent,
     FamiliesPageComponent,
     UserLoginComponent,
+    EmailValidatorDirective,
+    NameValidatorDirective,
   ],
   imports: [
     BrowserModule,
@@ -61,12 +65,11 @@ const GeniusRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(GeniusRoutes),
     HttpClientModule,
-
   ],
   // providers: [{provide: DataProvider, useValue: new LocalStorageDataProvider()}, GeniusGuard,],
   providers: [{provide: DataProvider, useClass: HttpDataProvider},
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
-    GeniusGuard,Router
+    GeniusGuard,
   ],
   bootstrap: [GeniusComponent]
 })
