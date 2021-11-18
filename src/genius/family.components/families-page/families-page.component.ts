@@ -54,9 +54,12 @@ export class FamiliesPageComponent implements OnInit, OnDestroy {
   }
 
   public loadFamilyTree(): void {
-    this.familyTree.getFamilyTree().subscribe(familyTree => {
-      this.familyGenius = <Array<Array<Family>>>familyTree;
-    });
+    this.familyTree.createFamilyTree().subscribe(familyTree => {
+        console.log(familyTree);
+      },
+      (errorResponse) => {
+        console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+      });
   }
 
 }

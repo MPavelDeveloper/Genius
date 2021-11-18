@@ -1,14 +1,17 @@
 <div class="table-families">
   <button class="button-add-new" [routerLink] = "['/createFamily', '']">+</button>
-  <ng-container *ngFor="let reatedFamilies of familyGenius">
+  <ng-container *ngFor="let relatedFamilies of familyGenius">
     <div class="row">
-      <ng-container *ngFor="let family of reatedFamilies">
-        <div class="family">
-          <family [family]="family" [routerLink] = "['/viewFamily', family.id]"></family>
-          <div class="row-actions">
-            <button class="button-add" [routerLink] = "['/viewFamily', family.id]">add</button>
-            <button class="button-delete" (click)="showConfirm(family)">del</button>
-          </div>
+      <ng-container *ngFor="let family of relatedFamilies; let familyIndex = index">
+        <div class="family" [ngClass]="{'family': family, 'family-none': !family}">
+          <ng-container *ngIf="family">
+            <div ></div>
+            <family [family]="family" [routerLink] = "['/viewFamily', family.id]"></family>
+            <div class="row-actions">
+              <button class="button-add" [routerLink] = "['/viewFamily', family.id]">add</button>
+              <button class="button-delete" (click)="showConfirm(family)">del</button>
+            </div>
+          </ng-container>
         </div>
       </ng-container>
     </div>

@@ -7,67 +7,88 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private familyTree: Array<Array<Family>>;
+  private root: Node;
 
-  constructor(private dataProvider: HttpDataProvider) {
+
+  constructor(public dataProvider: HttpDataProvider) {
   }
 
-  private getRootFamily(families: Array<Family>): Observable<Family> {
+  public createFamilyTree(): Observable<Node> {
     return new Observable(subscriber => {
-      for (let familyIndex = 0; familyIndex < families.length; familyIndex++) {
-        let family = families[familyIndex];
-        for (let childIndex = 0; childIndex < family.children.length; childIndex++) {
-          if (family.children[childIndex].familyId) {
-            break;
-          } else if (childIndex === family.children.length - 1) {
-            subscriber.next(family);
-            return;
-          }
-        }
-      }
+      this.dataProvider.getFamilies().subscribe(families => {
+          this.getRootFamily(families).subscribe(rootFamily => {
+              this.root = new Node(rootFamily);
+              this.root.children = this.createChildrenNodes(this.root, rootFamily, families);
+              this.root.children.forEach(childNode => {
+                this.addNodes(this.root, childNode, families);
+              })
+              subscriber.next(this.root);
+            },
+            (errorResponse) => {
+              console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+            });
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
+        });
     })
   }
 
-  private searchRelatedFamilies(currentFamilies: Array<Family>, families: Array<Family>): void {
-    let result: Array<Family> = [];
-    currentFamilies.forEach(family => {
-      if (family.husband?.parentFamilyId) {
-        const husbandParentsFamily = this.findParentFamily(family.husband.parentFamilyId, families);
-        if (husbandParentsFamily) result.push(husbandParentsFamily);
-      }
-      if (family.wife?.parentFamilyId) {
-        const wifeParentsFamily = this.findParentFamily(family.wife.parentFamilyId, families);
-        if (wifeParentsFamily) result.push(wifeParentsFamily);
-      }
-    });
-
-    if (result.length) {
-      this.familyTree.push(result);
-      this.searchRelatedFamilies(result, families);
-    } else {
-      return;
-    }
-
-  }
-
-  private findParentFamily(parentFamilyId: number, families: Array<Family>): Family {
-    return  families.find(currentFamily => currentFamily.id === parentFamilyId);
-  }
-
-  public getFamilyTree(): Observable<Array<Array<Family>>> {
-    this.familyTree = []
+  public getRootFamily(families: Array<Family>): Observable<Family> {
     return new Observable(subscriber => {
-      this.dataProvider.getFamilies().subscribe(families => {
-        this.getRootFamily(families).subscribe(rootFamily => {
-          this.familyTree.push([rootFamily]);
-          this.searchRelatedFamilies([rootFamily], families);
-          // ??? case: create new family(person as husband -> person as child)
-          subscriber.next(this.familyTree);
-          return;
+      this.dataProvider.getPersons().subscribe(persons => {
+          for (let personIndex = 0; personIndex < persons.length; personIndex++) {
+            if (persons[personIndex].familyId && persons[personIndex].parentFamilyId === null) {
+              let rootFamily = families.find(family => family.id === persons[personIndex].familyId);
+              subscriber.next(rootFamily);
+              return;
+            }
+          }
+        },
+        (errorResponse) => {
+          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
         });
-      });
     });
   }
 
+  public addNodes(parentNode: Node, childNode: Node, families: Array<Family>) {
+    childNode.children = this.createChildrenNodes(parentNode, childNode.data, families);
+    if (childNode.children.length > 0) {
+      childNode.children.forEach(child => {
+        this.addNodes(childNode, child, families);
+      })
+    }
+  }
+
+  public createChildrenNodes(currentNode: Node, family: Family, families: Array<Family>): Array<Node> {
+    let childrenFamilies: Array<Family> = [];
+    family.children.forEach(child => {
+      if (child.familyId) {
+        childrenFamilies.push(families.find((family) => family.id === child.familyId));
+      }
+    });
+
+    return (childrenFamilies.length) ? childrenFamilies.map(family => this.createNode(currentNode, family)) : [];
+  }
+
+  public createNode(currentNode: Node, family: Family) {
+    let node = new Node(family);
+    node.parent = currentNode;
+    return node;
+  }
 }
+
+class Node {
+  parent: Node;
+  data: Family;
+  children: Array<Node>;
+
+  constructor(data: Family) {
+    this.parent = null;
+    this.data = data;
+    this.children = [];
+  }
+}
+
+
 
