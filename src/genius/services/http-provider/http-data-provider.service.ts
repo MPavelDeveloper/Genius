@@ -228,7 +228,6 @@ export class HttpDataProvider extends DataProvider {
     person.familyId = dto?.familyId;
     person.parentFamilyId = dto?.parentFamilyId;
     person.lifeEvents = dto.events;
-    person.parentFamilyId = dto.parentFamilyId;
     return person;
   }
 

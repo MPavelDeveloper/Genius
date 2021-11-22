@@ -10,11 +10,11 @@ export class EmailValidatorDirective implements Validator {
   }
 
   validate(control: FormControl) {
-    const emailValid = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(control.value)
+    const emailValid = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(control.value);
     if (emailValid) {
-      return null
+      return null;
     } else {
-      return {'emailValid': false}
+      return {'emailValid': false};
     }
   }
 }

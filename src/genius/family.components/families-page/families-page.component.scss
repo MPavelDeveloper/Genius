@@ -27,6 +27,7 @@
     align-items: center;
 
     .family {
+      width: 221px;
       flex-grow: 0;
       flex-shrink: 0;
       display: flex;
@@ -48,13 +49,14 @@
         transform: rotateZ(-45deg) translateX(-30px);
         box-shadow: 0 4px 8px gray;
       }
+
       family {
         margin-bottom: 30px;
       }
     }
 
     .family-none {
-      width: 184px;
+      width: 221px;
     }
 
     .row-actions {
@@ -84,6 +86,7 @@
 
       .button-delete {
         background-color: #f080807d;
+
         &:hover {
           transform: translateY(-3px);
           background-color: lightcoral;

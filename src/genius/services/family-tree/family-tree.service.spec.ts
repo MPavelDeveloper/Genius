@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-import { FamilyTreeService } from './family-tree.service';
+import {TestBed} from '@angular/core/testing';
+import {Node, FamilyTreeService} from './family-tree.service';
 import {HttpDataProvider} from '../http-provider/http-data-provider.service';
 import {Family} from '../../../model/family';
 import {testDataFamilies, testDataPersons, testRootFamily} from '../../../json';
 import {Person} from '@angular/cli/utilities/package-json';
 import {Observable} from 'rxjs';
 
-describe('FamilyTreeTestService', () => {
+describe('FamilyTreeService', () => {
   let service: FamilyTreeService;
   let families: Array<Family>;
   let persons: Array<Person>;
@@ -15,32 +15,23 @@ describe('FamilyTreeTestService', () => {
     parent: null,
     data: null,
     children: [],
-  }
+  };
 
-  class HttpServiceSpy {
+  class HttpServiceMock {
     getFamilies(): Observable<Array<Family>> {
       return new Observable(subscriber => subscriber.next(families));
     }
 
     getPersons(): Observable<Array<Person>> {
-      return new Observable(subscriber => {subscriber.next(persons)});
-    }
-  }
-  class Node {
-    parent: Node;
-    data: Family;
-    children: Array<Node>;
-
-    constructor(data: Family) {
-      this.parent = null;
-      this.data = data;
-      this.children = [];
+      return new Observable(subscriber => {
+        subscriber.next(persons)
+      });
     }
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{provide: HttpDataProvider, useClass: HttpServiceSpy}],
+      providers: [{provide: HttpDataProvider, useClass: HttpServiceMock}],
     });
     families = testDataFamilies;
     persons = testDataPersons;

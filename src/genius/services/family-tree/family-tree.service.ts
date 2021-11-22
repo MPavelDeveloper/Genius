@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpDataProvider} from '../http-provider/http-data-provider.service';
 import {Family} from '../../../model/family';
 import {Observable} from 'rxjs';
+import * as Pipe from 'ramda';
+import {Person} from '../../../model/person';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FamilyTreeService {
   private root: Node;
-
 
   constructor(public dataProvider: HttpDataProvider) {
   }
@@ -37,9 +38,9 @@ export class FamilyTreeService {
   public getRootFamily(families: Array<Family>): Observable<Family> {
     return new Observable(subscriber => {
       this.dataProvider.getPersons().subscribe(persons => {
-          for (let personIndex = 0; personIndex < persons.length; personIndex++) {
-            if (persons[personIndex].familyId && persons[personIndex].parentFamilyId === null) {
-              let rootFamily = families.find(family => family.id === persons[personIndex].familyId);
+          for (let person of persons) {
+            if (person.familyId && person.parentFamilyId === null) {
+              let rootFamily = this.findFamily(person.familyId, families);
               subscriber.next(rootFamily);
               return;
             }
@@ -53,32 +54,66 @@ export class FamilyTreeService {
 
   public addNodes(parentNode: Node, childNode: Node, families: Array<Family>) {
     childNode.children = this.createChildrenNodes(parentNode, childNode.data, families);
-    if (childNode.children.length > 0) {
-      childNode.children.forEach(child => {
-        this.addNodes(childNode, child, families);
-      })
-    }
+    childNode.children.forEach(child => {
+      this.addNodes(childNode, child, families);
+    });
   }
 
   public createChildrenNodes(currentNode: Node, family: Family, families: Array<Family>): Array<Node> {
-    let childrenFamilies: Array<Family> = [];
-    family.children.forEach(child => {
-      if (child.familyId) {
-        childrenFamilies.push(families.find((family) => family.id === child.familyId));
-      }
-    });
-
-    return (childrenFamilies.length) ? childrenFamilies.map(family => this.createNode(currentNode, family)) : [];
+    return Pipe.filter((child: Person) => !!child.familyId, family.children)
+      .map((child: Person) => this.findFamily(child.familyId, families))
+      .map((family: Family) => this.createNode(currentNode, family));
   }
 
-  public createNode(currentNode: Node, family: Family) {
+  public findFamily(familyId: number, families: Array<Family>): Family {
+    return families.find((family) => family.id === familyId);
+  }
+
+  public createNode(currentNode: Node, family: Family): Node {
     let node = new Node(family);
     node.parent = currentNode;
     return node;
   }
+
+  public traversal() {
+    let result: Array<Node> = [];
+    this.traversalInOrder(this.root, result);
+    return result;
+  }
+
+  public traversalInOrder(node: Node, result: Array<Node>) {
+    node.children.forEach(childNode => {
+      this.traversalInOrder(childNode, result);
+    })
+    result.push(node)
+  }
+
+  public getFamilyTreeLevels(): Array<Array<Node>> {
+    let familyTreeLevels: Array<Array<Node>> = [];
+    familyTreeLevels.push([this.root]);
+    for (let level = 0; level < familyTreeLevels.length; level++) {
+      this.createFamilyTreeLevels(familyTreeLevels, familyTreeLevels[level]);
+    }
+
+    return familyTreeLevels;
+  }
+
+  public createFamilyTreeLevels(familyTreeLevels: Array<Array<Node>>, nodes: Array<Node>): void {
+    let level: Array<Node> = [];
+    nodes.forEach(node => {
+      if (node.children.length) {
+        level = level.concat(node.children);
+      }
+    });
+
+    if (level.length) {
+      familyTreeLevels.push(level);
+    }
+  }
+
 }
 
-class Node {
+export class Node {
   parent: Node;
   data: Family;
   children: Array<Node>;
