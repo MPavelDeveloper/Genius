@@ -5,3 +5,7 @@ export function deepClone(obj: any): any {
 export function generateTokenForLocalStorage() {
   return `Bearer ${Date.now()}`;
 }
+
+export function random(max: number, min: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

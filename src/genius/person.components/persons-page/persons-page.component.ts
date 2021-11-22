@@ -29,6 +29,7 @@ export class PersonsPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dataLoadSubscription = this.dataLoad.persons$.subscribe(() => this.loadPersons());
   }
+
   ngOnDestroy() {
     this.dataLoadSubscription.unsubscribe();
   }

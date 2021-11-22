@@ -6,6 +6,7 @@
   width: 100%;
   white-space: pre;
   cursor: pointer;
+
   .person-description {
     display: flex;
     justify-content: center;
@@ -13,8 +14,8 @@
   }
 }
 
-.person-short {
-  white-space: pre;
+.span {
+  white-space: pre-line;
 }
 
 

@@ -38,9 +38,9 @@ describe('PersonComponent', () => {
   });
 
   it('HTML and Instance; should be the same;', () => {
-    let personHTML = fixture.nativeElement.querySelector('.person-short')
+    let personHTML = fixture.nativeElement.querySelector('.person-short');
 
-    expect(personHTML.textContent).toContain(`${component.person.firstName}  ${component.person.age}`);
+    expect(personHTML.textContent).toContain(`${component.person.firstName} ${component.person.lastName}  ${component.person.age}`);
   });
 
   it('HTML and Instance; should be the same; Dynamic changes', () => {
@@ -49,7 +49,7 @@ describe('PersonComponent', () => {
     component.person.age = 300;
     fixture.detectChanges();
 
-    expect(personHTML.textContent).toContain(`${component.person.firstName}  ${component.person.age}`);
+    expect(personHTML.textContent).toContain(`${component.person.firstName} ${component.person.lastName}  ${component.person.age}`);
   })
 
 

@@ -2,9 +2,9 @@
   <form class="login-form" *ngIf="currentUserFormType === userFormType.LOGIN" #loginForm="ngForm">
     <ng-container *ngIf = "unregistered; else logOut">
       <div class="form-wrap">
-        <input class="login-input" placeholder="login" tabindex="1" [(ngModel)]="login" name="login" type="email" required minlength="5" autofocus>
+        <input class="login-input" placeholder="login" tabindex="1" [(ngModel)]="login" name="login" type="email" required minlength="5" autofocus emailValidatorDirective>
         <input class="login-input" type="password" placeholder="password" tabindex="2" [(ngModel)] = "password" name="password" required minlength="4">
-        <button class="login-btn" [disabled]="!loginForm.form.valid" tabindex="3" (click)="loginUser()" >Log in</button>
+        <button class="login-btn" [disabled]="loginForm.form.invalid" tabindex="3" (click)="loginUser()" >Log in</button>
       </div>
       <div class="link-wrap">
         <a class="link-item" (click)="formToggle()">Registration</a>
@@ -19,10 +19,10 @@
   </form>
 
   <form class="reg-form" *ngIf="currentUserFormType === userFormType.REGISTRY" #registryForm="ngForm">
-    <input class="reg-input" placeholder="name" tabindex="1" [(ngModel)] = "nameRegistry" name="nameRegistry" autofocus required minlength="1">
-    <input class="reg-input" placeholder="surname" tabindex="2" [(ngModel)] = "surnameRegistry" name="surnameRegistry" required minlength="1">
-    <input class="reg-input" placeholder="email" tabindex="3" type="email" [(ngModel)] = "emailRegistry" name="emailRegistry" required minlength="5">
-    <input class="reg-input" placeholder="password" tabindex="4" type="password" [(ngModel)] = "passwordRegistry" name="passwordRegistry" required minlength="4">
+    <input class="reg-input" placeholder="name" tabindex="1" [(ngModel)] = "nameRegistry" name="nameRegistry" autofocus required minlength="1" maxlength="25" nameValidatorDirective>
+    <input class="reg-input" placeholder="surname" tabindex="2" [(ngModel)] = "surnameRegistry" name="surnameRegistry" required minlength="1" maxlength="25" nameValidatorDirective>
+    <input class="reg-input" placeholder="email" tabindex="3" type="email" [(ngModel)] = "emailRegistry" name="emailRegistry" required minlength="5" emailValidatorDirective>
+    <input class="reg-input" placeholder="password" tabindex="4" type="password" [(ngModel)] = "passwordRegistry" name="passwordRegistry" required minlength="4" maxlength="12">
     <button class="reg-btn" [disabled]="!registryForm.form.valid" tabindex="5" (click) = "registerUser()">Register</button>
     <div class="link-wrap">
       <a class="link-item" (click)="formToggle()">Entrance</a>

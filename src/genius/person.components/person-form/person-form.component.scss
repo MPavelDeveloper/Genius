@@ -8,9 +8,9 @@
     border-radius: 6px;
     padding: 12px;
     display: flex;
-    //flex-flow: row wrap;
     flex-flow: column nowrap;
     width: 450px;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     justify-content: space-between;
     box-shadow: 0 2px 6px gray;
   }
@@ -22,7 +22,6 @@
     padding: 12px;
     display: flex;
     flex-flow: row wrap;
-    //flex-flow: column nowrap;
     width: 720px;
     justify-content: space-between;
     box-shadow: 0 2px 6px gray;
@@ -36,6 +35,7 @@
   flex-flow: column nowrap;
   min-width: 210px;
 }
+
 .wrap-btn-close {
   flex-basis: 100%;
   margin-bottom: 21px;
@@ -139,17 +139,17 @@
   }
 }
 
-.person-input {
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: 0;
-  border-bottom: 1px solid black;
-  padding: 12px;
-  padding-bottom: 3px;
-  width: 100%;
-  font-size: 18px;
-  outline: none;
-}
+//.person-input {
+//  margin-bottom: 12px;
+//  border-radius: 6px;
+//  border: 0;
+//  border-bottom: 1px solid black;
+//  padding: 12px;
+//  padding-bottom: 3px;
+//  width: 100%;
+//  font-size: 18px;
+//  outline: none;
+//}
 
 .person-input-view {
   margin-bottom: 12px;
@@ -178,8 +178,23 @@
   font-size: 18px;
   outline: none;
 }
+
 .person-input-edit:disabled {
   background-color: #d3d3d35e;
+}
+
+.person-input-edit.ng-valid[required] {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid black;
+  border-left: 6px solid #11be11;
+}
+
+.person-input-edit.ng-invalid[required] {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid black;
+  border-left: 6px solid #ffbaba80;
 }
 
 .person-familyList, .person-sexlist {
@@ -303,15 +318,15 @@ life-event {
   }
 }
 
-
-.ng-invalid {
-  border-left: 3px solid #ffbaba;
-}
-
-.ng-valid {
-  border-left: 3px solid #11be11;
-}
-
-.ng-invalid.ng-touched {
-  background-color: lightcoral;
-}
+//
+//.ng-invalid {
+//  border-left: 3px solid #ffbaba;
+//}
+//
+//.ng-valid {
+//  border-left: 3px solid #11be11;
+//}
+//
+//.ng-invalid.ng-touched {
+//  background-color: lightcoral;
+//}

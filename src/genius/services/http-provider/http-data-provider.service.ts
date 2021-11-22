@@ -186,7 +186,8 @@ export class HttpDataProvider extends DataProvider {
       occupation: person.occupation,
       note: person.note,
       events: person.lifeEvents,
-      familyId: person.familyId
+      familyId: person.familyId,
+      parentFamilyId: person.parentFamilyId
     };
   }
 
@@ -224,7 +225,8 @@ export class HttpDataProvider extends DataProvider {
     person.lastName = dto.name?.last;
     // @ts-ignore
     person.sex = (dto.gender) ? dto.gender.toLowerCase() : null;
-    person.familyId = dto?.parentFamilyId;
+    person.familyId = dto?.familyId;
+    person.parentFamilyId = dto?.parentFamilyId;
     person.lifeEvents = dto.events;
     return person;
   }

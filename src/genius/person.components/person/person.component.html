@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="templateVersion">
   <div *ngSwitchCase="personsTemplateType.SHORT" class="person-short" (click)="returnPerson()">
-    <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' '  : '' }}</span>
+    <span>{{ (person && person.firstName) ?  ' ' + person.firstName + ' ' + person.lastName + ' '  : '' }}</span>
     <span>{{ (person && person.age) ? ' ' + person?.age + ' ' : ''  }}</span>
   </div>
   <div *ngSwitchCase="personsTemplateType.FULL" class="person-fulldata" (click)="returnPerson()">
