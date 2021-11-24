@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
 import {Family} from '../../../model/family';
 import {Person} from '../../../model/person';
@@ -20,7 +20,7 @@ import {
   LifeEventFormTemplateAction,
   LifeEventFormType
 } from '../../event.components/life-event-form/life-event-form.component';
-import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
+import {EventPrefix, LifeEvent, LifeEventType} from '../../../model/life-event';
 import {deepClone} from '../../utils/utils';
 
 export enum FamilyFormTemplateVersion {
@@ -44,6 +44,7 @@ export enum FamilyFormPath {
   selector: 'family-form',
   templateUrl: './family-form.component.html',
   styleUrls: ['./family-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FamilyFormComponent implements OnInit {
 
@@ -65,7 +66,8 @@ export class FamilyFormComponent implements OnInit {
   constructor(private dataProvider: DataProvider,
               private activateRoute: ActivatedRoute,
               private selectPersonTransferService: SelectPersonTransferService,
-              private dataLoadService: DataLoadService) {
+              private dataLoadService: DataLoadService,
+              private changeDetection: ChangeDetectorRef) {
     this.person = new Person();
     this.family = new Family();
 
@@ -81,7 +83,7 @@ export class FamilyFormComponent implements OnInit {
       this.currentFamilyFormPath = path;
 
       if (path === FamilyFormPath.VIEW) {
-        this.findFamily(Number(this.activateRoute.snapshot.params.id))
+        this.findFamily(Number(this.activateRoute.snapshot.params.id));
         this.templateVersion = FamilyFormTemplateVersion.FAMILY_VIEW;
       } else if (path === FamilyFormPath.CREATE) {
         if (this.selectPersonTransferService.componentDescriptor === ComponentDescriptor.PERSON_FORM) {
@@ -89,15 +91,17 @@ export class FamilyFormComponent implements OnInit {
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
           this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
           this.addSelectPersonInFamily(this.selectPersonTransferService.personType, this.selectPersonTransferService.person, this.selectPersonTransferService.currentChildIndex);
+          this.changeDetection.detectChanges();
         } else {
           this.familyClone = this.family;
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
+          this.changeDetection.detectChanges();
         }
       } else if (path === FamilyFormPath.EDIT) {
         if (this.selectPersonTransferService.componentDescriptor === ComponentDescriptor.PERSON_FORM) {
-          this.findFamily(this.selectPersonTransferService.familyId)
-          this.familyClone = this.selectPersonTransferService.family
           this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
+          this.findFamily(this.selectPersonTransferService.familyId);
+          this.familyClone = this.selectPersonTransferService.family
           this.selectPersonTransferService.componentDescriptor = ComponentDescriptor.FAMILY_FORM;
           this.addSelectPersonInFamily(this.selectPersonTransferService.personType, this.selectPersonTransferService.person, this.selectPersonTransferService.currentChildIndex);
         } else {
@@ -105,6 +109,7 @@ export class FamilyFormComponent implements OnInit {
               this.family = family;
               this.familyClone = deepClone(family);
               this.templateVersion = FamilyFormTemplateVersion.FAMILY_EDITOR;
+              this.changeDetection.detectChanges();
             },
             (errorResponse) => {
               console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -150,6 +155,7 @@ export class FamilyFormComponent implements OnInit {
   public findFamily(familyId: number): void {
     this.dataProvider.findFamily(Number(familyId)).subscribe(family => {
         this.family = family;
+        this.changeDetection.detectChanges();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -335,6 +341,7 @@ export class FamilyFormComponent implements OnInit {
   private reloadFamily(familyId: number): void {
     this.dataProvider.findFamily(familyId).subscribe(family => {
         this.family = family;
+        this.changeDetection.detectChanges();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);

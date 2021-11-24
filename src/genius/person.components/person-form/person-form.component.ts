@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Person, Sex} from '../../../model/person';
 import {PersonType} from '../../family.components/family-form/family-form.component';
 import {DataProvider} from '../../services/data-provider';
@@ -37,7 +37,8 @@ export enum PersonFormPath {
 @Component({
   selector: 'person-form',
   templateUrl: './person-form.component.html',
-  styleUrls: ['./person-form.component.scss']
+  styleUrls: ['./person-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PersonFormComponent implements OnInit {
   @Input() templateVersion: string;
@@ -51,16 +52,20 @@ export class PersonFormComponent implements OnInit {
   public lifeEventClone: LifeEvent;
   public PersonSex: Array<string>;
   public currentPersonFormPath: PersonFormPath;
-  public confirmDialogVisiable: Boolean;
+  public confirmDialogVisible: Boolean;
   public lifeEventFormType: LifeEventFormType;
-  public lifeEventFormDialogVisiable: Boolean;
+  public lifeEventFormDialogVisible: Boolean;
   public personFormPath;
   public personFormTemplateVersion;
   public lifeEventFormTemplateVersion;
   public personTemplateType;
   public personSex;
 
-  constructor(private dataProvider: DataProvider, private activateRoute: ActivatedRoute, private selectPersonTransferService: SelectPersonTransferService, private dataLoad: DataLoadService) {
+  constructor(private dataProvider: DataProvider,
+              private activateRoute: ActivatedRoute,
+              private selectPersonTransferService: SelectPersonTransferService,
+              private dataLoad: DataLoadService,
+              private changeDetection: ChangeDetectorRef) {
     this.person = new Person();
     this.templateVersion = PersonFormTemplateVersion.PERSON_CREATE;
     this.PersonSex = Object.values(Sex);
@@ -72,6 +77,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.activateRoute.snapshot.params.id);
     if (this.activateRoute.snapshot && this.activateRoute.snapshot.routeConfig) {
       let path = <PersonFormPath>this.activateRoute.snapshot.routeConfig.path;
       this.currentPersonFormPath = path;
@@ -79,6 +85,7 @@ export class PersonFormComponent implements OnInit {
         this.dataProvider.findPerson(Number(this.activateRoute.snapshot.params.id)).subscribe(person => {
             this.person = person;
             this.templateVersion = PersonFormTemplateVersion.PERSON_VIEW;
+            this.changeDetection.detectChanges();
           },
           (errorResponse) => {
             console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -109,6 +116,7 @@ export class PersonFormComponent implements OnInit {
         } else if (this.personType === PersonType.CHILD) {
           this.persons = persons;
         }
+        this.changeDetection.detectChanges();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -125,6 +133,7 @@ export class PersonFormComponent implements OnInit {
 
   public toggleViewEditPerson(): void {
     this.personClone = this.personDeepClone(this.person);
+    this.changeDetection.detectChanges();
     this.templateVersion = PersonFormTemplateVersion.PERSON_EDIT;
   }
 
@@ -156,19 +165,19 @@ export class PersonFormComponent implements OnInit {
 
   public lifeEventHandler(lifeEventActionDescriptor: LifeEventActionDescriptor) {
     if (lifeEventActionDescriptor.action === LifeEventTemplateAction.DELETE) {
-      this.confirmDialogVisiable = true;
+      this.confirmDialogVisible = true;
       this.lifeEvent = lifeEventActionDescriptor.lifeEvent;
       this.lifeEventClone = this.lifeEventSimpleClone(lifeEventActionDescriptor.lifeEvent);
     } else if (lifeEventActionDescriptor.action === LifeEventTemplateAction.GET) {
       this.lifeEventFormType = LifeEventFormType.EXIST_EVENT;
-      this.lifeEventFormDialogVisiable = true;
+      this.lifeEventFormDialogVisible = true;
       this.lifeEvent = lifeEventActionDescriptor.lifeEvent;
       this.lifeEventClone = this.lifeEventSimpleClone(lifeEventActionDescriptor.lifeEvent);
     }
   }
 
   public lifeEventFormHandler(lifeEventFormActionDescriptor: LifeEventFormActionDescriptor): void {
-    this.lifeEventFormDialogVisiable = false;
+    this.lifeEventFormDialogVisible = false;
     if (lifeEventFormActionDescriptor) {
       if (lifeEventFormActionDescriptor.action === LifeEventFormTemplateAction.CHANGE) {
         this.changeLifeEvent(this.person.id, lifeEventFormActionDescriptor.lifeEvent);
@@ -202,7 +211,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   public confirmActionHandler(confirmAction: ConfirmAction): void {
-    this.confirmDialogVisiable = false;
+    this.confirmDialogVisible = false;
     if (confirmAction === ConfirmAction.OK) {
       this.dataProvider.deletePersonEvent(this.person.id, this.lifeEventClone)
         .subscribe(() => {
@@ -219,7 +228,7 @@ export class PersonFormComponent implements OnInit {
     this.lifeEventClone = new LifeEvent();
     this.lifeEventClone.type = LifeEventType.DEFAULT;
     this.lifeEventClone.prefix = EventPrefix.NONE;
-    this.lifeEventFormDialogVisiable = true;
+    this.lifeEventFormDialogVisible = true;
   }
 
   public personDeepClone(person: Person): Person {
@@ -245,6 +254,7 @@ export class PersonFormComponent implements OnInit {
   private reloadPerson() {
     this.dataProvider.findPerson(this.person.id).subscribe(person => {
         this.person = person;
+        this.changeDetection.detectChanges();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -260,7 +270,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   public getRouterLink(): [string, number | string] {
-    if (this.currentPersonFormPath === PersonFormPath.ADD_IN_EXIST_FAMILY){
+    if (this.currentPersonFormPath === PersonFormPath.ADD_IN_EXIST_FAMILY) {
       return ['/editFamily', this.familyId];
     } else if (this.currentPersonFormPath === PersonFormPath.ADD_IN_NEW_FAMILY) {
       return ['/createFamily', ''];

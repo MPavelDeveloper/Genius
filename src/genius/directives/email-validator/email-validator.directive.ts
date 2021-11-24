@@ -2,7 +2,7 @@ import {Directive} from '@angular/core';
 import {FormControl, NG_VALIDATORS, Validator} from '@angular/forms';
 
 @Directive({
-  selector: '[emailValidatorDirective]',
+  selector: '[emailValidation]',
   providers: [{provide: NG_VALIDATORS, useExisting: EmailValidatorDirective, multi: true}]
 })
 export class EmailValidatorDirective implements Validator {

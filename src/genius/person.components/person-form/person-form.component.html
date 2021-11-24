@@ -21,20 +21,21 @@
         <button class="btn-add-event" (click)="createLifeEvent()">+</button>
       </div>
     </div>
-    <life-event-form *ngIf = "lifeEventFormDialogVisiable"
+    <life-event-form *ngIf = "lifeEventFormDialogVisible"
                      [templateVersion]="lifeEventFormType"
                      [lifeEvent]="lifeEventClone"
                      [personFullName]="getPersonFullName()"
                      (formEvents)="lifeEventFormHandler($event)">
     </life-event-form>
-    <confirm-dialog *ngIf = "confirmDialogVisiable" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
+    <confirm-dialog *ngIf = "confirmDialogVisible" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
   </form>
 
   <form *ngSwitchCase="personFormTemplateVersion.PERSON_EDIT" class="form-wrap" #editForm="ngForm">
     <div class="wrap">
       <span class="btn-close" (click)="exit()">X</span>
       <div class="person-title"><span>Person</span></div>
-      <input class="person-fn person-input-edit" type="text" placeholder="First name"  [(ngModel)]="personClone.firstName" name="firstName" tabindex="1" autocomplete="off" minlength="1" maxlength="25" nameValidatorDirective required>
+      <input class="person-fn person-input-edit" type="text" placeholder="First name" [(ngModel)]="personClone.firstName" name="firstName" tabindex="1" autocomplete="off" minlength="1" maxlength="25"
+             nameValidation required>
       <input class="person-ln person-input-edit" type="text" placeholder="Last name" [(ngModel)]="personClone.lastName" name="lastName" tabindex="2" autocomplete="off" maxlength="25">
       <input class="person-mn person-input-edit" type="text" placeholder="Middle name" [(ngModel)]="personClone.middleName" name="middleName" tabindex="3" autocomplete="off" maxlength="25">
       <input class="person-age person-input-edit" type="number" placeholder="Age" [(ngModel)]="personClone.age" name="age" tabindex="4" autocomplete="off" min="1">
@@ -53,7 +54,8 @@
     <div class="wrap">
       <span class="btn-close" routerLink="/Persons">X</span>
       <div class="person-title"><span>Person</span></div>
-      <input class="person-fn person-input-edit" type="text" placeholder="First name" [(ngModel)]="person.firstName" name="firstName" tabindex="1" autocomplete="off"  minlength="2" nameValidatorDirective required>
+      <input class="person-fn person-input-edit" type="text" placeholder="First name" [(ngModel)]="person.firstName" name="firstName" tabindex="1" autocomplete="off" minlength="2"
+             nameValidation required>
       <input class="person-ln person-input-edit" type="text" placeholder="Last name" [(ngModel)]="person.lastName" name="lastName" tabindex="2" autocomplete="off" maxlength="25">
       <input class="person-mn person-input-edit" type="text" placeholder="Middle name" [(ngModel)]="person.middleName" name="middleName" tabindex="3" autocomplete="off" maxlength="25">
       <input class="person-age person-input-edit" type="number" placeholder="Age" [(ngModel)]="person.age" name="age" tabindex="4" autocomplete="off" min="1">

@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {LifeEvent} from '../../../model/life-event';
 
 export enum LifeEventTemplateAction {
@@ -14,7 +14,8 @@ export interface LifeEventActionDescriptor {
 @Component({
   selector: 'life-event',
   templateUrl: './life-event.component.html',
-  styleUrls: ['./life-event.component.scss']
+  styleUrls: ['./life-event.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class LifeEventComponent {
   @Input() lifeEvent: LifeEvent;
