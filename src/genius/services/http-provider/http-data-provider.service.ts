@@ -15,8 +15,6 @@ import {UserLoginData, UserRegistryData} from '../../user-login/user-login.compo
 })
 export class HttpDataProvider extends DataProvider {
 
-  public time: string;
-
   private readonly httpOptionsSend = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
