@@ -5,6 +5,7 @@ import {LifeEvent} from '../../model/life-event';
 import {UserLoginData, UserRegistryData} from '../user-login/user-login.component';
 
 export abstract class DataProvider {
+
   abstract getPersons(): Observable<Array<Person>>;
 
   abstract getFamilies(): Observable<Array<Family>>;

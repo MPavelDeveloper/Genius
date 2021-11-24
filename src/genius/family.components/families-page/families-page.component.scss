@@ -21,12 +21,13 @@
   }
 
   .row {
-    margin-bottom: 21px;
+    margin-bottom: 51px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 
     .family {
+      position: relative;
       width: 221px;
       flex-grow: 0;
       flex-shrink: 0;
@@ -96,3 +97,31 @@
     }
   }
 }
+
+.arrow {
+}
+
+.arrow-center {
+  z-index: -1;
+  position: relative;
+  border: 1px solid black;
+  width: 100%;
+  transform: rotate(90deg);
+}
+
+.arrow-left {
+  top: -39px;
+  position: relative;
+  border: 1px solid black;
+  transform: rotate(-45deg);
+  z-index: -1;
+}
+
+.arrow-right {
+  top: -39px;
+  position: relative;
+  border: 1px solid black;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+

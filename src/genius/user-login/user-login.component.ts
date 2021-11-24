@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TokenInterceptorService} from '../services/interceptor/token-interceptor.service';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DataProvider} from '../services/data-provider';
 
@@ -23,11 +22,10 @@ export interface UserRegistryData {
 @Component({
   selector: 'user-login',
   templateUrl: './user-login.component.html',
-  styleUrls: ['./user-login.component.scss']
+  styleUrls: ['./user-login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLoginComponent implements OnInit {
-  @Input() pattern: string | RegExp;
-
   public login: string;
   public password: string;
   public nameRegistry: string;
@@ -38,7 +36,7 @@ export class UserLoginComponent implements OnInit {
   public unregistered: boolean;
   public userFormType;
 
-  constructor(private dataProvider: DataProvider, private intreceptor: TokenInterceptorService, private router: Router) {
+  constructor(private dataProvider: DataProvider, private router: Router) {
     this.userFormType = UserFormType;
   }
 
@@ -88,4 +86,5 @@ export class UserLoginComponent implements OnInit {
     this.dataProvider.setToken('');
     this.unregistered = true;
   }
+
 }

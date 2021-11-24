@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LifeEvent, EventPrefix, LifeEventType} from '../../../model/life-event';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {EventPrefix, LifeEvent, LifeEventType} from '../../../model/life-event';
 
 export enum LifeEventFormType {
   NEW_EVENT = 'newEvent',
@@ -21,7 +21,8 @@ export interface LifeEventFormActionDescriptor {
 @Component({
   selector: 'life-event-form',
   templateUrl: './life-event-form.component.html',
-  styleUrls: ['./life-event-form.component.scss']
+  styleUrls: ['./life-event-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LifeEventFormComponent {
   @Input() templateVersion: LifeEventFormType;

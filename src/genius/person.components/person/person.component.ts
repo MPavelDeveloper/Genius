@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import {Person} from '../../../model/person';
 
 export enum PersonTemplateType {
@@ -11,6 +18,7 @@ export enum PersonTemplateType {
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PersonComponent {
   @Input() person: Person;
