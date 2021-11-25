@@ -1,26 +1,25 @@
 <div class="table-families">
-  <button class="button-add-new" [routerLink] = "['/createFamily', '']">+</button>
-
-    <ng-container *ngFor="let nodesRow of familyTreeBootstrap; index as indexRow">
-      <div class="row">
-        <ng-container *ngFor="let childNodeSet of nodesRow; count as parentsNodeAmount; index as parentChildrenSetIndex">
-          <ng-container *ngFor="let childNode of childNodeSet; count as childNodeAmount; index as indexChildNode">
-            <div class="family" [ngClass]="{'family': childNode !== null , 'family-none': childNode === null}">
-              <ng-container *ngIf="childNode">
-                <div class="arrow" *ngIf="childNodeAmount === 1 " [ngClass]="{'arrow-center': indexRow > 0}"></div>
-                <div class="arrow" *ngIf="childNodeAmount === 1 " [ngClass]="{'arrow-center': indexRow > 0}"></div>
-                <div class="arrow" *ngIf="childNodeAmount === 2" [ngClass]="{'arrow-left':compareIndexAndOrder(indexChildNode, 0), 'arrow-right':compareIndexAndOrder(indexChildNode, 1)}"></div>
-                <family [family]="childNode.data" [routerLink] = "['/viewFamily', childNode.data.id]"></family>
-                <div class="row-actions">
-                  <button class="button-add" [routerLink] = "['/viewFamily', childNode.data.id]">add</button>
-                  <button class="button-delete" (click)="showConfirm(childNode.data)">del</button>
-                </div>
+  <div class="container">
+    <button class="button-add-new" [routerLink] = "['/createFamily', '']">+</button>
+      <ng-container *ngFor="let gridRow of familyTreeGrid; index as indexRow">
+        <div class="row">
+          <ng-container *ngFor="let nodeCellsSet of gridRow; count as parentAmount">
+            <ng-container *ngFor="let node of nodeCellsSet; count as nodeAmount; index as nodeIndex">
+              <div [ngClass]="setFamilyStyle(node)">
+                <ng-container *ngIf="node.data">
+                  <div *ngIf="indexRow" [ngClass]="setArrowStyle(parentAmount, nodeAmount, nodeIndex)"></div>
+                  <family [family]="node.data" [routerLink] = "['/viewFamily', node.data.id]"></family>
+                  <div class="row-actions">
+                    <button class="button-add" [routerLink] = "['/viewFamily', node.data.id]">add</button>
+                    <button class="button-delete" (click)="showConfirm(node.data)">del</button>
+                  </div>
+                </ng-container>
+              </div>
               </ng-container>
-            </div>
-            </ng-container>
-        </ng-container>
-      </div>
-    </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+  </div>
 
   <confirm-dialog *ngIf = "confirmDialogVisible" (confirmAction)="confirmActionHandler($event)"></confirm-dialog>
 </div>
