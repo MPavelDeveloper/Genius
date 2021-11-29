@@ -4,26 +4,32 @@ import {Family} from '../../../model/family';
 import {Observable} from 'rxjs';
 import * as Pipe from 'ramda';
 import {Person} from '../../../model/person';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FamilyTreeService {
   private root: Node;
+  private familyTreeGrid: Array<Array<Array<Node>>>;
 
   constructor(public dataProvider: HttpDataProvider) {
+    this.familyTreeGrid = [];
   }
 
   public createFamilyTree(): Observable<Node> {
     return new Observable(subscriber => {
       this.dataProvider.getFamilies().subscribe(families => {
           this.getRootFamily(families).subscribe(rootFamily => {
-              this.root = new Node(rootFamily);
-              this.root.children = this.createChildrenNodes(this.root, rootFamily, families);
-              this.root.children.forEach(childNode => {
-                this.addNodes(this.root, childNode, families);
-              })
-              subscriber.next(this.root);
+              if (rootFamily) {
+                this.root = new Node(rootFamily);
+                this.root.children = this.createChildrenNodes(this.root, rootFamily, families);
+                this.root.children.forEach(childNode => this.addNodes(this.root, childNode, families));
+                this.familyTreeGrid = this.createFamilyTreeGrid([[this.root]], [[[this.root]]]);
+                subscriber.next(this.root);
+              } else {
+                subscriber.next(null);
+              }
             },
             (errorResponse) => {
               console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
@@ -36,20 +42,16 @@ export class FamilyTreeService {
   }
 
   public getRootFamily(families: Array<Family>): Observable<Family> {
-    return new Observable(subscriber => {
-      this.dataProvider.getPersons().subscribe(persons => {
+    return this.dataProvider.getPersons().pipe(
+      map((persons: Array<Person>) => {
           for (let person of persons) {
             if (person.familyId && person.parentFamilyId === null) {
-              let rootFamily = this.findFamily(person.familyId, families);
-              subscriber.next(rootFamily);
-              return;
+              return this.findFamily(person.familyId, families);
             }
           }
-        },
-        (errorResponse) => {
-          console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-        });
-    });
+          return null;
+        }
+      ));
   }
 
   public addNodes(parentNode: Node, childNode: Node, families: Array<Family>) {
@@ -75,43 +77,70 @@ export class FamilyTreeService {
     return node;
   }
 
-  public traversal() {
-    let result: Array<Node> = [];
-    this.traversalInOrder(this.root, result);
-    return result;
+  public getFamilyTreeGrid() {
+    return this.familyTreeGrid;
   }
 
-  public traversalInOrder(node: Node, result: Array<Node>) {
-    node.children.forEach(childNode => {
-      this.traversalInOrder(childNode, result);
-    })
-    result.push(node)
-  }
-
-  public getFamilyTreeLevels(): Array<Array<Node>> {
-    let familyTreeLevels: Array<Array<Node>> = [];
-    familyTreeLevels.push([this.root]);
-    for (let level = 0; level < familyTreeLevels.length; level++) {
-      this.createFamilyTreeLevels(familyTreeLevels, familyTreeLevels[level]);
+  private createFamilyTreeGrid(gridRow: Array<Array<Node>>, familyTreeGrid: Array<Array<Array<Node>>>): Array<Array<Array<Node>>> {
+    let nextGridRow = this.createFamilyGridRow(gridRow);
+    if (this.checkFamilyGridRow(nextGridRow)) {
+      familyTreeGrid.push(nextGridRow);
+      this.createFamilyTreeGrid(nextGridRow, familyTreeGrid);
     }
 
-    return familyTreeLevels;
+    return familyTreeGrid;
   }
 
-  public createFamilyTreeLevels(familyTreeLevels: Array<Array<Node>>, nodes: Array<Node>): void {
-    let level: Array<Node> = [];
-    nodes.forEach(node => {
-      if (node.children.length) {
-        level = level.concat(node.children);
-      }
+  private createFamilyGridRow(familyTreeGridRow: Array<Array<Node>>): Array<Array<Node>> {
+    let nextGridRow: Array<Array<Node>> = [];
+    let maxChildNumber = this.getMaxChildNumber(familyTreeGridRow);
+    let gridRowNodes = this.getFamilyGridRowNodes(familyTreeGridRow);
+    gridRowNodes.forEach(node => {
+      nextGridRow.push(this.createGridNodeSet(maxChildNumber, node));
     });
 
-    if (level.length) {
-      familyTreeLevels.push(level);
-    }
+    return nextGridRow;
   }
 
+  private createGridNodeSet(maxChildNumber: number, node: Node): Array<Node> {
+    let nodeSet: Array<Node> = [];
+    nodeSet = nodeSet.concat(node.children);
+    if (nodeSet.length < maxChildNumber) {
+      while (nodeSet.length < maxChildNumber) {
+        nodeSet.push(new Node(null))
+      }
+    }
+    return nodeSet;
+  }
+
+  private getMaxChildNumber(familyTreeGridRow: Array<Array<Node>>): number {
+    let nodes = this.getFamilyGridRowNodes(familyTreeGridRow);
+    let childMaxNumber = 0;
+    nodes.forEach(node => {
+      if (node.children.length > childMaxNumber) {
+        childMaxNumber = node.children.length;
+      }
+    });
+    return childMaxNumber;
+  }
+
+  private getFamilyGridRowNodes(familyTreeGridRow: Array<Array<Node>>): Array<Node> {
+    let nodes: Array<Node> = [];
+    familyTreeGridRow.forEach(nodeSet => nodes = nodes.concat(nodeSet));
+    return nodes;
+  }
+
+  private checkFamilyGridRow(familyGridRow: Array<Array<Node>>): boolean {
+    let nodes = this.getFamilyGridRowNodes(familyGridRow);
+    for (let node of nodes) {
+      if (node.data) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
+
 
 export class Node {
   parent: Node;

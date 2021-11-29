@@ -12,24 +12,27 @@ import {FamilyTreeService, Node} from '../../services/family-tree/family-tree.se
   styleUrls: ['./families-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FamiliesPageComponent implements OnInit, OnDestroy{
-
+export class FamiliesPageComponent implements OnInit, OnDestroy {
   private dataLoadSubscription: Subscription;
   public families: Array<Family>;
   public familyId: number;
   public confirmDialogVisible: boolean;
-  public familyGenius: Array<Array<Node>>;
-  public familyTreeBootstrap: Array<Array<Array<Node>>>;
+  public familyTreeGrid: Array<Array<Array<Node>>>;
+  private dataProvider: DataProvider;
+  private dataLoad: DataLoadService;
+  private familyTreeService: FamilyTreeService;
+  private changeDetection: ChangeDetectorRef;
 
-  constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService, private familyTree: FamilyTreeService, private changeDetection: ChangeDetectorRef) {
-    this.loadFamilyTree();
+  constructor(dataProvider: DataProvider, dataLoad: DataLoadService, familyTreeService: FamilyTreeService, changeDetection: ChangeDetectorRef) {
+    this.dataProvider = dataProvider;
+    this.dataLoad = dataLoad;
+    this.familyTreeService = familyTreeService;
+    this.changeDetection = changeDetection;
   }
 
   ngOnInit() {
-    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => {
-      this.familyGenius = [];
-      this.loadFamilyTree();
-    });
+    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => this.loadFamilyTree());
+    this.dataLoad.families$.next();
   }
 
   ngOnDestroy() {
@@ -55,8 +58,8 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
   }
 
   public loadFamilyTree(): void {
-    this.familyTree.createFamilyTree().subscribe(() => {
-        this.familyTreeBootstrap = this.createFamilyBootstrap(this.familyTree.getFamilyTreeLevels());
+    this.familyTreeService.createFamilyTree().subscribe(() => {
+        this.familyTreeGrid = this.familyTreeService.getFamilyTreeGrid();
         this.changeDetection.detectChanges();
       },
       (errorResponse) => {
@@ -64,96 +67,50 @@ export class FamiliesPageComponent implements OnInit, OnDestroy{
       });
   }
 
-  public createFamilyBootstrap(familyTreeLevels: Array<Array<Node>>): Array<Array<Array<Node>>> {
-    let familyTreeBootstrap: Array<Array<Array<Node>>> = [];
-    let nodeAmountParentLevel = 0;
-    let nodeAmountChildCurrentLevel = 0;
-    let gridCounter = 0;
-
-    // push #root
-    // VVV
-    familyTreeBootstrap.push([familyTreeLevels[0]]);
-    for (let currentRowIndex = 0; currentRowIndex < familyTreeBootstrap.length; currentRowIndex++) {
-      nodeAmountChildCurrentLevel = 0;
-
-      // [[node], [node]] nodeSets
-      nodeAmountParentLevel = familyTreeBootstrap[currentRowIndex].length;
-
-
-      let parentNodesAmount = 0;
-      let childNodesAmount = 0;
-
-      familyTreeBootstrap[currentRowIndex].forEach((nodes: Array<Node>) => {
-        parentNodesAmount ++;
-        nodes.forEach(node => {
-          if(node !== null) {
-            let currentChildAmount = node.children.length;
-            if(currentChildAmount > childNodesAmount) {
-              childNodesAmount = currentChildAmount;
-            }
-          }
-        });
-      });
-
-
-      if (parentNodesAmount > nodeAmountParentLevel) {
-        nodeAmountParentLevel = parentNodesAmount;
-      }
-
-      if (childNodesAmount > nodeAmountChildCurrentLevel) {
-        nodeAmountChildCurrentLevel = childNodesAmount
-      }
-      childNodesAmount = 0;
-      // console.log('parents: ', parentNodesAmount);
-      // console.log('chidren: ', childNodesAmount);
-
-      if (nodeAmountParentLevel > nodeAmountChildCurrentLevel) {
-        gridCounter = nodeAmountParentLevel
-      } else {
-        gridCounter = nodeAmountChildCurrentLevel;
-      }
-
-      // console.log('gridCounter: ', gridCounter)
-
-      let currentLevelNodes: Array<Node> = [];
-
-      // [[node], [node]]
-      familyTreeBootstrap[currentRowIndex].forEach((nodes: Array<Node>) => currentLevelNodes = currentLevelNodes.concat(nodes));
-      // console.log(currentLevelNodes)
-
-
-      familyTreeBootstrap.push(this.createNewFamilyTreeBootstrapLevel(currentLevelNodes, gridCounter));
-      if(currentRowIndex === familyTreeLevels.length) break
+  public getFamilyStyle(family: Node): string {
+    if (family.data) {
+      return 'family';
     }
-    return familyTreeBootstrap;
+    return 'family-none';
   }
 
-  public createNewFamilyTreeBootstrapLevel(currentLevelNodes: Array<Node>, maxChildrenNodes: number): Array<Array<Node>> {
-    let familyTreeBootstrapRow: Array<Array<Node>> = [];
-    currentLevelNodes.forEach(node => {
-
-
-      if (node !== null) {
-        let nodeChildren: Array<Node> = [].concat(node.children);
-        while (nodeChildren.length < maxChildrenNodes) {
-          nodeChildren.push(null);
-        }
-        familyTreeBootstrapRow.push(nodeChildren);
-      } else {
-        let nodeChildren: Array<Node> = []
-        while (nodeChildren.length < maxChildrenNodes) {
-          nodeChildren.push(null);
-        }
-        familyTreeBootstrapRow.push([null]);
+  public getArrowStyle(parentAmount: number, childNumber: number, nodeIndex: number,): string {
+    if (parentAmount === 1) {
+      switch (childNumber) {
+        case 1:
+          return 'arrow-center';
+        case 2:
+          if (nodeIndex === 0) return 'arrow-big-left';
+          if (nodeIndex === 1) return 'arrow-big-right';
       }
+    } else if (parentAmount === 2) {
+      switch (childNumber) {
+        case 1:
+          return 'arrow-center';
+        case 2:
+          if (nodeIndex === 0) return 'arrow-left_x4';
+          if (nodeIndex === 1) return 'arrow-right_x4';
+          break;
+        case 3:
+          if (nodeIndex === 0) return 'arrow-left_x4';
+          if (nodeIndex === 1) return 'arrow-center';
+          if (nodeIndex === 2) return 'arrow-right_x4';
+      }
+    }
 
-    });
-
-    return familyTreeBootstrapRow;
-  }
-
-  public compareIndexAndOrder(index: number, order: number): boolean {
-    return index === order;
+    switch (childNumber) {
+      case 1:
+        return 'arrow-center';
+      case 2:
+        if (nodeIndex === 0) return 'arrow-left_xN';
+        if (nodeIndex === 1) return 'arrow-right_xN';
+        break;
+      case 3:
+        if (nodeIndex === 0) return 'arrow-left_x4';
+        if (nodeIndex === 1) return 'arrow-center';
+        if (nodeIndex === 2) return 'arrow-right_x4';
+    }
+    return undefined
   }
 
 }
