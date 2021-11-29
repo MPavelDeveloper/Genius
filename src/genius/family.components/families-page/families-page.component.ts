@@ -18,23 +18,21 @@ export class FamiliesPageComponent implements OnInit, OnDestroy {
   public familyId: number;
   public confirmDialogVisible: boolean;
   public familyTreeGrid: Array<Array<Array<Node>>>;
-  private dataProvider;
-  private dataLoad;
-  private familyTree;
-  private changeDetection;
+  private dataProvider: DataProvider;
+  private dataLoad: DataLoadService;
+  private familyTreeService: FamilyTreeService;
+  private changeDetection: ChangeDetectorRef;
 
-  constructor(dataProvider: DataProvider, dataLoad: DataLoadService, familyTree: FamilyTreeService, changeDetection: ChangeDetectorRef) {
+  constructor(dataProvider: DataProvider, dataLoad: DataLoadService, familyTreeService: FamilyTreeService, changeDetection: ChangeDetectorRef) {
     this.dataProvider = dataProvider;
     this.dataLoad = dataLoad;
-    this.familyTree = familyTree;
+    this.familyTreeService = familyTreeService;
     this.changeDetection = changeDetection;
-    this.loadFamilyTree();
   }
 
   ngOnInit() {
-    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => {
-      this.loadFamilyTree();
-    });
+    this.dataLoadSubscription = this.dataLoad.families$.subscribe(() => this.loadFamilyTree());
+    this.dataLoad.families$.next();
   }
 
   ngOnDestroy() {
@@ -60,9 +58,8 @@ export class FamiliesPageComponent implements OnInit, OnDestroy {
   }
 
   public loadFamilyTree(): void {
-    this.familyTree.createFamilyTree().subscribe(() => {
-        this.familyTreeGrid = this.createFamilyTreeGrid(this.familyTree.getFamilyTreeLevels());
-        console.log(this.familyTreeGrid);
+    this.familyTreeService.createFamilyTree().subscribe(() => {
+        this.familyTreeGrid = this.familyTreeService.getFamilyTreeGrid();
         this.changeDetection.detectChanges();
       },
       (errorResponse) => {
@@ -70,75 +67,14 @@ export class FamiliesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  public createFamilyTreeGrid(familyTreeLevels: Array<Array<Node>>): Array<Array<Array<Node>>> {
-    let familyTreeGrid: Array<Array<Array<Node>>> = [];
-    let rootFamilyNode: Array<Array<Node>> = [familyTreeLevels[0]]
-    let nodeChildMaxNumber = 0;
-
-    familyTreeGrid.push(rootFamilyNode);
-    for (let currentFamilyNodeSet of familyTreeGrid) {
-      let currentRowNodes = this.getCurrentRowNodes(currentFamilyNodeSet);
-      nodeChildMaxNumber = this.getChildNodeMaxNumber(currentRowNodes);
-      let nextFamilyGridRow = this.createNewFamilyTreeGridRow(currentRowNodes, nodeChildMaxNumber);
-      if (this.checkNextFamilyGridRow(nextFamilyGridRow)) {
-        familyTreeGrid.push(nextFamilyGridRow);
-      } else {
-        break
-      }
-    }
-    return familyTreeGrid;
-  }
-
-  private getChildNodeMaxNumber(nodes: Array<Node>): number {
-    let maxChildNodeNumber = 0;
-    // [[node, node], [node]]
-    nodes.forEach(node => {
-      if (node.data !== null) {
-        if (node.children.length > maxChildNodeNumber) {
-          maxChildNodeNumber = node.children.length;
-        }
-      }
-    });
-    return maxChildNodeNumber;
-  }
-
-  private getCurrentRowNodes(currentFamilyNodeSet: Array<Array<Node>>): Array<Node> {
-    let currentRowNodes: Array<Node> = [];
-    currentFamilyNodeSet.forEach(node => currentRowNodes = currentRowNodes.concat(node));
-    return currentRowNodes;
-  }
-
-  public createNewFamilyTreeGridRow(currentRowNodes: Array<Node>, nodeChildMaxNumber: number): Array<Array<Node>> {
-    let familyTreeGridRow: Array<Array<Node>> = [];
-    currentRowNodes.forEach(node => {
-      let childNodes: Array<Node> = [];
-      if (node.data !== null) {
-        childNodes = node.children;
-      }
-      while (childNodes.length < nodeChildMaxNumber) {
-        childNodes.push(new Node(null));
-      }
-      familyTreeGridRow.push(childNodes);
-    });
-    return familyTreeGridRow;
-  }
-
-  private checkNextFamilyGridRow(nextFamilyGridRow: Array<Array<Node>>): boolean {
-    let nodes = this.getCurrentRowNodes(nextFamilyGridRow);
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].data !== null) return true
-    }
-    return false;
-  }
-
-  public setFamilyStyle(family: Node): string {
+  public getFamilyStyle(family: Node): string {
     if (family.data) {
       return 'family';
     }
     return 'family-none';
   }
 
-  public setArrowStyle(parentAmount: number, childNumber: number, nodeIndex: number,): string {
+  public getArrowStyle(parentAmount: number, childNumber: number, nodeIndex: number,): string {
     if (parentAmount === 1) {
       switch (childNumber) {
         case 1:

@@ -27,11 +27,17 @@ export class ConfirmDialogComponent implements OnInit{
     this.confirmActionType = ConfirmAction;
   }
 
-  returnConfirmAction(confirmAction: ConfirmAction) {
-    return this.confirmAction.emit(confirmAction);
-  }
-
   ngOnInit(): void {
     this.changeDetection.detectChanges();
   }
+
+  ok() {
+    this.confirmAction.emit(ConfirmAction.OK);
+  }
+
+  cancel() {
+    this.confirmAction.emit(ConfirmAction.CANCEL);
+  }
+
+
 }

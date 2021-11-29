@@ -5,9 +5,9 @@
         <div class="row">
           <ng-container *ngFor="let nodeCellsSet of gridRow; count as parentAmount">
             <ng-container *ngFor="let node of nodeCellsSet; count as nodeAmount; index as nodeIndex">
-              <div [ngClass]="setFamilyStyle(node)">
+              <div [ngClass]="getFamilyStyle(node)">
                 <ng-container *ngIf="node.data">
-                  <div *ngIf="indexRow" [ngClass]="setArrowStyle(parentAmount, nodeAmount, nodeIndex)"></div>
+                  <div *ngIf="indexRow" [ngClass]="getArrowStyle(parentAmount, nodeAmount, nodeIndex)"></div>
                   <family [family]="node.data" [routerLink] = "['/viewFamily', node.data.id]"></family>
                   <div class="row-actions">
                     <button class="button-add" [routerLink] = "['/viewFamily', node.data.id]">add</button>
