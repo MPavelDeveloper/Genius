@@ -283,7 +283,9 @@ export class FamilyFormComponent implements OnInit {
     this.familyClone = deepClone(this.family);
   }
 
-  private getFamilyPersons(family: Family): Array<Person> {
+
+
+  public getFamilyPersons(family: Family): Array<Person> {
     const persons: Array<Person> = [];
     if (family.husband) {
       persons.push(family.husband);
@@ -297,7 +299,7 @@ export class FamilyFormComponent implements OnInit {
     return persons;
   }
 
-  private familyValid(family: Family): boolean {
+  public familyValid(family: Family): boolean {
     if (this.getCompleteChildrenAmount() > 0) return true;
     if (family.husband) return true;
     if (family.wife) return true;
@@ -338,14 +340,14 @@ export class FamilyFormComponent implements OnInit {
     this.selectPersonTransferService.personFormTemplateVersion = null;
   }
 
-  private reloadFamily(familyId: number): void {
+  public reloadFamily(familyId: number): void {
     this.dataProvider.findFamily(familyId).subscribe(family => {
         this.family = family;
         this.changeDetection.detectChanges();
       },
       (errorResponse) => {
         console.error(`Error status: ${errorResponse.error.status}\n Error message: ${errorResponse.error.message}\n Error path: ${errorResponse.error.path}\n`);
-      })
+      });
   }
 
   public getRouterLink(): string {

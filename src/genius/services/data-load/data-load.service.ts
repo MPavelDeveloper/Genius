@@ -14,20 +14,12 @@ export class DataLoadService {
   constructor() {
   }
 
-  public reloadPersons(changedPerson: boolean): void {
-    this.persons$.next(changedPerson);
+  public reloadPersons(changedPersons: boolean): void {
+    this.persons$.next(changedPersons);
   }
 
   public reloadFamilies(changedFamilies: boolean): void {
     this.families$.next(changedFamilies);
-  }
-
-  public raloadPerson(personId: number): void {
-    this.personId$.next(personId);
-  }
-
-  public reloadFamily(familyId: number): void {
-    this.familyId$.next(familyId);
   }
 }
 

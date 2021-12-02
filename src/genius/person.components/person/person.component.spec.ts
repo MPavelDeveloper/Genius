@@ -24,30 +24,12 @@ describe('PersonComponent', () => {
     fixture.detectChanges();
   });
 
-
   it('should create the person component', () => {
     expect(component).toBeTruthy();
   });
 
   it('HTML and Instance; should be the same;', () => {
     let personHTML = fixture.nativeElement.querySelector('.person-short');
-
     expect(personHTML.textContent).toContain(`${component.person.firstName} ${component.person.lastName}`);
   });
-
-  // it('HTML and Instance; should be the same; Dynamic changes', () => {
-  //   let component = fixture.componentInstance;
-  //   let personHTML = fixture.nativeElement.querySelector('.person-short');
-  //   let testPerson = {
-  //     firstName: 'TestName',
-  //     lastName:'TestLastName',
-  //     sex:Sex.MALE,
-  //   };
-  //   component.person = testPerson
-  //
-  //   fixture.detectChanges();
-  //   expect(personHTML.textContent).toContain(`${component.person.firstName} ${component.person.lastName}`);
-  // });
-
-
 });

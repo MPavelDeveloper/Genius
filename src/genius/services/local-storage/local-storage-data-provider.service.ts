@@ -196,19 +196,6 @@ export class LocalStorageDataProvider extends DataProvider {
     });
   }
 
-  private changeExistFamilyChildren(person: Person): void {
-    const targetFamily = this.findFamily(person.familyId);
-    targetFamily.subscribe((family: Family) => {
-      if (family) {
-        if (family.children === null) {
-          family.children = [person];
-        } else {
-          family.children.push(person);
-        }
-      }
-    })
-  }
-
   private getNewPersonID(): number {
     const currentId = this.persons.reduce((previousId: number, item: Person) => {
       if (previousId < item.id) return item.id;
@@ -386,7 +373,7 @@ export class LocalStorageDataProvider extends DataProvider {
 
     return new Observable(subscriber => {
       subscriber.next('family event changed');
-    })
+    });
   }
 
   public deleteFamilyEvent(familyId: number, lifeEvent: LifeEvent): Observable<Object> {
@@ -411,8 +398,9 @@ export class LocalStorageDataProvider extends DataProvider {
 
   public loginUser(data: UserLoginData): Observable<string> {
     return new Observable<string>( subscriber => {
-      let userRigistry = this.getUserRegistry();
-      let targetUser = userRigistry.find( (user: UserDataLocalStorage) => {
+      let userRegistry = this.getUserRegistry();
+      console.log(userRegistry)
+      let targetUser = userRegistry.find( (user: UserDataLocalStorage) => {
         if(user.login === data.username && user.password === user.password) {
             return true;
           }
@@ -445,8 +433,8 @@ export class LocalStorageDataProvider extends DataProvider {
   }
 
   private addUserInUserRegistry(user: UserDataLocalStorage) {
-    let userRegisry = this.getUserRegistry();
-    userRegisry.push(user);
-    localStorage.setItem(GENEALOGY_USER_REGISTRY_KEY, JSON.stringify(userRegisry));
+    let userRegistry = this.getUserRegistry();
+    userRegistry.push(user);
+    localStorage.setItem(GENEALOGY_USER_REGISTRY_KEY, JSON.stringify(userRegistry));
   }
 }

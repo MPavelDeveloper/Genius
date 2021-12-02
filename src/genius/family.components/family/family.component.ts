@@ -18,7 +18,7 @@ export class FamilyComponent{
     this.personTemplateType = PersonTemplateType;
   }
 
-  public close(): void {
+  public returnFamily(): void {
     this.returnedFamily.emit(this.family);
   }
 }

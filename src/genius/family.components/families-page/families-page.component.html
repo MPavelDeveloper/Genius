@@ -8,7 +8,7 @@
               <div [ngClass]="getFamilyStyle(node)">
                 <ng-container *ngIf="node.data">
                   <div *ngIf="indexRow" [ngClass]="getArrowStyle(parentAmount, nodeAmount, nodeIndex)"></div>
-                  <family [family]="node.data" [routerLink] = "['/viewFamily', node.data.id]"></family>
+                  <family class="family" [family]="node.data" [routerLink] = "['/viewFamily', node.data.id]"></family>
                   <div class="row-actions">
                     <button class="button-add" [routerLink] = "['/viewFamily', node.data.id]">add</button>
                     <button class="button-delete" (click)="showConfirm(node.data)">del</button>
