@@ -20,6 +20,7 @@ import {
 } from '../../services/select-person-transfer/select-person-transfer.service';
 import {DataLoadService} from '../../services/data-load/data-load.service';
 import {ConfirmAction} from '../../confirm-dialog/confirm-dialog.component';
+import {deepClone} from '../../utils/utils';
 
 export enum PersonFormTemplateVersion {
   PERSON_VIEW = 'view',
@@ -60,12 +61,18 @@ export class PersonFormComponent implements OnInit {
   public lifeEventFormTemplateVersion;
   public personTemplateType;
   public personSex;
+  private dataProvider: DataProvider;
+  private activateRoute: ActivatedRoute;
+  private selectPersonTransferService: SelectPersonTransferService;
+  private dataLoad: DataLoadService;
+  private changeDetection: ChangeDetectorRef;
 
-  constructor(private dataProvider: DataProvider,
-              private activateRoute: ActivatedRoute,
-              private selectPersonTransferService: SelectPersonTransferService,
-              private dataLoad: DataLoadService,
-              private changeDetection: ChangeDetectorRef) {
+  constructor(dataProvider: DataProvider, activateRoute: ActivatedRoute, selectPersonTransferService: SelectPersonTransferService, dataLoad: DataLoadService, changeDetection: ChangeDetectorRef) {
+    this.dataProvider = dataProvider;
+    this.activateRoute = activateRoute;
+    this.selectPersonTransferService = selectPersonTransferService;
+    this.dataLoad = dataLoad;
+    this.changeDetection = changeDetection;
     this.person = new Person();
     this.templateVersion = PersonFormTemplateVersion.PERSON_CREATE;
     this.PersonSex = Object.values(Sex);
@@ -77,7 +84,6 @@ export class PersonFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.activateRoute.snapshot.params.id);
     if (this.activateRoute.snapshot && this.activateRoute.snapshot.routeConfig) {
       let path = <PersonFormPath>this.activateRoute.snapshot.routeConfig.path;
       this.currentPersonFormPath = path;
@@ -123,7 +129,7 @@ export class PersonFormComponent implements OnInit {
       })
   }
 
-  private searchPersonsByCondition(persons: Array<Person>, condition: Function): Array<Person> {
+  public searchPersonsByCondition(persons: Array<Person>, condition: Function): Array<Person> {
     const result = persons.filter(person => condition(person));
     if (result.length > 0) {
       return result;
@@ -132,7 +138,7 @@ export class PersonFormComponent implements OnInit {
   }
 
   public toggleViewEditPerson(): void {
-    this.personClone = this.personDeepClone(this.person);
+    this.personClone = deepClone(this.person);
     this.changeDetection.detectChanges();
     this.templateVersion = PersonFormTemplateVersion.PERSON_EDIT;
   }
@@ -231,10 +237,6 @@ export class PersonFormComponent implements OnInit {
     this.lifeEventFormDialogVisible = true;
   }
 
-  public personDeepClone(person: Person): Person {
-    return JSON.parse(JSON.stringify(person));
-  }
-
   public lifeEventSimpleClone(lifeEvent: LifeEvent): LifeEvent {
     let lifeEventClone = {};
     Object.assign(lifeEventClone, lifeEvent);
@@ -251,7 +253,7 @@ export class PersonFormComponent implements OnInit {
       ` ${(this.person.lastName) ? this.person.lastName : ''}`;
   }
 
-  private reloadPerson() {
+  public reloadPerson() {
     this.dataProvider.findPerson(this.person.id).subscribe(person => {
         this.person = person;
         this.changeDetection.detectChanges();

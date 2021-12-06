@@ -3,6 +3,7 @@ import {LineAge} from './model/line-age';
 import {Person, Sex} from './model/person';
 import {generateTokenForLocalStorage} from './genius/utils/utils';
 import {Family} from './model/family';
+import {Node} from './genius/services/family-tree/family-tree.service'
 
 export interface UserDataLocalStorage {
   login: string;
@@ -736,7 +737,7 @@ export const testDataFamilies: Array<Family> = [{
   children: [],
 }];
 
-export const testDataPersons: Array<Person> = [ {
+export const testDataPersons: Array<Person> = [{
   id: 2,
   firstName: 'Lola',
   lastName: 'James',
@@ -768,7 +769,7 @@ export const testDataPersons: Array<Person> = [ {
   sex: Sex.MALE,
   familyId: 1,
   parentFamilyId: null,
-}, ];
+},];
 
 export const testRootFamily: Family = {
   id: 1,
@@ -800,6 +801,11 @@ export const testRootFamily: Family = {
     familyId: 2,
   }],
 }
+
+export const testRootNode: Node = new Node(testDataFamilies[0]);
+testRootNode.children.push(new Node(testDataFamilies[1]));
+
+export const testFamilyTreeGridRow: Array<Array<Node>> = [testDataFamilies.map(family => new Node(family))];
 
 
 

@@ -28,13 +28,13 @@ export class PersonsPageComponent implements OnInit, OnDestroy {
   public gender;
 
   constructor(private dataProvider: DataProvider, private dataLoad: DataLoadService, private changeDetection: ChangeDetectorRef) {
-    this.loadPersons();
     this.personTemplateType = PersonTemplateType;
     this.gender = Sex;
   }
 
   ngOnInit() {
     this.dataLoadSubscription = this.dataLoad.persons$.subscribe(() => this.loadPersons());
+    this.dataLoad.persons$.next()
   }
 
   ngOnDestroy() {

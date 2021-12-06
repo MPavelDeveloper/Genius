@@ -112,5 +112,4 @@ export class FamiliesPageComponent implements OnInit, OnDestroy {
     }
     return undefined
   }
-
 }

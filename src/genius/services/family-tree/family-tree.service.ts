@@ -77,11 +77,12 @@ export class FamilyTreeService {
     return node;
   }
 
+
   public getFamilyTreeGrid() {
     return this.familyTreeGrid;
   }
 
-  private createFamilyTreeGrid(gridRow: Array<Array<Node>>, familyTreeGrid: Array<Array<Array<Node>>>): Array<Array<Array<Node>>> {
+  public createFamilyTreeGrid(gridRow: Array<Array<Node>>, familyTreeGrid: Array<Array<Array<Node>>>): Array<Array<Array<Node>>> {
     let nextGridRow = this.createFamilyGridRow(gridRow);
     if (this.checkFamilyGridRow(nextGridRow)) {
       familyTreeGrid.push(nextGridRow);
@@ -91,7 +92,7 @@ export class FamilyTreeService {
     return familyTreeGrid;
   }
 
-  private createFamilyGridRow(familyTreeGridRow: Array<Array<Node>>): Array<Array<Node>> {
+  public createFamilyGridRow(familyTreeGridRow: Array<Array<Node>>): Array<Array<Node>> {
     let nextGridRow: Array<Array<Node>> = [];
     let maxChildNumber = this.getMaxChildNumber(familyTreeGridRow);
     let gridRowNodes = this.getFamilyGridRowNodes(familyTreeGridRow);
@@ -102,7 +103,7 @@ export class FamilyTreeService {
     return nextGridRow;
   }
 
-  private createGridNodeSet(maxChildNumber: number, node: Node): Array<Node> {
+  public createGridNodeSet(maxChildNumber: number, node: Node): Array<Node> {
     let nodeSet: Array<Node> = [];
     nodeSet = nodeSet.concat(node.children);
     if (nodeSet.length < maxChildNumber) {
@@ -113,7 +114,7 @@ export class FamilyTreeService {
     return nodeSet;
   }
 
-  private getMaxChildNumber(familyTreeGridRow: Array<Array<Node>>): number {
+  public getMaxChildNumber(familyTreeGridRow: Array<Array<Node>>): number {
     let nodes = this.getFamilyGridRowNodes(familyTreeGridRow);
     let childMaxNumber = 0;
     nodes.forEach(node => {
@@ -124,13 +125,13 @@ export class FamilyTreeService {
     return childMaxNumber;
   }
 
-  private getFamilyGridRowNodes(familyTreeGridRow: Array<Array<Node>>): Array<Node> {
+  public getFamilyGridRowNodes(familyTreeGridRow: Array<Array<Node>>): Array<Node> {
     let nodes: Array<Node> = [];
     familyTreeGridRow.forEach(nodeSet => nodes = nodes.concat(nodeSet));
     return nodes;
   }
 
-  private checkFamilyGridRow(familyGridRow: Array<Array<Node>>): boolean {
+  public checkFamilyGridRow(familyGridRow: Array<Array<Node>>): boolean {
     let nodes = this.getFamilyGridRowNodes(familyGridRow);
     for (let node of nodes) {
       if (node.data) {

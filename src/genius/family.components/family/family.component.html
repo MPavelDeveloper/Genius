@@ -1,13 +1,13 @@
-<div class="family" (click)="close()">
+<div class="family" (click)="returnFamily()">
   <div class="family-parents">
     <p class="person-title">{{family?.husband?.lastName}}</p>
     <hr class="horizont-line">
     <div class="parents">
       <div class="family-husband">
-        <person [person]="family?.husband" [templateVersion]="personTemplateType.SHORT"></person>
+        <person class="person" [person]="family?.husband" [templateVersion]="personTemplateType.SHORT"></person>
       </div>
       <div class="family-wife">
-        <person [person]="family?.wife" [templateVersion]="personTemplateType.SHORT"></person>
+        <person class="person" [person]="family?.wife" [templateVersion]="personTemplateType.SHORT"></person>
       </div>
     </div>
     <hr class="horizont-line">
@@ -15,7 +15,7 @@
   <div class="family-children">
     <ng-container *ngFor="let child of family?.children">
       <div class="family-child">
-        <person [person]="child" [templateVersion]="personTemplateType.SHORT"></person>
+        <person class="person" [person]="child" [templateVersion]="personTemplateType.SHORT"></person>
       </div>
     </ng-container>
   </div>

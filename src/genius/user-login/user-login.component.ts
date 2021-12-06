@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DataProvider} from '../services/data-provider';
 
-enum UserFormType {
+export enum UserFormType {
   LOGIN = 'login',
   REGISTRY = 'registry',
 }
@@ -13,8 +13,8 @@ export interface UserLoginData {
 }
 
 export interface UserRegistryData {
-  name: string;
-  surName: string;
+  name?: string;
+  surName?: string;
   email: string;
   password: string;
 }
